@@ -1,0 +1,23 @@
+{
+  "name": "evolv-e",
+  "version": "1.0.0",
+  "description": "evolv•e\r Aplicação web que visa simular a evolução por seleção natural utilizando algoritmos genéticos em Javascript.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroheck/evolv-e.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedroheck/evolv-e/issues"
+  },
+  "homepage": "https://github.com/pedroheck/evolv-e#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
