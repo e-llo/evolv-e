@@ -13,6 +13,7 @@
   },
   "author": "",
   "license": "ISC",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/pedroheck/evolv-e/issues"
   },
