@@ -1,7 +1,7 @@
 import {Organismo} from "./Classes/Organismo.js";
 import {Herbivoro} from "./Classes/Herbivoro.js";
 import {Carnivoro} from "./Classes/Carnivoro.js";
-import {Alimento} from "./Alimento.js";
+import {Alimento} from "./Classes/Alimento.js";
 
 const herbivoro1 = new Herbivoro(100, 200, 7, 15, 6, 20, 3, "rosa", 8, 13, 18, 1, 9, 0.5);
 const carnivoro1 = new Carnivoro(200,200,5,2,6,5,3,"verde",3,4,1,2,2,4);
