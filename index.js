@@ -10,8 +10,10 @@ const alimento1 = new Alimento(100,100,4);
 console.log(herbivoro1);
 
 // testando criação de filho
-var clone_herbivoro = herbivoro1.reproduzir();
-console.log(clone_herbivoro)
+// var clone_herbivoro = herbivoro1.reproduzir();
+// console.log(clone_herbivoro);
+var clone_carnivoro = carnivoro1.reproduzir();
+console.log(clone_carnivoro)
 
 // // testando criação de filhos dos filhos
 // var clone_do_clone = clone_herbivoro.reproduzir();
