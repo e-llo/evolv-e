@@ -8,6 +8,7 @@ export class Herbivoro extends Organismo{
        Herbivoro.n_herbivoros++;
      }
 
+
      reproduzir(){
         var dados_filho = this._reproduzir();
         //pegando as variáveis do método privado e repassando para o público;
