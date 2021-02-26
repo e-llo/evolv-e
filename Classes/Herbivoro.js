@@ -2,8 +2,8 @@ import {Organismo} from "./Organismo.js";
 
 export class Herbivoro extends Organismo{
     static n_herbivoros = 0;
-    constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
-        super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
+    constructor(x, y, raio, vel, acel, vel_max, forca_max, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
+        super(x, y, raio, vel, acel, vel_max, forca_max, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
        //alguma coisa que quer que aconteça logo na criação
        Herbivoro.n_herbivoros++;
      }
@@ -26,10 +26,5 @@ export class Herbivoro extends Organismo{
             this._cor, raio_deteccao_filho, this._energia, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
             );
-    }
-
-    hello(){
-        let tipo = "herbívoro";
-        return this._hello(tipo);
     }
 }
