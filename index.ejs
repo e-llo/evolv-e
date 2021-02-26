@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evolv-e</title>
 
+    <link type="text/javascript" src="./index.js"/>
+    <link type="text/javascript" src="./canvas.js"/>
+
     <style>
         body{
             margin: 0
@@ -14,7 +17,13 @@
 </head>
 <body>
     <canvas></canvas>
-    <script src="./index.js"></script>
-    <script src="./canvas.js"></script>
 </body>
+
+<script>
+    const canvas = document.querySelector("canvas")
+
+    canvas.style.height = "50px"
+    canvas.style.backgroundColor = "red"
+
+</script>
 </html>
