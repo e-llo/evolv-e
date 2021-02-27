@@ -1,13 +1,6 @@
-<<<<<<< Updated upstream:public/Classes/Organismo.js
 class Organismo{
-    // static lista_de_organismos = []
-=======
-import {Vetor} from "./Vetor.js"
+    static lista_de_organismos = []
 
-export class Organismo{
-    static organismos = [];
->>>>>>> Stashed changes:Classes/Organismo.js
-    
     constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
         this._posicao = new Vetor(x, y);
         this._raio = raio;
@@ -15,10 +8,6 @@ export class Organismo{
         this._acel = new Vetor();
         this._vel_max = vel_max;
         this._forca_max = forca_max;
-<<<<<<< Updated upstream:public/Classes/Organismo.js
-        this._cor = cor;
-=======
->>>>>>> Stashed changes:Classes/Organismo.js
         this._raio_deteccao = raio_deteccao;
         this._energia = energia;
         this._energia_max = energia_max;
@@ -29,8 +18,7 @@ export class Organismo{
         this.r = Math.floor(Math.random() * 256); 
         this.g = Math.floor(Math.random() * 256);
         this.b = Math.floor(Math.random() * 256);
-
-        this._color = "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+        this._cor = "rgb(" + this.r + "," + this.g + "," + this.b + ")";
 
         Organismo.organismos.push(this);
     }

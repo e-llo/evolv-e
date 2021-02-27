@@ -1,23 +1,11 @@
-<<<<<<< Updated upstream:public/Classes/Herbivoro.js
 class Herbivoro extends Organismo{
-    static n_herbivoros = 0;
-    constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
-        super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
-       //alguma coisa que quer que aconteça logo na criação
-       Herbivoro.n_herbivoros++;
-     }
-=======
-import {Organismo} from "./Organismo.js";
-
-export class Herbivoro extends Organismo{
     static herbivoros = [];
 
-    constructor(x, y, raio, vel, acel, vel_max, forca_max, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
-        super(x, y, raio, vel, acel, vel_max, forca_max, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
+    constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
+        super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
        
         Herbivoro.herbivoros.push(this);
     }
->>>>>>> Stashed changes:Classes/Herbivoro.js
 
 
     reproduzir(){
@@ -65,13 +53,4 @@ export class Herbivoro extends Organismo{
         
         return new Vetor(0, 0)
     }
-
-<<<<<<< Updated upstream:public/Classes/Herbivoro.js
-    hello(){
-        let tipo = "herbívoro";
-        return this._hello(tipo);
-    }
-=======
-    
->>>>>>> Stashed changes:Classes/Herbivoro.js
 }
