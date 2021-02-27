@@ -7,8 +7,8 @@ const c = canvas.getContext('2d');
 var x = Math.random() * canvas.width;
 var y = Math.random() * canvas.height;
 var raio = 7;
-var vel_max = 2.2; // Altere esse valor para ver o comportamento do bicho!
-var forca_max = 0.12; // Altere esse valor para ver o comportamento do bicho!
+var vel_max = 1.9; // Altere esse valor para ver o comportamento do bicho!
+var forca_max = 0.9; // Altere esse valor para ver o comportamento do bicho!
 var cor = geraCor();
 var raio_deteccao = 50;
 var energia = 100;
@@ -18,6 +18,9 @@ var cansaco_max = 9;
 var taxa_aum_cansaco = 0.5;
 
 const herbivoro = new Herbivoro(x, y, raio, vel_max, forca_max, cor, 
+    raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
+
+const herbivoro2 = new Herbivoro(x, y, raio, 2.5, 0.5, geraCor(), 
     raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 // const carnivoro = new Carnivoro(100, 200, 7, 15, 6, 20, 3, "rosa", 8, 13, 18, 1, 9, 0.5);
 
@@ -39,7 +42,7 @@ const herbivoro = new Herbivoro(x, y, raio, vel_max, forca_max, cor,
 var alimentos = [];
 
 // Testando a criação de alimentos aleatórios
-var n_alimentos = 50;
+var n_alimentos = 150;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * canvas.width;
     var y = Math.random() * canvas.height;
@@ -80,7 +83,9 @@ function animate(){
     })
     
     herbivoro.update();
+    herbivoro2.update();
     herbivoro.comerAlimento(alimentos);
+    herbivoro2.comerAlimento(alimentos);
     console.log(alimentos);
 }
 
