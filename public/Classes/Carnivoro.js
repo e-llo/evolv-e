@@ -1,10 +1,10 @@
 class Carnivoro extends Organismo{
-    static carnivoros = [];
+    static n_total_carnivoros = 0;
 
-    constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
-        super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
+    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
+        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
         
-        Carnivoro.carnivoros.push(this);
+        Carnivoro.n_total_carnivoros++;
     }
 
     // Método de reprodução (com mutações)
@@ -21,8 +21,8 @@ class Carnivoro extends Organismo{
         var taxa_aum_cansaco_filho = dados_filho [7];
 
         return new Carnivoro(
-            this._posicao.x, this._posicao.y, raio_filho, this._vel, this._acel, vel_max_filho, forca_max_filho, 
-            this._cor, raio_deteccao_filho, this._energia, energia_max_filho, taxa_gasto_energia_filho, 
+            this.posicao.x, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
+            this.cor, raio_deteccao_filho, this.energia, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
         );
     }

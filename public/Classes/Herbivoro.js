@@ -1,12 +1,11 @@
 class Herbivoro extends Organismo{
-    static herbivoros = [];
+    static n_total_herbivoros = 0;
 
-    constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
-        super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
+    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
+        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
        
-        Herbivoro.herbivoros.push(this);
+        Herbivoro.n_total_herbivoros++;
     }
-
 
     reproduzir(){
         var dados_filho = this._reproduzir();
@@ -21,36 +20,34 @@ class Herbivoro extends Organismo{
         var taxa_aum_cansaco_filho = dados_filho [7];
 
         return new Herbivoro(
-            this._posicao.x, this._posicao.y, raio_filho, this._vel, this._acel, vel_max_filho, forca_max_filho, 
-            this._cor, raio_deteccao_filho, this._energia, energia_max_filho, taxa_gasto_energia_filho, 
+            this.posicao.x, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
+            this.cor, raio_deteccao_filho, this.energia, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
         );
     }
 
-    comerAlimento(lista_alimentos, energia_alimento, percepcao){
+    comerAlimento(lista_alimentos){
         // Var recorde: qual a menor distância (a recorde) de um alimento até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
-        var mais_perto = null; // Qual o alimento mais perto até agora (portanto mais_perto referenciará um objeto Alimento())
+        var mais_perto = -1; // Qual o alimento mais perto até agora (portanto mais_perto referenciará um objeto Alimento())
         // Loop que analisa cada alimento na lista de alimentos (Alimento.alimentos)
-        for(var i = lista_alimentos.length - 1; i >= 0; i--){
+        
+        for(var i = 0; i < lista_alimentos.length; i++){
             // Distância d entre este organismo e o atual alimento sendo analisado na lista (lista_alimentos[i])
-            var d = this._posicao.dist(lista_alimentos[i].posicao);
-
-            if (d < this._vel_max){
-                lista_alimentos.splice(i, 1); // Retira o alimento comido da lista 
-                this._energia += energia_alimento;
-            } else{
-                if (d < recorde && d < percepcao){ // Caso a distância seja menor que a distância recorde,
-                    recorde = d; // recorde passa a ter o valor de d
-                    mais_perto = lista_alimentos[i]; // e o atual alimento passa a ser o mais_perto 
-                }
+            var d = this.posicao.dist(lista_alimentos[i].posicao);
+            if (d < recorde){ // Caso a distância seja menor que a distância recorde,
+                recorde = d; // recorde passa a ter o valor de d
+                mais_perto = i; // e o atual alimento passa a ser o mais_perto 
             }
         }
         // Momento em que ele vai comer!
-        if(mais_perto != null){
-            return this.persegue(mais_perto);
+        if(recorde <= 5){
+            lista_alimentos.splice(mais_perto, 1);
+        }
+        if(lista_alimentos.length != 0){
+            this.persegue(lista_alimentos[mais_perto]);
         }
         
-        return new Vetor(0, 0)
+        
     }
 }
