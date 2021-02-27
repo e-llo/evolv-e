@@ -1,6 +1,4 @@
-import {Vetor} from "./Vetor.js"
-
-export class Organismo{
+class Organismo{
     // static lista_de_organismos = []
     
     constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){

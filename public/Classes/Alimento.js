@@ -1,4 +1,4 @@
-export class Alimento{
+class Alimento{
     constructor(x, y, raio){
         this.x = x;
         this.y = y;

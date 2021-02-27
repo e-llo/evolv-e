@@ -1,5 +1,5 @@
 // criando a classe de vetores
-export class Vetor {
+class Vetor {
     constructor (x, y) {
       this.x = isNaN(x) ? 0 : x
       this.y = isNaN(y) ? 0 : y

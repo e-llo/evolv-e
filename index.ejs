@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evolv-e</title>
 
-    <link type="text/javascript" src="./index.js"/>
-    <link type="text/javascript" src="./canvas.js"/>
+    <!-- A ordem de importar o script deve ser do que não depende de nada até os que dependem... (pra n bugar)-->
+    <script type="text/javascript" src="/Classes/Vetor.js"></script>
+    <script type="text/javascript" src="/Classes/Alimento.js"></script>
+    <script type="text/javascript" src="/Classes/Organismo.js"></script>
+    <script type="text/javascript" src="/Classes/Herbivoro.js"></script>
+    <script type="text/javascript" src="/Classes/Carnivoro.js"></script>
 
     <style>
         body{
@@ -21,9 +25,7 @@
 
 <script>
     const canvas = document.querySelector("canvas")
-
-    canvas.style.height = "50px"
-    canvas.style.backgroundColor = "red"
-
 </script>
+
+<script type="text/javascript" src="/index.js"></script>
 </html>

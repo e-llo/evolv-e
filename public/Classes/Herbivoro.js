@@ -1,6 +1,4 @@
-import {Organismo} from "./Organismo.js";
-
-export class Herbivoro extends Organismo{
+class Herbivoro extends Organismo{
     static n_herbivoros = 0;
     constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
         super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);

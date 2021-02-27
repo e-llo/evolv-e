@@ -8,6 +8,12 @@ const app = express();
 app.set("view engine", "ejs");
 let __dirname = path.resolve(path.dirname(''))
 app.set("views", path.join(__dirname));
+app.use(express.static(path.join(__dirname, "public"), {
+    cacheControl: true,
+    etag: false,
+    maxAge: "30d"
+}));
+
 
 
 //direcionamento da página

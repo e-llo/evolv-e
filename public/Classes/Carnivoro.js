@@ -1,6 +1,4 @@
-import {Organismo} from "./Organismo.js";
-
-export class Carnivoro extends Organismo{
+class Carnivoro extends Organismo{
     static n_carnivoros = 0;
     constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
         super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
