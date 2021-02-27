@@ -1,5 +1,12 @@
+<<<<<<< Updated upstream:public/Classes/Organismo.js
 class Organismo{
     // static lista_de_organismos = []
+=======
+import {Vetor} from "./Vetor.js"
+
+export class Organismo{
+    static organismos = [];
+>>>>>>> Stashed changes:Classes/Organismo.js
     
     constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
         this._posicao = new Vetor(x, y);
@@ -8,18 +15,28 @@ class Organismo{
         this._acel = new Vetor();
         this._vel_max = vel_max;
         this._forca_max = forca_max;
+<<<<<<< Updated upstream:public/Classes/Organismo.js
         this._cor = cor;
+=======
+>>>>>>> Stashed changes:Classes/Organismo.js
         this._raio_deteccao = raio_deteccao;
         this._energia = energia;
         this._energia_max = energia_max;
         this._taxa_gasto_energia = taxa_gasto_energia;
         this._cansaco_max = cansaco_max;
         this._taxa_aum_cansaco = taxa_aum_cansaco;
+        // variáveis para a geração de cores
+        this.r = Math.floor(Math.random() * 256); 
+        this.g = Math.floor(Math.random() * 256);
+        this.b = Math.floor(Math.random() * 256);
+
+        this._color = "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+
+        Organismo.organismos.push(this);
     }
     
     // Método de reprodução (com mutações)
     reproduzir(){
-
         var dados_filho = this._reproduzir();
         //pegando as variáveis do método privado e repassando para o público;
         var raio_filho = dados_filho[0];
@@ -35,7 +52,7 @@ class Organismo{
             this._posicao.x, this._posicao.y, raio_filho, this._vel, this._acel, vel_max_filho, forca_max_filho, 
             this._cor, raio_deteccao_filho, this._energia, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
-            );
+        );
     }
    
     _reproduzir(){ //criando um método de reprodução comum a todos os organismos
@@ -148,11 +165,12 @@ class Organismo{
     // Método para atualizar o estdo do organismo
     update(){
         // Taxa de diminuição de energia
-        this._energia -= _taxa_gasto_energia // 
+        this._energia -= this._taxa_gasto_energia // 
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
         this._vel.add(this._acel);
         // Limita velocidade
         this._vel.limit(this.vel_max);
+        // A velocidade altera a posição (assim como a aceleração altera a velocidade)
         this._posicao.add(this._vel);
         // Reseta a aceleração para 0 a cada ciclo
         this._acel.mul(0);
@@ -169,19 +187,34 @@ class Organismo{
         
     }
 
+    // Método que calcula a força de redirecionamento em direção a um alvo
+    // REDIRECIONAMENTO = VELOCIDADE DESEJADA - VELOCIDADE
+    persegue(alvo){
+        // O vetor da velocidade desejada é o vetor de posição do alvo menos o da própria posição
+        var vel_desejada = alvo.sub(this._posicao); // Um vetor apontando da localização dele para o alvo
 
-    hello(){
-        let tipo = "organismo";
-        return this._hello(tipo);
-    }
-    _hello(tipo){
-        console.log('oi eu sou um', tipo); 
+        // Amplia a velocidade desejada para a velocidade máxima
+        vel_desejada.setMag(this._vel_max);
+
+        // Redirecionamento = velocidade desejada - velocidade
+        var redirecionamento = vel_desejada.sub(this._vel);
+        redirecionamento.limit(this._forca_max); // Limita o redirecionamento para a força máxima
+
+         // Soma a força de redirecionamento à aceleração
+        this.aplicaForca(redirecionamento);
     }
 
-    draw(){
-        c.beginPath()
-        c.arc(this.x, this.y, this.raio, 0, Math.PI * 2, false)
-        c.fillStyle = this.color
-        c.fill()
+    estaMorto(){
+        return this._energia <= 0;
+    }
+
+    
+    display(){
+        // // Desenha um triângulo rotacionado na direção da velocidade
+        // var angulo = this._vel.headingDegs() + Math.PI / 2;
+        c.beginPath();
+        c.arc(this._posicao.x, this._posicao.y, this._raio, 0, Math.PI * 2);
+        c.fillStyle = this._cor;
+        c.fill();
     }
 }

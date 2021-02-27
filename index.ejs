@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evolv-e</title>
 
+<<<<<<< Updated upstream
     <!-- A ordem de importar o script deve ser do que não depende de nada até os que dependem... (pra n bugar)-->
     <script type="text/javascript" src="/Classes/Vetor.js"></script>
     <script type="text/javascript" src="/Classes/Alimento.js"></script>
     <script type="text/javascript" src="/Classes/Organismo.js"></script>
     <script type="text/javascript" src="/Classes/Herbivoro.js"></script>
     <script type="text/javascript" src="/Classes/Carnivoro.js"></script>
+=======
+    <link type="text/javascript" src="./index.js"/>
+>>>>>>> Stashed changes
 
     <style>
         body{
@@ -19,13 +23,29 @@
         }
     </style>
 </head>
+
 <body>
     <canvas></canvas>
 </body>
 
 <script>
+<<<<<<< Updated upstream
     const canvas = document.querySelector("canvas")
 </script>
 
 <script type="text/javascript" src="/index.js"></script>
+=======
+
+    const canvas = document.querySelector("canvas");
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    const c = canvas.getContext('2d');
+
+    alimento1 = new Alimento(100, 100, 4);
+    alimento1.draw();
+
+</script>
+
+>>>>>>> Stashed changes
 </html>

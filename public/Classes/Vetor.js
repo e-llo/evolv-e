@@ -65,10 +65,28 @@ class Vetor {
     }
   
     // transforma o vetor para que sua magnitude seja 1 (usado para multiplicação de vetores)
-    normalise () {
+    normalize () {
       let mag = Math.sqrt(this.x * this.x + this.y * this.y)
       this.x = mag === 0 ? 0 : this.x / mag
       this.y = mag === 0 ? 0 : this.y / mag
       return this
+    }
+
+    // muda a magnitude do vetor para o valor especificado
+    setMag (n) {
+      return this.normalize().mul(n)
+    }
+
+    // retorna a direção em radianos
+    headingRads = function () {            
+      var h = Math.atan2(this.y, this.x);
+      return h;
+    }
+
+    // retorna a direção em graus
+    headingDegs = function () {            
+      var r = Math.atan2(this.y, this.x);
+      var h = (r * 180.0) / Math.PI;
+      return h;
     }
 }

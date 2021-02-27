@@ -1,9 +1,21 @@
+<<<<<<< Updated upstream:public/Classes/Carnivoro.js
 class Carnivoro extends Organismo{
     static n_carnivoros = 0;
     constructor(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
         super(x, y, raio, vel, acel, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
         //alguma coisa que quer que aconteça logo na criação
         Carnivoro.n_carnivoros++;
+=======
+import {Organismo} from "./Organismo.js";
+
+export class Carnivoro extends Organismo{
+    static carnivoros = [];
+
+    constructor(x, y, raio, vel, acel, vel_max, forca_max, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
+        super(x, y, raio, vel, acel, vel_max, forca_max, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
+        
+        Carnivoro.carnivoros.push(this);
+>>>>>>> Stashed changes:Classes/Carnivoro.js
     }
 
     // Método de reprodução (com mutações)
@@ -23,7 +35,7 @@ class Carnivoro extends Organismo{
             this._posicao.x, this._posicao.y, raio_filho, this._vel, this._acel, vel_max_filho, forca_max_filho, 
             this._cor, raio_deteccao_filho, this._energia, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
-            );
+        );
     }
 
 
