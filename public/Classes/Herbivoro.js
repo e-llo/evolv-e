@@ -26,28 +26,33 @@ class Herbivoro extends Organismo{
         );
     }
 
-    comerAlimento(lista_alimentos){
+    buscarAlimento(lista_alimentos){
         // Var recorde: qual a menor distância (a recorde) de um alimento até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
-        var mais_perto = -1; // Qual o alimento mais perto até agora (portanto mais_perto referenciará um objeto Alimento())
+        var mais_perto = -1; // Qual o índice do alimento mais perto até agora
+
         // Loop que analisa cada alimento na lista de alimentos (Alimento.alimentos)
-        
         for(var i = 0; i < lista_alimentos.length; i++){
             // Distância d entre este organismo e o atual alimento sendo analisado na lista (lista_alimentos[i])
             var d = this.posicao.dist(lista_alimentos[i].posicao);
-            if (d < recorde){ // Caso a distância seja menor que a distância recorde,
-                recorde = d; // recorde passa a ter o valor de d
-                mais_perto = i; // e o atual alimento passa a ser o mais_perto 
+            // Somente atualizará as variáveis se houver um alimento dentro do raio de detecção
+            if(d < this.raio_deteccao){
+                if (d <= recorde){ // Caso a distância seja menor que a distância recorde,
+                    recorde = d; // recorde passa a ter o valor de d
+                    mais_perto = i; // e o atual alimento passa a ser o mais_perto 
+                }
             }
+            
         }
         // Momento em que ele vai comer!
-        if(recorde <= 5){
-            lista_alimentos.splice(mais_perto, 1);
+        if(recorde <= this.raio_deteccao){
+            if(recorde <= 5){
+                lista_alimentos.splice(mais_perto, 1);
+            } else if(lista_alimentos.length != 0){
+                this.persegue(lista_alimentos[mais_perto]);
+            }
+            
         }
-        if(lista_alimentos.length != 0){
-            this.persegue(lista_alimentos[mais_perto]);
-        }
-        
         
     }
 }

@@ -28,4 +28,26 @@ class Carnivoro extends Organismo{
     }
 
 
+    // buscarHerbivoro(lista_herbivoros){
+    //     // Var recorde: qual a menor distância (a recorde) de um alimento até agora
+    //     var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
+    //     var mais_perto = -1; // Qual o alimento mais perto até agora (portanto mais_perto referenciará um objeto Alimento())
+    //     // Loop que analisa cada alimento na lista de alimentos (Alimento.alimentos)
+        
+    //     for(var i = 0; i < lista_herbivoros.length; i++){
+    //         // Distância d entre este organismo e o atual alimento sendo analisado na lista (lista_herbivoros[i])
+    //         var d = this.posicao.dist(lista_herbivoros[i].posicao);
+    //         if (d < recorde){ // Caso a distância seja menor que a distância recorde,
+    //             recorde = d; // recorde passa a ter o valor de d
+    //             mais_perto = i; // e o atual alimento passa a ser o mais_perto 
+    //         }
+    //     }
+    //     // Momento em que ele vai comer!
+    //     if(recorde <= 5){
+    //         lista_herbivoros.splice(mais_perto, 1);
+    //     }
+    //     if(lista_herbivoros.length != 0){
+    //         this.persegue(lista_herbivoros[mais_perto]);
+    //     }
+    // }
 }

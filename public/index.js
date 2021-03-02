@@ -21,7 +21,7 @@ const herbivoro = new Herbivoro(x, y, raio, vel_max, forca_max, cor,
     raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
 const herbivoro2 = new Herbivoro(x, y, raio, 2, 0.2, geraCor(), 
-    raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
+    30, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 // const carnivoro = new Carnivoro(100, 200, 7, 15, 6, 20, 3, "rosa", 8, 13, 18, 1, 9, 0.5);
 
 // console.log("\n\n------------ Herbívoro -------------\n\n");
@@ -42,7 +42,7 @@ const herbivoro2 = new Herbivoro(x, y, raio, 2, 0.2, geraCor(),
 var alimentos = [];
 
 // Testando a criação de alimentos aleatórios
-var n_alimentos = 150;
+var n_alimentos = 100;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * canvas.width;
     var y = Math.random() * canvas.height;
@@ -94,8 +94,8 @@ function animate(){
     
     herbivoro.update();
     herbivoro2.update();
-    herbivoro.comerAlimento(alimentos);
-    herbivoro2.comerAlimento(alimentos);
+    herbivoro.buscarAlimento(alimentos);
+    herbivoro2.buscarAlimento(alimentos);
     console.log(alimentos);
 }
 

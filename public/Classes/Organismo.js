@@ -160,5 +160,11 @@ class Organismo{
         c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);
         c.fillStyle = this.cor;
         c.fill();
+
+        // desenhando o raio de detecção
+        c.beginPath();
+        c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+        c.strokeStyle = "grey";
+        c.stroke();
     }
 }
