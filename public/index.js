@@ -75,7 +75,7 @@ function geraCor(){
 }
 
 function mutacao(porcent) { //porcentagem em decimal
-    let calculo = ((Math.random() - 0.5) / (porcent * 100)).toFixed(4)
+    let calculo = ((Math.random() - 0.5) / (1 / porcent)).toFixed(4)
     return parseFloat(calculo)
 }
 
