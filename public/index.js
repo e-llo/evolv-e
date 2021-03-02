@@ -74,6 +74,16 @@ function geraCor(){
     return cor;
 }
 
+function mutacao(porcent) { //porcentagem em decimal
+    let calculo = ((Math.random() - 0.5) / (porcent * 100)).toFixed(4)
+    return parseFloat(calculo)
+}
+
+function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em decimal)
+    let calculo = ( valor + mutacao(porcent) ).toFixed(4)
+    return parseFloat(calculo)
+}
+
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, innerWidth, innerHeight);
