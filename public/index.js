@@ -7,8 +7,8 @@ const c = canvas.getContext('2d');
 var x = Math.random() * canvas.width;
 var y = Math.random() * canvas.height;
 var raio = 7;
-var vel_max = 1.9; // Altere esse valor para ver o comportamento do bicho!
-var forca_max = 0.9; // Altere esse valor para ver o comportamento do bicho!
+var vel_max = 2.2; // Altere esse valor para ver o comportamento do bicho!
+var forca_max = 0.1; // Altere esse valor para ver o comportamento do bicho!
 var cor = geraCor();
 var raio_deteccao = 50;
 var energia = 100;
@@ -20,7 +20,7 @@ var taxa_aum_cansaco = 0.5;
 const herbivoro = new Herbivoro(x, y, raio, vel_max, forca_max, cor, 
     raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
-const herbivoro2 = new Herbivoro(x, y, raio, 2.5, 0.5, geraCor(), 
+const herbivoro2 = new Herbivoro(x, y, raio, 2, 0.2, geraCor(), 
     raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 // const carnivoro = new Carnivoro(100, 200, 7, 15, 6, 20, 3, "rosa", 8, 13, 18, 1, 9, 0.5);
 
@@ -75,13 +75,13 @@ function geraCor(){
 }
 
 function mutacao(porcent) { //porcentagem em decimal
-    let calculo = ((Math.random() - 0.5) / (1 / porcent)).toFixed(4)
-    return parseFloat(calculo)
+    let calculo = ((Math.random() - 0.5) / (1 / porcent)).toFixed(4);
+    return parseFloat(calculo);
 }
 
 function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em decimal)
-    let calculo = ( valor + mutacao(porcent) ).toFixed(4)
-    return parseFloat(calculo)
+    let calculo = (valor + mutacao(porcent)).toFixed(4);
+    return parseFloat(calculo);
 }
 
 function animate(){
