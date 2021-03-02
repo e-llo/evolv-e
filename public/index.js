@@ -10,7 +10,7 @@ var raio = 7;
 var vel_max = 2.2; // Altere esse valor para ver o comportamento do bicho!
 var forca_max = 0.1; // Altere esse valor para ver o comportamento do bicho!
 var cor = geraCor();
-var raio_deteccao = 50;
+var raio_deteccao = 100;
 var energia = 100;
 var energia_max = 100;
 var taxa_gasto_energia = 0.1;
@@ -21,25 +21,17 @@ const herbivoro = new Herbivoro(x, y, raio, vel_max, forca_max, cor,
     raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
 const herbivoro2 = new Herbivoro(x, y, raio, 2, 0.2, geraCor(), 
-    30, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
-// const carnivoro = new Carnivoro(100, 200, 7, 15, 6, 20, 3, "rosa", 8, 13, 18, 1, 9, 0.5);
+    70, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
-// console.log("\n\n------------ Herbívoro -------------\n\n");
-// console.log(herbivoro);
-
-// var clone_herbivoro = herbivoro1.reproduzir();
-// console.log("\n\n------------ Clone do herbívoro -------------\n\n");
-// console.log(clone_herbivoro);
-
-// console.log("\n\n------------ Carnívoro -------------\n\n");
-// console.log(carnivoro1);
-
-// var clone_carnivoro = carnivoro1.reproduzir();
-// console.log("\n\n------------ Clone do carnívoro -------------\n\n");
-// console.log(clone_carnivoro);
-
+const carnivoro = new Carnivoro(canvas.width/2, canvas.height/2, raio, vel_max, forca_max, "red", 
+    200, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
 var alimentos = [];
+var herbivoros = [];
+var carnivoros = [];
+
+herbivoros.push(herbivoro, herbivoro2);
+carnivoros.push(carnivoro);
 
 // Testando a criação de alimentos aleatórios
 var n_alimentos = 100;
@@ -50,17 +42,6 @@ for(var i = 0; i < n_alimentos; i++){
 
     alimentos.push(new Alimento(x, y, raio));
 }
-
-// // Testando a criação de alimentos aleatórios
-//     var x1 = 100;
-//     var y1 = 100;
-//     var x2 = 200;
-//     var y2 = 200;
-//     var raio = Math.random() * 1.5 + 1;
-
-//     var alimento1 = new Alimento(x1, y1, raio);
-//     var alimento2 = new Alimento(x2, y2, raio);
-//     alimentos.push(alimento1, alimento2);
 
 
 // --------------------------------------- Funções ----------------------------------------------
@@ -92,11 +73,17 @@ function animate(){
         console.log("alimento",alimento.posicao);
     })
     
-    herbivoro.update();
-    herbivoro2.update();
-    herbivoro.buscarAlimento(alimentos);
-    herbivoro2.buscarAlimento(alimentos);
-    console.log(alimentos);
+    herbivoros.forEach((herbivoro) => {
+        herbivoro.update();
+        herbivoro.buscarAlimento(alimentos);
+    })
+
+    carnivoros.forEach((carnivoro) => {
+        carnivoro.update();
+        carnivoro.buscarHerbivoro(herbivoros);
+    })
+    
+
 }
 
 

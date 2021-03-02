@@ -31,7 +31,7 @@ class Herbivoro extends Organismo{
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
         var mais_perto = -1; // Qual o índice do alimento mais perto até agora
 
-        // Loop que analisa cada alimento na lista de alimentos (Alimento.alimentos)
+        // Loop que analisa cada alimento na lista de alimentos
         for(var i = 0; i < lista_alimentos.length; i++){
             // Distância d entre este organismo e o atual alimento sendo analisado na lista (lista_alimentos[i])
             var d = this.posicao.dist(lista_alimentos[i].posicao);
