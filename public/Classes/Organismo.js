@@ -41,12 +41,12 @@ class Organismo{
     }
    
     _reproduzir(){ //criando um método de reprodução comum a todos os organismos
-        var probabilidade_mutacao = 0.5; // chances de cada gene (atributo) sofrer mutação
+        var probabilidade_mutacao = 1 // chances de cada gene (atributo) sofrer mutação
         // As mutações poderão ter valores positivos ou negativos com a mesma probabilidade (daí o "- 0.5").
         // A divisão é para diminuir a magnitude da diferença de uma geração para a outra
         // o (...).toFixed(4) é para arredondar para 4 casas decimais, mas retorna uma String
         // então o parseFloat() transforma tudo em float novamente
-        console.log("\n--------------- Mutações ocorridas ----------------\n")
+        // console.log("\n--------------- Mutações ocorridas ----------------\n")
         
         // raio (antigo)
         /*var raio_filho;
@@ -62,7 +62,7 @@ class Organismo{
 
         // raio
         var raio_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio, 0.25) : this.raio;
+                newMutacao(this.raio, 50) : this.raio;
 
         // velocidade máxima
         var vel_max_filho = Math.random() < probabilidade_mutacao ?
@@ -73,10 +73,11 @@ class Organismo{
                 newMutacao(this.forca_max, 0.5) : this.forca_max;
 
         // cor
+        
 
         // raio de detecção
         var raio_deteccao_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio_deteccao, 0.5) : this.raio_deteccao;
+                newMutacao(this.raio_deteccao, 50) : this.raio_deteccao;
         
         // energia máxima
         var energia_max_filho = Math.random() < probabilidade_mutacao ?
@@ -106,10 +107,10 @@ class Organismo{
         // Taxa de diminuição de energia
         this.energia -= this.taxa_gasto_energia // 
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
-        console.log("vel antes de add a acel: ", this.vel);
-        console.log("Acel: ", this.acel);
+        // console.log("vel antes de add a acel: ", this.vel);
+        // console.log("Acel: ", this.acel);
         this.vel.add(this.acel);
-        console.log("vel depois de add a acel: ", this.vel);
+        // console.log("vel depois de add a acel: ", this.vel);
         // Limita velocidade
         this.vel.limit(this.vel_max);
         // A velocidade altera a posição (assim como a aceleração altera a velocidade)
@@ -124,9 +125,9 @@ class Organismo{
     aplicaForca(forca){
         // Adiciona a força à aceleração, o que a faz aumentar
         // Podemos considerar a massa no cálculo também: A = F / M
-        console.log("força: ", forca);
+        // console.log("força: ", forca);
         this.acel.add(forca);
-        console.log("aplicaForca() ativado")
+        // console.log("aplicaForca() ativado")
     }
 
     // Teste para implementação de aprendizado
@@ -146,7 +147,7 @@ class Organismo{
         var redirecionamento = vel_desejada.subNew(this.vel);
         redirecionamento.limit(this.forca_max); // Limita o redirecionamento para a força máxima
 
-        console.log("vel: ", this.vel);
+        // console.log("vel: ", this.vel);
         // Soma a força de redirecionamento à aceleração
         this.aplicaForca(redirecionamento);
     }
@@ -155,9 +156,22 @@ class Organismo{
         return this.energia <= 0;
     }
     
+    // display(){
+    //     c.beginPath();
+    //     c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);
+    //     c.fillStyle = this.cor;
+    //     c.fill();
+
+    //     // desenhando o raio de detecção
+    //     c.beginPath();
+    //     c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+    //     c.strokeStyle = "grey";
+    //     c.stroke();
+    // }
     display(){
         c.beginPath();
-        c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);
+        drawEllipseWithQuatraticCurve(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red')
+        
         c.fillStyle = this.cor;
         c.fill();
 

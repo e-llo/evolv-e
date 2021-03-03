@@ -1,10 +1,11 @@
 class Carnivoro extends Organismo{
     static n_total_carnivoros = 0;
-
+    static carnivoros = [];
     constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
         super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
         
         Carnivoro.n_total_carnivoros++;
+        Carnivoro.carnivoros.push(this);
     }
 
     // Método de reprodução (com mutações)
@@ -21,10 +22,12 @@ class Carnivoro extends Organismo{
         var taxa_aum_cansaco_filho = dados_filho [7];
 
         return new Carnivoro(
-            this.posicao.x, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
+            this.posicao.x +50, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
             this.cor, raio_deteccao_filho, this.energia, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
         );
+        
+        
     }
 
 

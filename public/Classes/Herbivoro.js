@@ -55,4 +55,10 @@ class Herbivoro extends Organismo{
         }
         
     }
+
+    
+
+    
+
+
 }

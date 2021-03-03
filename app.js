@@ -23,5 +23,5 @@ app.get("/", (req, res) => {
 
 
 app.listen(1337, () => {
-    console.log('Servidor executando na porta 1337...')
+    // console.log('Servidor executando na porta 1337...')
 })
