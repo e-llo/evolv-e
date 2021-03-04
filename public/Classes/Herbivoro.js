@@ -56,6 +56,19 @@ class Herbivoro extends Organismo{
         
     }
 
+    display(){
+        c.beginPath();
+        desenharOval(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red')
+        
+        c.fillStyle = this.cor;
+        c.fill();
+
+        // desenhando o raio de detecção
+        c.beginPath();
+        c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+        c.strokeStyle = "grey";
+        c.stroke();
+    }
     
 
     

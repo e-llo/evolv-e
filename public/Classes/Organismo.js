@@ -156,23 +156,9 @@ class Organismo{
         return this.energia <= 0;
     }
     
-    // display(){
-    //     c.beginPath();
-    //     c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);
-    //     c.fillStyle = this.cor;
-    //     c.fill();
-
-    //     // desenhando o raio de detecção
-    //     c.beginPath();
-    //     c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
-    //     c.strokeStyle = "grey";
-    //     c.stroke();
-    // }
     display(){
         c.beginPath();
-        drawEllipseWithQuatraticCurve(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red')
-        
-        c.fillStyle = this.cor;
+        c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        c.fillStyle = this.cor;
         c.fill();
 
         // desenhando o raio de detecção
@@ -181,4 +167,5 @@ class Organismo{
         c.strokeStyle = "grey";
         c.stroke();
     }
+    
 }

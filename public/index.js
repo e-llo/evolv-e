@@ -90,7 +90,7 @@ function animate(){
 
 }
 
- function drawEllipseWithQuatraticCurve(ctx, x, y, w, h, style) {
+ function desenharOval(ctx, x, y, w, h, style) {
 
     var kappa = .5522848,
         ox = (w / 2) * kappa, // control point offset horizontal
