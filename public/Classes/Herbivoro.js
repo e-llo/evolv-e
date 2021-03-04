@@ -1,10 +1,11 @@
 class Herbivoro extends Organismo{
     static n_total_herbivoros = 0;
-
+    static herbivoros = [];
     constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
         super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
        
         Herbivoro.n_total_herbivoros++;
+        Herbivoro.herbivoros.push(this)
     }
 
     reproduzir(){

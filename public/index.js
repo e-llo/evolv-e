@@ -31,22 +31,22 @@ const carnivoro_filho = carnivoro.reproduzir();
 
 
 var alimentos = [];
-var herbivoros = [];
+// var herbivoros = [];
 // var carnivoros = [];
 
-herbivoros.push(herbivoro, herbivoro2);
+// herbivoros.push(herbivoro, herbivoro2);
 // carnivoros.push(carnivoro);
 
 // Testando a criação de alimentos aleatórios
 var n_alimentos = 100;
-for(var i = 0; i < n_alimentos; i++){
-    var x = Math.random() * canvas.width;
-    var y = Math.random() * canvas.height;
-    var raio = Math.random() * 1.5 + 1;
-
-    alimentos.push(new Alimento(x, y, raio));
+ for(var i = 0; i < n_alimentos; i++){
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var raio = Math.random() * 1.5 + 1;
+    
+        alimentos.push(new Alimento(x, y, raio));
 }
-
+    
 
 // --------------------------------------- Funções ----------------------------------------------
 function geraCor(){
@@ -77,14 +77,14 @@ function animate(){
         // // console.log("alimento",alimento.posicao);
     })
     
-    herbivoros.forEach((herbivoro) => {
+    Herbivoro.herbivoros.forEach((herbivoro) => {
         herbivoro.update();
         herbivoro.buscarAlimento(alimentos);
     })
 
     Carnivoro.carnivoros.forEach((carnivoro) => {
         carnivoro.update();
-        carnivoro.buscarHerbivoro(herbivoros);
+        carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
     })
     
 
