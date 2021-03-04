@@ -37,16 +37,24 @@ var alimentos = [];
 // herbivoros.push(herbivoro, herbivoro2);
 // carnivoros.push(carnivoro);
 
-// Testando a criação de alimentos aleatórios
+// criação de alimentos aleatórios no início
+
 var n_alimentos = 100;
- for(var i = 0; i < n_alimentos; i++){
-        var x = Math.random() * canvas.width;
-        var y = Math.random() * canvas.height;
-        var raio = Math.random() * 1.5 + 1;
-    
-        alimentos.push(new Alimento(x, y, raio));
+for(var i = 0; i < n_alimentos; i++){
+    var x = Math.random() * canvas.width;
+    var y = Math.random() * canvas.height;
+    var raio = Math.random() * 1.5 + 1;
+
+    alimentos.push(new Alimento(x, y, raio));
 }
-    
+// cria mais alimentos ao longo do tempo
+// a função setInterval() permite que ele chame o loop a cada x milisegundos
+const novosAlimentos = setInterval(criaAlimentosGradativo, 5000); //a cada 5 segundos ele joga os elementos
+
+
+
+
+
 
 // --------------------------------------- Funções ----------------------------------------------
 function geraCor(){
@@ -112,5 +120,16 @@ function animate(){
     ctx.stroke();
     ctx.restore();
   }
+
+  function criaAlimentosGradativo(){
+    for(var i = 0; i < 5; i++){
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var raio = Math.random() * 1.5 + 1;
+    
+        alimentos.push(new Alimento(x, y, raio));
+    }
+    console.log(alimentos.length);
+} 
 
 animate();

@@ -41,7 +41,7 @@ class Organismo{
     }
    
     _reproduzir(){ //criando um método de reprodução comum a todos os organismos
-        var probabilidade_mutacao = 1 // chances de cada gene (atributo) sofrer mutação
+        var probabilidade_mutacao = 0.5 // chances de cada gene (atributo) sofrer mutação
         // As mutações poderão ter valores positivos ou negativos com a mesma probabilidade (daí o "- 0.5").
         // A divisão é para diminuir a magnitude da diferença de uma geração para a outra
         // o (...).toFixed(4) é para arredondar para 4 casas decimais, mas retorna uma String
@@ -62,7 +62,7 @@ class Organismo{
 
         // raio
         var raio_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio, 50) : this.raio;
+                newMutacao(this.raio, 10) : this.raio;
 
         // velocidade máxima
         var vel_max_filho = Math.random() < probabilidade_mutacao ?
