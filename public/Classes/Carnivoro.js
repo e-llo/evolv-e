@@ -31,6 +31,11 @@ class Carnivoro extends Organismo{
     }
 
 
+    morre(){
+        Carnivoro.carnivoros.splice(this, 1);
+        console.log("Morri! Carnívoro");
+    }
+
     buscarHerbivoro(lista_herbivoros){
         // Var recorde: qual a menor distância (a recorde) de um herbivoro até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
@@ -53,7 +58,7 @@ class Carnivoro extends Organismo{
         if(recorde <= this.raio_deteccao){
             if(recorde <= 5){
                 lista_herbivoros.splice(mais_perto, 1);
-                console.log("Morri!");
+                console.log("Herbivoro fui comido!");
             } else if(lista_herbivoros.length != 0){
                 this.persegue(lista_herbivoros[mais_perto]);
             }

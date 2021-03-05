@@ -161,7 +161,7 @@ class Organismo{
     }
     
     morre(){
-        console.log("Morri!");
+       
     }
 
     display(){

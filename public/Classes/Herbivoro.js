@@ -27,6 +27,11 @@ class Herbivoro extends Organismo{
         );
     }
 
+    morre(){
+        Herbivoro.herbivoros.splice(this, 1);
+        console.log("Morri! Herbivoro");
+    }
+    
     buscarAlimento(lista_alimentos){
         // Var recorde: qual a menor distância (a recorde) de um alimento até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
