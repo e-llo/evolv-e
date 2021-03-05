@@ -105,7 +105,11 @@ class Organismo{
     // Método para atualizar o estado do organismo
     update(){
         // Taxa de diminuição de energia
-        this.energia -= this.taxa_gasto_energia // 
+        this.energia -= this.taxa_gasto_energia;
+
+        if(this.energia <= 0){
+            this.morre();
+        }
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
         // console.log("vel antes de add a acel: ", this.vel);
         // console.log("Acel: ", this.acel);
@@ -156,6 +160,10 @@ class Organismo{
         return this.energia <= 0;
     }
     
+    morre(){
+        console.log("Morri!");
+    }
+
     display(){
         c.beginPath();
         c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        c.fillStyle = this.cor;

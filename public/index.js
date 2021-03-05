@@ -17,28 +17,21 @@ var taxa_gasto_energia = 0.1;
 var cansaco_max = 9;
 var taxa_aum_cansaco = 0.5;
 
-const herbivoro = new Herbivoro(x, y, raio, vel_max, forca_max, cor, 
+const herbivoro = new Herbivoro(x, y, raio, Math.random() + 2, forca_max, cor, 
     raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
-const herbivoro2 = new Herbivoro(x, y, raio, 2, 0.2, geraCor(), 
+const herbivoro2 = new Herbivoro(x, y, raio, Math.random() + 2, 0.2, geraCor(), 
     70, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
 
-const carnivoro = new Carnivoro(canvas.width/2, canvas.height/2, raio, vel_max, forca_max, "red", 
+const carnivoro = new Carnivoro(canvas.width/2, canvas.height/2, raio, Math.random() + 2, forca_max, "red", 
     200, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
 const carnivoro_filho = carnivoro.reproduzir();
 
-
 var alimentos = [];
-// var herbivoros = [];
-// var carnivoros = [];
-
-// herbivoros.push(herbivoro, herbivoro2);
-// carnivoros.push(carnivoro);
 
 // criação de alimentos aleatórios no início
-
 var n_alimentos = 100;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * canvas.width;
@@ -49,14 +42,15 @@ for(var i = 0; i < n_alimentos; i++){
 }
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
-const novosAlimentos = setInterval(criaAlimentosGradativo, 5000); //a cada 5 segundos ele joga os elementos
+const novosAlimentos = setInterval(criaAlimentosGradativo, 3000); //a cada 5 segundos ele joga os elementos
 
 
 
 
+//-----------------------------------------------------------------------------------------------
+//                                         Funções
+// ----------------------------------------------------------------------------------------------
 
-
-// --------------------------------------- Funções ----------------------------------------------
 function geraCor(){
     // variáveis para a geração de cores
     var r = Math.floor(Math.random() * 256); 
@@ -88,14 +82,13 @@ function animate(){
     Herbivoro.herbivoros.forEach((herbivoro) => {
         herbivoro.update();
         herbivoro.buscarAlimento(alimentos);
+        herbivoro.detectaPredador(Carnivoro.carnivoros);
     })
 
     Carnivoro.carnivoros.forEach((carnivoro) => {
         carnivoro.update();
         carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
     })
-    
-
 }
 
  function desenharOval(ctx, x, y, w, h, style) {
@@ -129,7 +122,6 @@ function animate(){
     
         alimentos.push(new Alimento(x, y, raio));
     }
-    console.log(alimentos.length);
 } 
 
 animate();

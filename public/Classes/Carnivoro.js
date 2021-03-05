@@ -53,6 +53,7 @@ class Carnivoro extends Organismo{
         if(recorde <= this.raio_deteccao){
             if(recorde <= 5){
                 lista_herbivoros.splice(mais_perto, 1);
+                console.log("Morri!");
             } else if(lista_herbivoros.length != 0){
                 this.persegue(lista_herbivoros[mais_perto]);
             }
