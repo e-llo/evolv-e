@@ -89,12 +89,13 @@ class Organismo{
     // Método para atualizar o estado do organismo
     update(){
         // Taxa de diminuição de energia
-        this.energia -= this.taxa_gasto_energia;
-
-        if(this.energia <= 0){
+        if(this.energia > 0){
+            this.energia -= this.taxa_gasto_energia;
+        } else{
             this.morre();
             console.log("Morri de fome!");
         }
+        
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
         // console.log("vel antes de add a acel: ", this.vel);
         // console.log("Acel: ", this.acel);

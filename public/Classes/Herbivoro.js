@@ -51,8 +51,15 @@ class Herbivoro extends Organismo{
         // Momento em que ele vai comer!
         if(recorde <= this.raio_deteccao){
             if(recorde <= 5){
-                // O herbívoro, ao comer o alimento, adquire a energia
-                this.energia += lista_alimentos[i_mais_perto].energia_alimento;
+                // Absorção de energia ao comer alimento
+                // Se a energia do alimento for menor que o quanto falta para encher a barra de energia, 
+                // o herbívoro adquire ela toda
+                if(this.energia_max - this.energia >= lista_alimentos[i_mais_perto].energia_alimento){
+                    this.energia += lista_alimentos[i_mais_perto].energia_alimento;
+                } else{ 
+                    this.energia = energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
+                }
+                
                 lista_alimentos.splice(i_mais_perto, 1); // Retira o alimento da lista de alimentos
             } else if(lista_alimentos.length != 0){
                 this.persegue(lista_alimentos[i_mais_perto]);

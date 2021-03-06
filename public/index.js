@@ -10,13 +10,13 @@ const c = canvas.getContext('2d');
 // ------------------------------------------------------------------------------------
 var x = Math.random() * canvas.width;
 var y = Math.random() * canvas.height;
-var raio = Math.random() * 3 + 4;
+var raio = Math.random() * 3 + 5;
 var vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
 var forca_max = Math.random()/5; // Altere esse valor para ver o comportamento do bicho!
 var cor = "red";
 var raio_deteccao = Math.random() * 50 + 120;
 var energia_max = Math.random() * 100 + 30;
-var taxa_gasto_energia = Math.random() / 20 + 0.005;
+var taxa_gasto_energia = Math.random() / 40 + 0.005;
 var cansaco_max = Math.random() * 50 + 20;
 var taxa_aum_cansaco = Math.random() + 0.05;
 
@@ -34,7 +34,7 @@ var n_alimentos = 100;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * canvas.width;
     var y = Math.random() * canvas.height;
-    var raio = Math.random() * 1.5 + 1;
+    var raio = Math.random() + 1;
 
     alimentos.push(new Alimento(x, y, raio));
 }
@@ -66,11 +66,11 @@ for(var i = 0; i < n_herbivoros; i++){
     y = Math.random() * canvas.height;
     raio = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
-    forca_max = Math.random()/5; // Altere esse valor para ver o comportamento do bicho!
+    forca_max = Math.random()/10 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
     raio_deteccao = Math.random() * 50 + 50;
     energia_max = Math.random() * 100 + 30
-    taxa_gasto_energia = Math.random() / 20 + 0.005;
+    taxa_gasto_energia = Math.random() / 40 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
 
@@ -81,6 +81,8 @@ for(var i = 0; i < n_herbivoros; i++){
 }
 
 
+
+animate();
 
 // ----------------------------------------------------------------------------------------------
 //                                         Funções
@@ -108,7 +110,9 @@ function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em 
 
 function animate(){
     requestAnimationFrame(animate);
-    c.clearRect(0, 0, innerWidth, innerHeight);
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    c.fillStyle = '#F9F4EA';
+    c.fillRect(0, 0, canvas.width, canvas.height);
     Alimento.alimentos.forEach((alimento) => {
         alimento.display();
         // // console.log("alimento",alimento.posicao);
@@ -118,6 +122,7 @@ function animate(){
         herbivoro.update();
         herbivoro.buscarAlimento(Alimento.alimentos);
         herbivoro.detectaPredador(Carnivoro.carnivoros);
+        console.log(herbivoro.energia);
     })
 
     Carnivoro.carnivoros.forEach((carnivoro) => {
@@ -158,5 +163,3 @@ function animate(){
         
     }
 } 
-
-animate();
