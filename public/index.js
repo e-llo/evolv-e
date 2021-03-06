@@ -3,35 +3,33 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 
 const c = canvas.getContext('2d');
-//x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco
+
+
+// ------------------------------------------------------------------------------------
+//                         Criação dos carnívoros
+// ------------------------------------------------------------------------------------
 var x = Math.random() * canvas.width;
 var y = Math.random() * canvas.height;
-var raio = 7;
-var vel_max = 2.2; // Altere esse valor para ver o comportamento do bicho!
-var forca_max = 0.1; // Altere esse valor para ver o comportamento do bicho!
-var cor = geraCor();
-var raio_deteccao = 100;
-var energia = 100;
-var energia_max = 100;
-var taxa_gasto_energia = 0.1;
-var cansaco_max = 9;
-var taxa_aum_cansaco = 0.5;
+var raio = Math.random() * 3 + 4;
+var vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
+var forca_max = Math.random()/5; // Altere esse valor para ver o comportamento do bicho!
+var cor = "red";
+var raio_deteccao = Math.random() * 50 + 120;
+var energia_max = Math.random() * 100 + 30;
+var taxa_gasto_energia = Math.random() / 20 + 0.005;
+var cansaco_max = Math.random() * 50 + 20;
+var taxa_aum_cansaco = Math.random() + 0.05;
 
-const herbivoro = new Herbivoro(x, y, raio, Math.random() + 2, forca_max, cor, 
-    raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
-
-const herbivoro2 = new Herbivoro(x, y, raio, Math.random() + 2, 0.2, geraCor(), 
-    70, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
-
-
-const carnivoro = new Carnivoro(canvas.width/2, canvas.height/2, raio, Math.random() + 2, forca_max, "red", 
-    200, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
+const carnivoro = new Carnivoro(canvas.width/2, canvas.height/2, raio, vel_max, forca_max, cor, 
+    raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
 
 const carnivoro_filho = carnivoro.reproduzir();
 
-var alimentos = [];
 
-// criação de alimentos aleatórios no início
+// ------------------------------------------------------------------------------------
+//                    Criação de alimentos aleatórios no início
+// ------------------------------------------------------------------------------------
+var alimentos = [];
 var n_alimentos = 100;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * canvas.width;
@@ -42,12 +40,49 @@ for(var i = 0; i < n_alimentos; i++){
 }
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
-const novosAlimentos = setInterval(criaAlimentosGradativo, 3000); //a cada 5 segundos ele joga os elementos
+const novosAlimentos = setInterval(criaAlimentosGradativo, 100); //a cada 5 segundos ele joga os elementos
+
+
+// ------------------------------------------------------------------------------------
+//                     Criação da primeira getação de herbívoros
+// ------------------------------------------------------------------------------------
+var x;
+var y;
+var raio;
+var vel_max; // Altere esse valor para ver o comportamento do bicho!
+var forca_max; // Altere esse valor para ver o comportamento do bicho!
+var cor = geraCor();
+var raio_deteccao;
+var energia;
+var energia_max;
+var taxa_gasto_energia;
+var cansaco_max;
+var taxa_aum_cansaco;
+
+var n_herbivoros = 30;
+
+for(var i = 0; i < n_herbivoros; i++){
+    x = Math.random() * canvas.width;
+    y = Math.random() * canvas.height;
+    raio = Math.random() * 3 + 4;
+    vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
+    forca_max = Math.random()/5; // Altere esse valor para ver o comportamento do bicho!
+    cor = geraCor();
+    raio_deteccao = Math.random() * 50 + 50;
+    energia_max = Math.random() * 100 + 30
+    taxa_gasto_energia = Math.random() / 20 + 0.005;
+    cansaco_max = Math.random() * 50 + 20;
+    taxa_aum_cansaco = Math.random() + 0.05;
+
+    new Herbivoro(
+        x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
+        cansaco_max, taxa_aum_cansaco
+    );
+}
 
 
 
-
-//-----------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------
 //                                         Funções
 // ----------------------------------------------------------------------------------------------
 
@@ -74,14 +109,14 @@ function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em 
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, innerWidth, innerHeight);
-    alimentos.forEach((alimento) => {
+    Alimento.alimentos.forEach((alimento) => {
         alimento.display();
         // // console.log("alimento",alimento.posicao);
     })
     
     Herbivoro.herbivoros.forEach((herbivoro) => {
         herbivoro.update();
-        herbivoro.buscarAlimento(alimentos);
+        herbivoro.buscarAlimento(Alimento.alimentos);
         herbivoro.detectaPredador(Carnivoro.carnivoros);
     })
 
@@ -108,19 +143,19 @@ function animate(){
     ctx.quadraticCurveTo(xe,y,xe,ym);
     ctx.quadraticCurveTo(xe,ye,xm,ye);
     ctx.quadraticCurveTo(x,ye,x,ym);
-    if(style)
-      ctx.strokeStyle = style;
-    ctx.stroke();
     ctx.restore();
   }
 
   function criaAlimentosGradativo(){
-    for(var i = 0; i < 5; i++){
+    for(var i = 0; i < 1; i++){
         var x = Math.random() * canvas.width;
         var y = Math.random() * canvas.height;
         var raio = Math.random() * 1.5 + 1;
     
-        alimentos.push(new Alimento(x, y, raio));
+        if(Alimento.alimentos.length < 200){ // Limitador temporário para não sobrecarregar a simulação
+            Alimento.alimentos.push(new Alimento(x, y, raio));
+        }
+        
     }
 } 
 

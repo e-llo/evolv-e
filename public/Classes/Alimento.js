@@ -1,5 +1,6 @@
 class Alimento{
     static n_total_alimentos = 0;
+    static alimentos = [];
 
     constructor(x, y, raio){
         this.posicao = new Vetor(x, y);
@@ -8,6 +9,7 @@ class Alimento{
         this.energia_alimento = Math.floor(Math.PI * Math.pow(this.raio, 2));
 
         Alimento.n_total_alimentos++;
+        Alimento.alimentos.push(this);
     }
 
     display(){

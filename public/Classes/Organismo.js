@@ -1,7 +1,7 @@
 class Organismo{
     static n_total_organismos = 0;
 
-    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
+    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
         this.posicao = new Vetor(x, y);
         this.raio = raio;
         this.vel = new Vetor(0, 0);
@@ -10,8 +10,8 @@ class Organismo{
         this.forca_max = forca_max;
         this.cor = cor;
         this.raio_deteccao = raio_deteccao;
-        this.energia = energia;
         this.energia_max = energia_max;
+        this.energia = this.energia_max; // Começa com energia máxima
         this.taxa_gasto_energia = taxa_gasto_energia;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
@@ -35,30 +35,14 @@ class Organismo{
 
         return new Organismo(
             this.posicao.x, this.posicao.y, raio_filho, this.vel, this.acel, vel_max_filho, forca_max_filho, 
-            this.cor, raio_deteccao_filho, this.energia, energia_max_filho, taxa_gasto_energia_filho, 
+            this.cor, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
         );
     }
    
-    _reproduzir(){ //criando um método de reprodução comum a todos os organismos
+    // Criando um método de reprodução comum a todos os organismos
+    _reproduzir(){ 
         var probabilidade_mutacao = 0.5 // chances de cada gene (atributo) sofrer mutação
-        // As mutações poderão ter valores positivos ou negativos com a mesma probabilidade (daí o "- 0.5").
-        // A divisão é para diminuir a magnitude da diferença de uma geração para a outra
-        // o (...).toFixed(4) é para arredondar para 4 casas decimais, mas retorna uma String
-        // então o parseFloat() transforma tudo em float novamente
-        // console.log("\n--------------- Mutações ocorridas ----------------\n")
-        
-        // raio (antigo)
-        /*var raio_filho;
-        if(Math.random() < probabilidade_mutacao){
-            var mutacao_raio = parseFloat(((Math.random() - 0.5) / 4).toFixed(4));
-            raio_filho = parseFloat((this.raio + mutacao_raio).toFixed(4));
-            raio_filho = newMutacao(this.raio, 0.25);
-            sofreu_mutacao = true;
-        }
-        else{
-            raio_filho = this.raio;
-        } */
 
         // raio
         var raio_filho = Math.random() < probabilidade_mutacao ?
@@ -109,6 +93,7 @@ class Organismo{
 
         if(this.energia <= 0){
             this.morre();
+            console.log("Morri de fome!");
         }
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
         // console.log("vel antes de add a acel: ", this.vel);
@@ -170,10 +155,10 @@ class Organismo{
         c.fill();
 
         // desenhando o raio de detecção
-        c.beginPath();
-        c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
-        c.strokeStyle = "grey";
-        c.stroke();
+        // c.beginPath();
+        // c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+        // c.strokeStyle = "grey";
+        // c.stroke();
     }
     
 }
