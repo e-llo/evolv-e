@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    overflow: hidden;
+}
+
+canvas {
+    border: solid 2px black;
+}

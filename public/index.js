@@ -1,6 +1,8 @@
+const tela = {width: innerWidth - 8, height: innerHeight - 8}
 const canvas = document.querySelector("canvas");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+canvas.width = tela.width;
+canvas.height = tela.height;
+
 
 const c = canvas.getContext('2d');
 
@@ -98,6 +100,20 @@ function geraCor(){
     return cor;
 }
 
+function corMutacao(colorStylePai) {
+    let cores = [];
+    colorStylePai.substring(4, colorStylePai.length - 1).split(',')
+        .forEach(cor => {
+            if(cor <= 10 || Math.random() < 0.5 && cor <= 246) { //não gerar números negativos
+                cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
+            } else {
+                cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
+            }
+        });
+
+    return `rgb(${cores[0]}, ${cores[1]}, ${cores[2]})`
+}
+
 function mutacao(porcent) { //porcentagem em decimal
     let calculo = ((Math.random() - 0.5) * porcent).toFixed(4);
     return parseFloat(calculo);
@@ -118,14 +134,14 @@ function animate(){
         // // console.log("alimento",alimento.posicao);
     })
     
-    Herbivoro.herbivoros.forEach((herbivoro) => {
+    Herbivoro.herbivoros.forEach(herbivoro => {
         herbivoro.update();
         herbivoro.buscarAlimento(Alimento.alimentos);
         herbivoro.detectaPredador(Carnivoro.carnivoros);
-        console.log(herbivoro.energia);
+        //console.log(herbivoro.energia);
     })
 
-    Carnivoro.carnivoros.forEach((carnivoro) => {
+    Carnivoro.carnivoros.forEach(carnivoro => {
         carnivoro.update();
         carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
     })

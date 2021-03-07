@@ -32,10 +32,11 @@ class Organismo{
         var taxa_gasto_energia_filho = dados_filho[5];
         var cansaco_max_filho = dados_filho[6];
         var taxa_aum_cansaco_filho = dados_filho [7];
+        var cor_filho = dados_filho[8];
 
         return new Organismo(
             this.posicao.x, this.posicao.y, raio_filho, this.vel, this.acel, vel_max_filho, forca_max_filho, 
-            this.cor, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
+            cor_filho, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
         );
     }
@@ -57,7 +58,8 @@ class Organismo{
                 newMutacao(this.forca_max, 0.5) : this.forca_max;
 
         // cor
-        
+        var cor_filho = Math.random() < probabilidade_mutacao ?
+                corMutacao(this.cor) : this.cor;
 
         // raio de detecção
         var raio_deteccao_filho = Math.random() < probabilidade_mutacao ?
