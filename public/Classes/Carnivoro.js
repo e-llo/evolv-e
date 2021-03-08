@@ -15,15 +15,16 @@ class Carnivoro extends Organismo{
         var raio_filho = dados_filho[0];
         var vel_max_filho = dados_filho[1];
         var forca_max_filho = dados_filho[2];
-        var raio_deteccao_filho = dados_filho[3];
-        var energia_max_filho = dados_filho[4];
-        var taxa_gasto_energia_filho = dados_filho[5];
-        var cansaco_max_filho = dados_filho[6];
-        var taxa_aum_cansaco_filho = dados_filho [7];
+        var cor_filho = dados_filho[3]
+        var raio_deteccao_filho = dados_filho[4];
+        var energia_max_filho = dados_filho[5];
+        var taxa_gasto_energia_filho = dados_filho[6];
+        var cansaco_max_filho = dados_filho[7];
+        var taxa_aum_cansaco_filho = dados_filho [8];
 
         return new Carnivoro(
             this.posicao.x +50, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
-            this.cor, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
+            cor_filho, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
         );
         
@@ -66,7 +67,7 @@ class Carnivoro extends Organismo{
                 
                 
                 lista_herbivoros.splice(i_mais_perto, 1); // O herbívoro comido morre (é retirado da lista de herbívoros)
-                console.log("Herbivoro foi comido!");
+                // console.log("Herbivoro foi comido!");
             } else if(lista_herbivoros.length != 0){
                 this.persegue(lista_herbivoros[i_mais_perto]);
             }

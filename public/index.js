@@ -15,7 +15,7 @@ var y = Math.random() * canvas.height;
 var raio = Math.random() * 3 + 5;
 var vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
 var forca_max = Math.random()/5; // Altere esse valor para ver o comportamento do bicho!
-var cor = "red";
+var cor = geraCor();
 var raio_deteccao = Math.random() * 50 + 120;
 var energia_max = Math.random() * 100 + 30;
 var taxa_gasto_energia = Math.random() / 40 + 0.005;
@@ -104,7 +104,7 @@ function corMutacao(colorStylePai) {
     let cores = [];
     colorStylePai.substring(4, colorStylePai.length - 1).split(',')
         .forEach(cor => {
-            if(cor <= 10 || Math.random() < 0.5 && cor <= 246) { //não gerar números negativos
+            if(cor <= 10 ||  cor <= 246) { //não gerar números negativos
                 cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
             } else {
                 cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
@@ -147,7 +147,7 @@ function animate(){
     })
 }
 
- function desenharOval(ctx, x, y, w, h, style) {
+ function desenhaOval(ctx, x, y, w, h, style) {
 
     var kappa = .5522848,
         ox = (w / 2) * kappa, // control point offset horizontal

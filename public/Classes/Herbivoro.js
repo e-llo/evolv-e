@@ -10,21 +10,23 @@ class Herbivoro extends Organismo{
 
     reproduzir(){
         var dados_filho = this._reproduzir();
-        //pegando as variáveis do método privado e repassando para o público;
+        //pegando as variáveis do método privado e repassando para o público
         var raio_filho = dados_filho[0];
         var vel_max_filho = dados_filho[1];
         var forca_max_filho = dados_filho[2];
-        var raio_deteccao_filho = dados_filho[3];
-        var energia_max_filho = dados_filho[4];
-        var taxa_gasto_energia_filho = dados_filho[5];
-        var cansaco_max_filho = dados_filho[6];
-        var taxa_aum_cansaco_filho = dados_filho [7];
+        var cor_filho = dados_filho[3]
+        var raio_deteccao_filho = dados_filho[4];
+        var energia_max_filho = dados_filho[5];
+        var taxa_gasto_energia_filho = dados_filho[6];
+        var cansaco_max_filho = dados_filho[7];
+        var taxa_aum_cansaco_filho = dados_filho [8];
 
         return new Herbivoro(
-            this.posicao.x, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
-            this.cor, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
+            this.posicao.x +50, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
+            cor_filho, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho, taxa_aum_cansaco_filho
         );
+        
     }
 
     morre(){
@@ -128,7 +130,7 @@ class Herbivoro extends Organismo{
 
 
         c.beginPath();
-        desenharOval(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red')
+        desenhaOval(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red')
         
         c.fillStyle = this.cor;
         c.strokeStyle = this.cor;

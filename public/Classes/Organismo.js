@@ -15,7 +15,6 @@ class Organismo{
         this.taxa_gasto_energia = taxa_gasto_energia;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
-        
 
         Organismo.n_total_organismos++;
     }
@@ -81,7 +80,7 @@ class Organismo{
         var taxa_aum_cansaco_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.taxa_aum_cansaco, 0.5) : this.taxa_aum_cansaco;
 
-            var dados_filho = [raio_filho, vel_max_filho, forca_max_filho, 
+            var dados_filho = [raio_filho, vel_max_filho, forca_max_filho, cor_filho,
             raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
             cansaco_max_filho,taxa_aum_cansaco_filho];
 
@@ -95,7 +94,7 @@ class Organismo{
             this.energia -= this.taxa_gasto_energia;
         } else{
             this.morre();
-            console.log("Morri de fome!");
+            // console.log("Morri de fome!");
         }
         
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
