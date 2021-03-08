@@ -127,8 +127,6 @@ class Herbivoro extends Organismo{
 
     display(){
         // var direcao = this.vel.headingDegs();
-
-
         c.beginPath();
         desenhaOval(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red')
         

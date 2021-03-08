@@ -18,28 +18,7 @@ class Organismo{
 
         Organismo.n_total_organismos++;
     }
-    
-    // Método de reprodução (com mutações)
-    reproduzir(){
-        var dados_filho = this._reproduzir();
-        //pegando as variáveis do método privado e repassando para o público;
-        var raio_filho = dados_filho[0];
-        var vel_max_filho = dados_filho[1];
-        var forca_max_filho = dados_filho[2];
-        var raio_deteccao_filho = dados_filho[3];
-        var energia_max_filho = dados_filho[4];
-        var taxa_gasto_energia_filho = dados_filho[5];
-        var cansaco_max_filho = dados_filho[6];
-        var taxa_aum_cansaco_filho = dados_filho [7];
-        var cor_filho = dados_filho[8];
-
-        return new Organismo(
-            this.posicao.x, this.posicao.y, raio_filho, this.vel, this.acel, vel_max_filho, forca_max_filho, 
-            cor_filho, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
-            cansaco_max_filho, taxa_aum_cansaco_filho
-        );
-    }
-   
+  
     // Criando um método de reprodução comum a todos os organismos
     _reproduzir(){ 
         var probabilidade_mutacao = 0.5 // chances de cada gene (atributo) sofrer mutação
@@ -94,7 +73,6 @@ class Organismo{
             this.energia -= this.taxa_gasto_energia;
         } else{
             this.morre();
-            // console.log("Morri de fome!");
         }
         
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
@@ -161,10 +139,6 @@ class Organismo{
         return this.energia <= 0;
     }
     
-    morre(){
-       
-    }
-
     display(){
         c.beginPath();
         c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        c.fillStyle = this.cor;
