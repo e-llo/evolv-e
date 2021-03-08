@@ -104,6 +104,20 @@ class Organismo{
         // console.log("vel depois de add a acel: ", this.vel);
         // Limita velocidade
         this.vel.limit(this.vel_max);
+
+        //Limita posição pela borda do canvas
+        if(this.posicao.x + 2*this.raio > canvas.width) //direita
+            this.vel.x = this.vel.x * -1; //inverte a velocidade x se ultrapassa a borda do canvas
+
+        if(this.posicao.x < 0) //esquerda
+            this.vel.x = this.vel.x * -1;
+
+        if(this.posicao.y + this.raio > canvas.height) //baixo
+            this.vel.y = this.vel.y* -1;
+
+        if(this.posicao.y < 0) //cima
+            this.vel.y = this.vel.y * -1;
+
         // A velocidade altera a posição (assim como a aceleração altera a velocidade)
         this.posicao.add(this.vel);
         // Reseta a aceleração para 0 a cada ciclo

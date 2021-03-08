@@ -34,8 +34,8 @@ const carnivoro_filho = carnivoro.reproduzir();
 var alimentos = [];
 var n_alimentos = 100;
 for(var i = 0; i < n_alimentos; i++){
-    var x = Math.random() * canvas.width;
-    var y = Math.random() * canvas.height;
+    var x = Math.random() * (canvas.width - 20) + 10;
+    var y = Math.random() * (canvas.height - 20) + 10;
     var raio = Math.random() + 1;
 
     alimentos.push(new Alimento(x, y, raio));
@@ -127,8 +127,6 @@ function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em 
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
-    c.fillStyle = '#F9F4EA';
-    c.fillRect(0, 0, canvas.width, canvas.height);
     Alimento.alimentos.forEach((alimento) => {
         alimento.display();
         // // console.log("alimento",alimento.posicao);
@@ -169,8 +167,8 @@ function animate(){
 
   function criaAlimentosGradativo(){
     for(var i = 0; i < 1; i++){
-        var x = Math.random() * canvas.width;
-        var y = Math.random() * canvas.height;
+        var x = Math.random() * (canvas.width - 20) + 10;
+        var y = Math.random() * (canvas.height - 20) + 10;
         var raio = Math.random() * 1.5 + 1;
     
         if(Alimento.alimentos.length < 200){ // Limitador temporário para não sobrecarregar a simulação
