@@ -1,10 +1,11 @@
 class Carnivoro extends Organismo{
-    static n_total_carnivoros = 0;
     static carnivoros = [];
     constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
         super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
         
-        Carnivoro.n_total_carnivoros++;
+        // variável para contar quando um carnívoro poderá se reproduzir
+        this.contagem_pra_reproducao = 0;
+        
         Carnivoro.carnivoros.push(this);
     }
 
@@ -56,23 +57,32 @@ class Carnivoro extends Organismo{
         // Momento em que ele vai comer!
         if(recorde <= this.raio_deteccao){
             if(recorde <= 5){
-                // Absorção de energia ao comer o herbívoro
-                // Se a energia que ele adquirá do herbívoro (1/4 da energia do herbívoro quando foi comido)
-                // for menor que o quanto falta para encher a barra de energia, ela (o 1/4) será somada integralmente
-                if(this.energia_max - this.energia >= lista_herbivoros[i_mais_perto].energia / 4){
-                    this.energia += lista_herbivoros[i_mais_perto].energia / 4; // O carnívoro, ao comer o herbívoro, ganha um quarto da energia deste
-                } else{
-                    this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
+                
+                this.comeHerbivoro(lista_herbivoros, i_mais_perto);
+
+                this.contagem_pra_reproducao++;
+
+                if(this.contagem_pra_reproducao == 3){ // se o carnívoro comer 3 herbívoros
+                    this.reproduzir();
+                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }
                 
-                
-                lista_herbivoros.splice(i_mais_perto, 1); // O herbívoro comido morre (é retirado da lista de herbívoros)
-                // console.log("Herbivoro foi comido!");
             } else if(lista_herbivoros.length != 0){
                 this.persegue(lista_herbivoros[i_mais_perto]);
             }
-            
         }
-        
+    }
+    
+    comeHerbivoro(herbivoro, i){
+        // Absorção de energia ao comer o herbívoro
+        // Se a energia que ele adquirá do herbívoro (1/4 da energia do herbívoro quando foi comido)
+        // for menor que o quanto falta para encher a barra de energia, ela (o 1/4) será somada integralmente
+        if(this.energia_max - this.energia >= herbivoro.energia / 4){
+            this.energia += herbivoro.energia / 4; // O carnívoro, ao comer o herbívoro, ganha um quarto da energia deste
+        } else{
+            this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
+        }
+
+        Herbivoro.herbivoros.splice(i, 1); // O herbívoro comido morre (é retirado da lista de herbívoros)
     }
 }

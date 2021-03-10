@@ -73,6 +73,7 @@ class Organismo{
             this.energia -= this.taxa_gasto_energia;
         } else{
             this.morre();
+            console.log("morri de fome!");
         }
         
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
@@ -103,6 +104,7 @@ class Organismo{
 
         this.display();
     }
+
 
     // Método para aplicar a força que fará o organismo virar na direção do alvo mais próximo de modo natural
     aplicaForca(forca){

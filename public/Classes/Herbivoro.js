@@ -1,13 +1,15 @@
 class Herbivoro extends Organismo{
-    static n_total_herbivoros = 0;
     static herbivoros = [];
     constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
         super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
        
-        Herbivoro.n_total_herbivoros++;
+        // variável para contar quando um herbívoro poderá se reproduzir
+        this.contagem_pra_reproducao = 0;
+
         Herbivoro.herbivoros.push(this)
     }
 
+    
     reproduzir(){
         var dados_filho = this._reproduzir();
         //pegando as variáveis do método privado e repassando para o público
@@ -53,21 +55,33 @@ class Herbivoro extends Organismo{
         // Momento em que ele vai comer!
         if(recorde <= this.raio_deteccao){
             if(recorde <= 5){
-                // Absorção de energia ao comer alimento
-                // Se a energia do alimento for menor que o quanto falta para encher a barra de energia, 
-                // o herbívoro adquire ela toda
-                if(this.energia_max - this.energia >= lista_alimentos[i_mais_perto].energia_alimento){
-                    this.energia += lista_alimentos[i_mais_perto].energia_alimento;
-                } else{ 
-                    this.energia = energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
+                this.comeAlimento(lista_alimentos[i_mais_perto], i_mais_perto);
+
+                this.contagem_pra_reproducao++; 
+
+                if(this.contagem_pra_reproducao == 10){ // se o herbívoro comer 10 alimentos
+                    this.reproduzir();
+                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }
                 
-                lista_alimentos.splice(i_mais_perto, 1); // Retira o alimento da lista de alimentos
             } else if(lista_alimentos.length != 0){
                 this.persegue(lista_alimentos[i_mais_perto]);
             }
             
         }
+    }
+
+    comeAlimento(alimento, i){
+        // Absorção de energia ao comer alimento:
+        // Se a energia do alimento for menor que o quanto falta para encher a barra de energia, 
+        // o herbívoro adquire ela toda
+        if(this.energia_max - this.energia >= alimento.energia_alimento){
+            this.energia += alimento.energia_alimento;
+        } else{ 
+            this.energia = energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
+        }
+        
+        Alimento.alimentos.splice(i, 1); // Retira o alimento da lista de alimentos
     }
 
     // Método para detectar um predador (basicamente idêntico ao buscarAlimento())
@@ -89,7 +103,6 @@ class Herbivoro extends Organismo{
                     i_mais_perto = i; // e o atual carnívoro passa a ser o i_mais_perto 
                 }
             }
-            
         }
         // Momento em que ele vai fugir!
         if(recorde <= this.raio_deteccao){
@@ -139,9 +152,4 @@ class Herbivoro extends Organismo{
         // c.strokeStyle = "grey";
         // c.stroke();
     }
-    
-
-    
-
-
 }

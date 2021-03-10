@@ -17,8 +17,8 @@ var vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportam
 var forca_max = Math.random()/5; // Altere esse valor para ver o comportamento do bicho!
 var cor = geraCor();
 var raio_deteccao = Math.random() * 50 + 120;
-var energia_max = Math.random() * 100 + 30;
-var taxa_gasto_energia = Math.random() / 40 + 0.005;
+var energia_max = Math.random() * 100 + 80;
+var taxa_gasto_energia = Math.random() / 80 + 0.002;
 var cansaco_max = Math.random() * 50 + 20;
 var taxa_aum_cansaco = Math.random() + 0.05;
 
@@ -32,7 +32,7 @@ const carnivoro_filho = carnivoro.reproduzir();
 //                    Criação de alimentos aleatórios no início
 // ------------------------------------------------------------------------------------
 var alimentos = [];
-var n_alimentos = 100;
+var n_alimentos = 150;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * (canvas.width - 20) + 10;
     var y = Math.random() * (canvas.height - 20) + 10;
@@ -61,7 +61,7 @@ var taxa_gasto_energia;
 var cansaco_max;
 var taxa_aum_cansaco;
 
-var n_herbivoros = 30;
+var n_herbivoros = 15;
 
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * canvas.width;
@@ -70,9 +70,9 @@ for(var i = 0; i < n_herbivoros; i++){
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
     forca_max = Math.random()/10 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
-    raio_deteccao = Math.random() * 50 + 50;
-    energia_max = Math.random() * 100 + 30
-    taxa_gasto_energia = Math.random() / 40 + 0.005;
+    raio_deteccao = Math.random() * 50 + 150;
+    energia_max = Math.random() * 100 + 80
+    taxa_gasto_energia = Math.random() / 80 + 0.002;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
 
@@ -136,7 +136,6 @@ function animate(){
         herbivoro.update();
         herbivoro.buscarAlimento(Alimento.alimentos);
         herbivoro.detectaPredador(Carnivoro.carnivoros);
-        //console.log(herbivoro.energia);
     })
 
     Carnivoro.carnivoros.forEach(carnivoro => {
