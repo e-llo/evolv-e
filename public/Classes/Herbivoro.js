@@ -59,7 +59,7 @@ class Herbivoro extends Organismo{
 
                 this.contagem_pra_reproducao++; 
 
-                if(this.contagem_pra_reproducao == 10){ // se o herbívoro comer 10 alimentos
+                if(this.contagem_pra_reproducao == 8){ // se o herbívoro comer 8 alimentos
                     this.reproduzir();
                     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }

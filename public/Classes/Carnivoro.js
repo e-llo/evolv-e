@@ -31,7 +31,6 @@ class Carnivoro extends Organismo{
         
     }
 
-
     morre(){
         Carnivoro.carnivoros.splice(this, 1);
     }
@@ -62,7 +61,7 @@ class Carnivoro extends Organismo{
 
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 3){ // se o carnívoro comer 3 herbívoros
+                if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros
                     this.reproduzir();
                     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }

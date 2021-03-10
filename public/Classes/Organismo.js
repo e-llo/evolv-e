@@ -21,19 +21,19 @@ class Organismo{
   
     // Criando um método de reprodução comum a todos os organismos
     _reproduzir(){ 
-        var probabilidade_mutacao = 0.5 // chances de cada gene (atributo) sofrer mutação
+        var probabilidade_mutacao = 0.2 // chances de cada gene (atributo) sofrer mutação
 
         // raio
         var raio_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio, 10) : this.raio;
+                newMutacao(this.raio, 0.1) : this.raio;
 
         // velocidade máxima
         var vel_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.vel_max, 0.5) : this.vel_max;
+                newMutacao(this.vel_max, 0.1) : this.vel_max;
 
         // força máxima
         var forca_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.forca_max, 0.5) : this.forca_max;
+                newMutacao(this.forca_max, 0.1) : this.forca_max;
 
         // cor
         var cor_filho = Math.random() < probabilidade_mutacao ?
@@ -41,23 +41,23 @@ class Organismo{
 
         // raio de detecção
         var raio_deteccao_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio_deteccao, 50) : this.raio_deteccao;
+                newMutacao(this.raio_deteccao, 0.1) : this.raio_deteccao;
         
         // energia máxima
         var energia_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.energia_max, 0.5) : this.energia_max;
+                newMutacao(this.energia_max, 0.1) : this.energia_max;
 
         // taxa de gasto de energia
         var taxa_gasto_energia_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.taxa_gasto_energia, 0.5) : this.taxa_gasto_energia;
+                newMutacao(this.taxa_gasto_energia, 0.1) : this.taxa_gasto_energia;
 
         // cansaço máximo
         var cansaco_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.cansaco_max, 0.5) : this.cansaco_max;
+                newMutacao(this.cansaco_max, 0.1) : this.cansaco_max;
 
         // taxa de aumento do cansaço
         var taxa_aum_cansaco_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.taxa_aum_cansaco, 0.5) : this.taxa_aum_cansaco;
+                newMutacao(this.taxa_aum_cansaco, 0.1) : this.taxa_aum_cansaco;
 
             var dados_filho = [raio_filho, vel_max_filho, forca_max_filho, cor_filho,
             raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
@@ -143,8 +143,11 @@ class Organismo{
     
     display(){
         c.beginPath();
-        c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        c.fillStyle = this.cor;
+        c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        
+        c.fillStyle = this.cor;
         c.fill();
+        c.strokeStyle = "red";
+        c.stroke();
 
         // desenhando o raio de detecção
         // c.beginPath();
