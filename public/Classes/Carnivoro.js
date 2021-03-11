@@ -19,14 +19,13 @@ class Carnivoro extends Organismo{
         var cor_filho = dados_filho[3]
         var raio_deteccao_filho = dados_filho[4];
         var energia_max_filho = dados_filho[5];
-        var taxa_gasto_energia_filho = dados_filho[6];
-        var cansaco_max_filho = dados_filho[7];
-        var taxa_aum_cansaco_filho = dados_filho [8];
+        // var taxa_gasto_energia_filho = dados_filho[6];
+        var cansaco_max_filho = dados_filho[6];
+        var taxa_aum_cansaco_filho = dados_filho [7];
 
         return new Carnivoro(
             this.posicao.x +50, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
-            cor_filho, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
-            cansaco_max_filho, taxa_aum_cansaco_filho
+            cor_filho, raio_deteccao_filho, energia_max_filho, cansaco_max_filho, taxa_aum_cansaco_filho
         );
         
     }
@@ -62,7 +61,9 @@ class Carnivoro extends Organismo{
                 this.contagem_pra_reproducao++;
 
                 if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros
-                    this.reproduzir();
+                    if(Math.random() < 0.75){ // 75% de chance de se reproduzir
+                        this.reproduzir();
+                    }
                     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }
                 

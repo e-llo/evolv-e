@@ -1,7 +1,7 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
-    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
-        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco);
+    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco){
+        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -9,7 +9,7 @@ class Herbivoro extends Organismo{
         Herbivoro.herbivoros.push(this)
     }
 
-    
+
     reproduzir(){
         var dados_filho = this._reproduzir();
         //pegando as variáveis do método privado e repassando para o público
@@ -19,14 +19,13 @@ class Herbivoro extends Organismo{
         var cor_filho = dados_filho[3]
         var raio_deteccao_filho = dados_filho[4];
         var energia_max_filho = dados_filho[5];
-        var taxa_gasto_energia_filho = dados_filho[6];
-        var cansaco_max_filho = dados_filho[7];
-        var taxa_aum_cansaco_filho = dados_filho [8];
+        // var taxa_gasto_energia_filho = dados_filho[6];
+        var cansaco_max_filho = dados_filho[6];
+        var taxa_aum_cansaco_filho = dados_filho [7];
 
         return new Herbivoro(
             this.posicao.x +50, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
-            cor_filho, raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
-            cansaco_max_filho, taxa_aum_cansaco_filho
+            cor_filho, raio_deteccao_filho, energia_max_filho, cansaco_max_filho, taxa_aum_cansaco_filho
         );
         
     }
@@ -60,7 +59,9 @@ class Herbivoro extends Organismo{
                 this.contagem_pra_reproducao++; 
 
                 if(this.contagem_pra_reproducao == 8){ // se o herbívoro comer 8 alimentos
-                    this.reproduzir();
+                    if(Math.random() < 0.75){ // 75% de chance de se reproduzir
+                        this.reproduzir();
+                    }
                     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }
                 

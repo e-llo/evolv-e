@@ -1,7 +1,7 @@
 class Organismo{
     static n_total_organismos = 0;
 
-    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco){
+    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco){
         this.posicao = new Vetor(x, y);
         this.raio = raio;
         this.vel = new Vetor(0, 0);
@@ -12,7 +12,7 @@ class Organismo{
         this.raio_deteccao = raio_deteccao;
         this.energia_max = energia_max;
         this.energia = this.energia_max; // Começa com energia máxima
-        this.taxa_gasto_energia = taxa_gasto_energia;
+        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(vel_max, 2)) / 10000;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
 
@@ -47,9 +47,9 @@ class Organismo{
         var energia_max_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.energia_max, 0.1) : this.energia_max;
 
-        // taxa de gasto de energia
-        var taxa_gasto_energia_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.taxa_gasto_energia, 0.1) : this.taxa_gasto_energia;
+        // // taxa de gasto de energia
+        // var taxa_gasto_energia_filho = Math.random() < probabilidade_mutacao ?
+        //         newMutacao(this.taxa_gasto_energia, 0.1) : this.taxa_gasto_energia;
 
         // cansaço máximo
         var cansaco_max_filho = Math.random() < probabilidade_mutacao ?
@@ -59,11 +59,10 @@ class Organismo{
         var taxa_aum_cansaco_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.taxa_aum_cansaco, 0.1) : this.taxa_aum_cansaco;
 
-            var dados_filho = [raio_filho, vel_max_filho, forca_max_filho, cor_filho,
-            raio_deteccao_filho, energia_max_filho, taxa_gasto_energia_filho, 
-            cansaco_max_filho,taxa_aum_cansaco_filho];
+        var dados_filho = [raio_filho, vel_max_filho, forca_max_filho, cor_filho,
+        raio_deteccao_filho, energia_max_filho, cansaco_max_filho,taxa_aum_cansaco_filho];
 
-            return dados_filho;
+        return dados_filho;
     }
 
     // Método para atualizar o estado do organismo
