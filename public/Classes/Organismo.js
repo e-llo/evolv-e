@@ -26,7 +26,7 @@ class Organismo{
 
         // raio
         var raio_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio, 0.1) : this.raio;
+                newMutacao(this.raio, 0.1, 3) : this.raio; //valor minimo 3 (?)
 
         // velocidade máxima
         var vel_max_filho = Math.random() < probabilidade_mutacao ?

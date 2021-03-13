@@ -111,10 +111,16 @@ function corMutacao(colorStylePai) {
     let cores = [];
     colorStylePai.substring(4, colorStylePai.length - 1).split(',')
         .forEach(cor => {
-            if(cor <= 10 ||  cor <= 246) { //não gerar números negativos
+            if(cor <= 10) { //não gerar números negativos
                 cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
-            } else {
+            } else if(cor >= 246) { //não gerar valores maiores que 256
                 cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
+            } else { //randomiza se vai ser add ou subtraido valores caso a cor estiver entre 10 e 246
+                if(Math.random() < 0.5) {
+                    cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
+                } else {
+                    cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
+                }
             }
         });
 
@@ -126,8 +132,12 @@ function mutacao(porcent) { //porcentagem em decimal
     return parseFloat(calculo);
 }
 
-function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em decimal)
+function newMutacao(valor, porcent, valor_minimo = 0) { //quanto menor a % menor a variação (em decimal)
+    //o valor_minimo é um parametro opcional, que se não for definido na chamada da função recebe o valor 0.
     let calculo = (valor + mutacao(porcent)).toFixed(4);
+    if(calculo <= valor_minimo) {
+        return newMutacao(valor, porcent, valor_minimo);
+    }
     return parseFloat(calculo);
 }
 

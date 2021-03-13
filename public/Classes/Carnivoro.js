@@ -43,8 +43,9 @@ class Carnivoro extends Organismo{
         for(var i = lista_herbivoros.length - 1; i >= 0; i--){
             // Distância d entre este organismo e o atual herbivoro sendo analisado na lista (lista_herbivoros[i])
             var d = this.posicao.dist(lista_herbivoros[i].posicao);
-            // Somente atualizará as variáveis se houver um herbivoro dentro do raio de detecção
-            if(d < this.raio_deteccao){
+            // Somente atualizará as variáveis se houver um herbivoro dentro do raio de detecção e o
+            // tamanho do herbívoro(raio) for menor que o carnívoro + 20% do seu tamanho.
+            if(d < this.raio_deteccao && lista_herbivoros[i].raio < this.raio * 1.2){
                 if (d <= recorde){ // Caso a distância seja menor que a distância recorde,
                     recorde = d; // recorde passa a ter o valor de d
                     i_mais_perto = i; // e o atual alimento passa a ser o i_mais_perto 
