@@ -12,9 +12,10 @@ class Organismo{
         this.raio_deteccao = raio_deteccao;
         this.energia_max = energia_max;
         this.energia = this.energia_max; // Começa com energia máxima
-        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(vel_max, 2)) / 10000;
+        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(vel_max, 2)) / 5000;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
+        this.chance_de_reproducao = 0.5;
 
         Organismo.n_total_organismos++;
     }
@@ -75,13 +76,7 @@ class Organismo{
             console.log("morri de fome!");
         }
         
-        // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
-        // console.log("vel antes de add a acel: ", this.vel);
-        // console.log("Acel: ", this.acel);
-        this.vel.add(this.acel);
-        // console.log("vel depois de add a acel: ", this.vel);
-        // Limita velocidade
-        this.vel.limit(this.vel_max);
+        this.limitaBordas(); // Faz com que o organismo verifique se está próximo às bordas a cada frame
 
         //Limita posição pela borda do canvas
         if(this.posicao.x + 2*this.raio > canvas.width) //direita
@@ -96,12 +91,52 @@ class Organismo{
         if(this.posicao.y < 0) //cima
             this.vel.y = this.vel.y * -1;
 
+        // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
+        // console.log("vel antes de add a acel: ", this.vel);
+        // console.log("Acel: ", this.acel);
+        this.vel.add(this.acel);
+        // console.log("vel depois de add a acel: ", this.vel);
+        // Limita velocidade
+        this.vel.limit(this.vel_max);
+
         // A velocidade altera a posição (assim como a aceleração altera a velocidade)
         this.posicao.add(this.vel);
         // Reseta a aceleração para 0 a cada ciclo
         this.acel.mul(0);
 
         this.display();
+    }
+
+    // Método para aplicar força ao organismo que o impeça de continuar a seguir por uma trajetória para fora da tela
+    limitaBordas(){
+        var d = 30; // d é uma variável global que delimita a distância da borda a partir da qual os organismos começarão a fazer a curva 
+        var vel_desejada = null; // Esta velocidade será o vetor que dirá para onde o organismo deve ir para não sair da borda
+
+        // Borda esquerda
+        if(this.posicao.x < d){ 
+            vel_desejada = new Vetor(this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção x (para a direita)
+        } 
+        // Borda direita
+        else if(this.posicao.x > canvas.width - d){
+            vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
+        }
+
+        // Borda de cima
+        if(this.posicao.y < d){
+            vel_desejada = new Vetor(this.vel.x, this.vel_max); // Faz sua velocidade ser máxima na direção y (para a baixo)
+        }
+        // Borda de baixo
+        else if(this.posicao.y > canvas.height - d){
+            vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
+        }
+
+        if(vel_desejada != null){ // Caso qualquer uma das condições anteriores tenha sido satisfeita
+            vel_desejada.normalize(); // Normaliza (transforma para ter tamanho 1) o vetor vel_desejada
+            vel_desejada.mul(this.vel_max); // Multiplica o vetor (que agora tem tamanho 1) pela velocidade máxima
+            var redirecionamento = vel_desejada.sub(this.vel); // Cria um vetor de força que redirecionará o organismo
+            redirecionamento.limit(this.forca_max * 1.5); // Limita essa força com uma folga maior ("* 1.5") para dar chances dela ser maior que as outras forças atuantes nele
+            this.aplicaForca(redirecionamento); // Aplica esta força no organismo e a deixa levemente mais forte para ganhar prioridade em relação a outras forças
+        }
     }
 
 

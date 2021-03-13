@@ -24,7 +24,7 @@ class Carnivoro extends Organismo{
         var taxa_aum_cansaco_filho = dados_filho [7];
 
         return new Carnivoro(
-            this.posicao.x +50, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
+            this.posicao.x, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
             cor_filho, raio_deteccao_filho, energia_max_filho, cansaco_max_filho, taxa_aum_cansaco_filho
         );
         
@@ -40,7 +40,7 @@ class Carnivoro extends Organismo{
         var i_mais_perto = -1; // Qual o índice na lista de herbivoros do herbivoro mais perto até agora
 
         // Loop que analisa cada herbivoro na lista de herbivoros
-        for(var i = 0; i < lista_herbivoros.length; i++){
+        for(var i = lista_herbivoros.length - 1; i >= 0; i--){
             // Distância d entre este organismo e o atual herbivoro sendo analisado na lista (lista_herbivoros[i])
             var d = this.posicao.dist(lista_herbivoros[i].posicao);
             // Somente atualizará as variáveis se houver um herbivoro dentro do raio de detecção
@@ -61,7 +61,7 @@ class Carnivoro extends Organismo{
                 this.contagem_pra_reproducao++;
 
                 if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros
-                    if(Math.random() < 0.75){ // 75% de chance de se reproduzir
+                    if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }
                     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
