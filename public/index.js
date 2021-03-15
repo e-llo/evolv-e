@@ -25,7 +25,7 @@ var taxa_aum_cansaco;
 //                         Criação dos carnívoros
 // ------------------------------------------------------------------------------------
 
-var n_carnivoros = 3;
+var n_carnivoros = 30;
 
 for(var i = 0; i < n_carnivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
@@ -52,7 +52,7 @@ for(var i = 0; i < n_carnivoros; i++){
 // ------------------------------------------------------------------------------------
 
 
-var n_herbivoros = 20;
+var n_herbivoros = 0;
 
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;

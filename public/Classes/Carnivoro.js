@@ -31,7 +31,7 @@ class Carnivoro extends Organismo{
     }
 
     morre(){
-        Carnivoro.carnivoros.splice(this, 1);
+        Carnivoro.carnivoros = super.remove(Carnivoro.carnivoros, this);
     }
 
     buscarHerbivoro(lista_herbivoros){

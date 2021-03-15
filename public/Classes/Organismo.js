@@ -12,7 +12,7 @@ class Organismo{
         this.raio_deteccao = raio_deteccao;
         this.energia_max = energia_max;
         this.energia = this.energia_max; // Começa com energia máxima
-        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(vel_max, 2)) / 5000;
+        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(vel_max, 2)) / 1000;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
@@ -47,10 +47,6 @@ class Organismo{
         // energia máxima
         var energia_max_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.energia_max, 0.1) : this.energia_max;
-
-        // // taxa de gasto de energia
-        // var taxa_gasto_energia_filho = Math.random() < probabilidade_mutacao ?
-        //         newMutacao(this.taxa_gasto_energia, 0.1) : this.taxa_gasto_energia;
 
         // cansaço máximo
         var cansaco_max_filho = Math.random() < probabilidade_mutacao ?
@@ -189,5 +185,17 @@ class Organismo{
         // c.strokeStyle = "grey";
         // c.stroke();
     }
+    remove(lista) {
+        var what, a = arguments, L = a.length, indice;
+        while (L > 1 && lista.length) {
+            what = a[--L];
+            while ((indice = lista.indexOf(what)) !== -1) {
+                lista.splice(indice, 1);
+            }
+        }
+        return lista;
+    }
+
     
+
 }

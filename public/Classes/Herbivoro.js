@@ -31,7 +31,7 @@ class Herbivoro extends Organismo{
     }
 
     morre(){
-        Herbivoro.herbivoros.splice(this, 1);
+        Herbivoro.herbivoros = super.remove(Herbivoro.herbivoros, this);
     }
     
     buscarAlimento(lista_alimentos){
