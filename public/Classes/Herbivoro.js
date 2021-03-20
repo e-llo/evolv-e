@@ -6,7 +6,8 @@ class Herbivoro extends Organismo{
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
 
-        Herbivoro.herbivoros.push(this)
+        Herbivoro.herbivoros.push(this);
+        console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio: "+parseFloat(this.raio.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4)));
     }
 
 
@@ -35,6 +36,7 @@ class Herbivoro extends Organismo{
     }
     
     buscarAlimento(lista_alimentos){
+        this.comendo = false;
         // Var recorde: qual a menor distância (a recorde) de um alimento até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
         var i_mais_perto = -1; // Qual o índice do alimento mais perto até agora
@@ -53,12 +55,13 @@ class Herbivoro extends Organismo{
         }
         // Momento em que ele vai comer!
         if(recorde <= this.raio_deteccao){
+            this.comendo = true;
             if(recorde <= 5){
                 this.comeAlimento(lista_alimentos[i_mais_perto], i_mais_perto);
 
                 this.contagem_pra_reproducao++; 
 
-                if(this.contagem_pra_reproducao == 8){ // se o herbívoro comer 8 alimentos
+                if(this.contagem_pra_reproducao == 4){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }
@@ -68,7 +71,6 @@ class Herbivoro extends Organismo{
             } else if(lista_alimentos.length != 0){
                 this.persegue(lista_alimentos[i_mais_perto]);
             }
-            
         }
     }
 
@@ -89,6 +91,7 @@ class Herbivoro extends Organismo{
     // O método faz o herbívoro achar o carnívoro mais próximo e, se ele estiver dentro de seu raio de detecção,
     // ele aciona o método fugir()
     detectaPredador(lista_predadores){
+        this.fugindo = false;
         // Var recorde: qual a menor distância (a recorde) de um carnívoro até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
         var i_mais_perto = -1; // Qual o índice do carnívoro mais perto até agora
@@ -107,6 +110,7 @@ class Herbivoro extends Organismo{
         }
         // Momento em que ele vai fugir!
         if(recorde <= this.raio_deteccao){
+            this.fugindo = true;
             if(lista_predadores.length != 0){
                 // Chamada do método foge(), que muda a velocidade do herbívoro para a direção oposta ao do predador
                 this.foge(lista_predadores[i_mais_perto]); 
@@ -134,7 +138,6 @@ class Herbivoro extends Organismo{
         var redirecionamento = vel_desejada.subNew(this.vel);
         redirecionamento.limit(this.forca_max); // Limita o redirecionamento para a força máxima
 
-        // console.log("vel: ", this.vel);
         // Soma a força de redirecionamento à aceleração
         this.aplicaForca(redirecionamento);
     }

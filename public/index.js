@@ -21,20 +21,22 @@ var taxa_gasto_energia;
 var cansaco_max;
 var taxa_aum_cansaco;
 
+
+
 // ------------------------------------------------------------------------------------
 //                         Criação dos carnívoros
 // ------------------------------------------------------------------------------------
 
-var n_carnivoros = 30;
+var n_carnivoros = 10;
 
 for(var i = 0; i < n_carnivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
     y = Math.random() * (canvas.height - 50) + 25;
     raio = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
-    forca_max = Math.random()/10 + 0.001; // Altere esse valor para ver o comportamento do bicho!
+    forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
-    raio_deteccao = Math.random() * 50 + 50;
+    raio_deteccao = Math.random() * 50 + 40;
     energia_max = Math.random() * 100 + 80
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
@@ -52,14 +54,14 @@ for(var i = 0; i < n_carnivoros; i++){
 // ------------------------------------------------------------------------------------
 
 
-var n_herbivoros = 0;
+var n_herbivoros = 90;
 
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
     y = Math.random() * (canvas.height - 50) + 25;
     raio = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
-    forca_max = Math.random()/10 + 0.001; // Altere esse valor para ver o comportamento do bicho!
+    forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
     raio_deteccao = Math.random() * 50 + 50;
     energia_max = Math.random() * 100 + 80
@@ -78,7 +80,7 @@ for(var i = 0; i < n_herbivoros; i++){
 //                    Criação de alimentos aleatórios no início
 // ------------------------------------------------------------------------------------
 var alimentos = [];
-var n_alimentos = 150;
+var n_alimentos = 250;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * (canvas.width - 50) + 25;
     var y = Math.random() * (canvas.height - 50) + 25;
@@ -88,7 +90,7 @@ for(var i = 0; i < n_alimentos; i++){
 }
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
-const novosAlimentos = setInterval(criaAlimentosGradativo, 100); 
+const novosAlimentos = setInterval(criaAlimentosGradativo, 80); 
 
 
 animate();
@@ -132,12 +134,12 @@ function mutacao(porcent) { //porcentagem em decimal
     return parseFloat(calculo);
 }
 
-function newMutacao(valor, porcent, valor_minimo = 0) { //quanto menor a % menor a variação (em decimal)
+function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em decimal)
     //o valor_minimo é um parametro opcional, que se não for definido na chamada da função recebe o valor 0.
     let calculo = (valor + mutacao(porcent)).toFixed(4);
-    if(calculo <= valor_minimo) {
-        return newMutacao(valor, porcent, valor_minimo);
-    }
+    // if(calculo <= valor_minimo) {
+    //     return newMutacao(valor, porcent, valor_minimo);
+    // }
     return parseFloat(calculo);
 }
 
@@ -162,7 +164,7 @@ function desenhaOval(ctx, x, y, w, h, style) {
     }
 
 function criaAlimentosGradativo(){
-    for(var i = 0; i < 1; i++){
+    for(var i = 0; i < 2; i++){
         var x = Math.random() * (canvas.width - 50) + 25;
         var y = Math.random() * (canvas.height - 50) + 25;
         var raio = Math.random() * 1.5 + 1;
@@ -174,6 +176,7 @@ function criaAlimentosGradativo(){
     }
 } 
 
+var copia;
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
@@ -183,12 +186,14 @@ function animate(){
     
     Herbivoro.herbivoros.forEach(herbivoro => {
         herbivoro.update();
+        herbivoro.vagueia();
         herbivoro.buscarAlimento(Alimento.alimentos);
         herbivoro.detectaPredador(Carnivoro.carnivoros);
     })
 
     Carnivoro.carnivoros.forEach(carnivoro => {
         carnivoro.update();
+        carnivoro.vagueia();
         carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
     })
 }

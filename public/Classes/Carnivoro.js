@@ -7,6 +7,7 @@ class Carnivoro extends Organismo{
         this.contagem_pra_reproducao = 0;
         
         Carnivoro.carnivoros.push(this);
+        console.log("C - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio: "+parseFloat(this.raio.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4)));
     }
 
     // Método de reprodução (com mutações)
@@ -35,6 +36,7 @@ class Carnivoro extends Organismo{
     }
 
     buscarHerbivoro(lista_herbivoros){
+        this.comendo = false;
         // Var recorde: qual a menor distância (a recorde) de um herbivoro até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
         var i_mais_perto = -1; // Qual o índice na lista de herbivoros do herbivoro mais perto até agora
@@ -55,13 +57,13 @@ class Carnivoro extends Organismo{
         }
         // Momento em que ele vai comer!
         if(recorde <= this.raio_deteccao){
+            this.comendo = true;
             if(recorde <= 5){
-                
                 this.comeHerbivoro(lista_herbivoros, i_mais_perto);
 
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros
+                if(this.contagem_pra_reproducao == 6){ // se o carnívoro comer 4 herbívoros
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }
@@ -76,10 +78,10 @@ class Carnivoro extends Organismo{
     
     comeHerbivoro(herbivoro, i){
         // Absorção de energia ao comer o herbívoro
-        // Se a energia que ele adquirá do herbívoro (1/4 da energia do herbívoro quando foi comido)
-        // for menor que o quanto falta para encher a barra de energia, ela (o 1/4) será somada integralmente
-        if(this.energia_max - this.energia >= herbivoro.energia / 4){
-            this.energia += herbivoro.energia / 4; // O carnívoro, ao comer o herbívoro, ganha um quarto da energia deste
+        // Se a energia que ele adquirá do herbívoro (1/8 da energia do herbívoro quando foi comido)
+        // for menor que o quanto falta para encher a barra de energia, ela (o 1/8) será somada integralmente
+        if(this.energia_max - this.energia >= herbivoro.energia / 8){
+            this.energia += herbivoro.energia / 8; // O carnívoro, ao comer o herbívoro, ganha um quarto da energia deste
         } else{
             this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }
