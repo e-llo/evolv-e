@@ -1,10 +1,7 @@
-Web app that simulates evolution through natural selection using a genetic algorithm in Javascript
+Web application that aims at simulating evolution by natural selection using genetic algorithms in Javascript. 
 
------
+It is a 2D virtual environment in which organisms with randomly generated genes evolve over the generations. The user has the ability to alter some of the properties that rule the environment in order to analyse how each gene (attribute) is affected. Each object - organism - may or may not conceive new descendents, which will carry their father's attributes values with themselves, but with a slight chance for each of the genes of them undergoing a mutation.
 
-Aplicação web que visa simular a evolução por seleção natural utilizando algoritmos genéticos em Javascript.
+The interface used for the simulation is primarily HTML Canvas. However, alongside it, there's a dashboard containing interactive graphics showcasing the frequency of each gene in the population over time.
 
-Ambiente virtual 2D onde organismos com genes aleatoriamente gerados evoluem com o passar de cada geração. O usuário tem o poder de alterar algumas regras do ambiente a fim de ver como cada atributo é afetado. Cada objeto pode ou não criar descendentes, que carregarão consigo os valores dos atributos do pai, porém com a possibilidade de sofrerem mutação.
-Interface: HTML Canvas para a simulação e dashboard com gráficos simples mostrando a frequência de cada gene na população ao longo do tempo. 
-
-O intuito é demonstrar como a seleção natural é capaz de fazer surgir espontaneamente populações complexas mesmo que em ambientes regidos por regras simples.
+Our goal is to demonstrate how natural selection enables complex populations and behaviors to spontaneously emerge even in rigid environments ruled by simplistic laws.
