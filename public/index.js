@@ -27,7 +27,7 @@ var taxa_aum_cansaco;
 //                         Criação dos carnívoros
 // ------------------------------------------------------------------------------------
 
-var n_carnivoros = 10;
+var n_carnivoros = 4;
 
 for(var i = 0; i < n_carnivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
@@ -54,7 +54,7 @@ for(var i = 0; i < n_carnivoros; i++){
 // ------------------------------------------------------------------------------------
 
 
-var n_herbivoros = 90;
+var n_herbivoros = 40;
 
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
@@ -80,7 +80,7 @@ for(var i = 0; i < n_herbivoros; i++){
 //                    Criação de alimentos aleatórios no início
 // ------------------------------------------------------------------------------------
 var alimentos = [];
-var n_alimentos = 250;
+var n_alimentos = 150;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * (canvas.width - 50) + 25;
     var y = Math.random() * (canvas.height - 50) + 25;
@@ -176,7 +176,6 @@ function criaAlimentosGradativo(){
     }
 } 
 
-var copia;
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);

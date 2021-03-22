@@ -114,6 +114,8 @@ class Organismo{
         // Limita velocidade
         this.vel.limit(this.vel_max);
 
+        // console.log("ângulo vel: ", this.vel.headingDegs());
+
         // A velocidade altera a posição (assim como a aceleração altera a velocidade)
         this.posicao.add(this.vel);
         // Reseta a aceleração para 0 a cada ciclo
