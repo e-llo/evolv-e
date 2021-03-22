@@ -146,7 +146,7 @@ class Herbivoro extends Organismo{
         // var direcao = this.vel.headingDegs();
         c.beginPath();
         // desenhaOval(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red');
-        c.ellipse(this.posicao.x, this.posicao.y, this.raio * 0.75, this.raio * 1.2, this.vel.headingRads() - Math.PI/2, 0, Math.PI * 2);
+        c.ellipse(this.posicao.x, this.posicao.y, this.raio * 0.7, this.raio * 1.1, this.vel.headingRads() - Math.PI/2, 0, Math.PI * 2);
         // console.log(this.vel.headingDegs());
         c.fillStyle = this.cor;
         c.strokeStyle = this.cor;
