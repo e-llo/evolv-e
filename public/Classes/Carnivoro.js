@@ -1,32 +1,35 @@
 class Carnivoro extends Organismo{
     static carnivoros = [];
-    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco){
-        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_dim_cansaco); // referenciando o construtor da classe mãe
+    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, taxa_aum_cansaco, tempo_vida){
+        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, tempo_vida); // referenciando o construtor da classe mãe
         
         // variável para contar quando um carnívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
         
         Carnivoro.carnivoros.push(this);
-        console.log("C - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio: "+parseFloat(this.raio.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4)));
+        console.log("C - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio: "+parseFloat(this.raio.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
+        + " | vida: " + this.tempo_vida);
     }
 
     // Método de reprodução (com mutações)
     reproduzir(){
-        var dados_filho = this._reproduzir();
-        //pegando as variáveis do método privado e repassando para o público
-        var raio_filho = dados_filho[0];
-        var vel_max_filho = dados_filho[1];
-        var forca_max_filho = dados_filho[2];
-        var cor_filho = dados_filho[3]
-        var raio_deteccao_filho = dados_filho[4];
-        var energia_max_filho = dados_filho[5];
-        // var taxa_gasto_energia_filho = dados_filho[6];
-        var cansaco_max_filho = dados_filho[6];
-        var taxa_aum_cansaco_filho = dados_filho [7];
+        var filho = this._reproduzir();
+        // //pegando as variáveis do método privado e repassando para o público
+        // var raio_filho = dados_filho[0];
+        // var vel_max_filho = dados_filho[1];
+        // var forca_max_filho = dados_filho[2];
+        // var cor_filho = dados_filho[3]
+        // var raio_deteccao_filho = dados_filho[4];
+        // var energia_max_filho = dados_filho[5];
+        // // var taxa_gasto_energia_filho = dados_filho[6];
+        // var cansaco_max_filho = dados_filho[6];
+        // var taxa_aum_cansaco_filho = dados_filho [7];
+        // var tempo_vida_filho = dados_filho [8];
 
         return new Carnivoro(
-            this.posicao.x, this.posicao.y, raio_filho, vel_max_filho, forca_max_filho, 
-            cor_filho, raio_deteccao_filho, energia_max_filho, cansaco_max_filho, taxa_aum_cansaco_filho
+            this.posicao.x, this.posicao.y, filho.raio, filho.vel_max, filho.forca_max, 
+            filho.cor, filho.raio_deteccao, filho.energia_max, filho.taxa_gasto_energia, filho.cansaco_max,
+            filho.tempo_vida
         );
         
     }

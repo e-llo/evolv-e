@@ -20,6 +20,7 @@ var energia_max;
 var taxa_gasto_energia;
 var cansaco_max;
 var taxa_aum_cansaco;
+var tempo_vida;
 
 
 
@@ -41,10 +42,11 @@ for(var i = 0; i < n_carnivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
+    tempo_vida = 10000;
 
     new Carnivoro(
         x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
-        cansaco_max, taxa_aum_cansaco
+        cansaco_max, taxa_aum_cansaco, tempo_vida
     );
 }
 
@@ -68,10 +70,11 @@ for(var i = 0; i < n_herbivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
+    tempo_vida = 10000;
 
     new Herbivoro(
-        x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
-        cansaco_max, taxa_aum_cansaco
+        x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max,
+        cansaco_max, taxa_aum_cansaco, tempo_vida
     );
 }
 
@@ -109,19 +112,21 @@ function geraCor(){
     return cor;
 }
 
-function corMutacao(colorStylePai) {
+function corMutacao(estilo) {
     let cores = [];
-    colorStylePai.substring(4, colorStylePai.length - 1).split(',')
-        .forEach(cor => {
-            if(cor <= 10) { //não gerar números negativos
+    estilo.substring(4, estilo.length - 1) // remover os caracteres de texto. ex: "rgb(256,20,40)"
+        .split(',') // retornar um array com os elementos separados por virgula. ex: 256,20,40
+        .forEach(cor => { //pegar cada elemento do array e fazer os cálculos a seguir
+            if(cor <= 10) { //para não gerar números negativos
                 cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
-            } else if(cor >= 246) { //não gerar valores maiores que 256
+            } else if(cor >= 246) { //para não gerar valores maiores que 256
                 cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
+
             } else { //randomiza se vai ser add ou subtraido valores caso a cor estiver entre 10 e 246
                 if(Math.random() < 0.5) {
                     cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
                 } else {
-                    cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
+                    cores.push(parseInt(cor) - Math.ceil(Math.random() * 10)) // salva o valor novo no array cores
                 }
             }
         });
