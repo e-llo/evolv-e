@@ -42,7 +42,7 @@ for(var i = 0; i < n_carnivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida = 10000;
+    tempo_vida = Math.random()*30000+40000;
 
     new Carnivoro(
         x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
