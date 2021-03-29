@@ -1,14 +1,14 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
-    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida){
-        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida);
+    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
 
         Herbivoro.herbivoros.push(this);
         console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio: "+parseFloat(this.raio.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
-            + " | vida: " + this.tempo_vida);
+        + " | vida: " + this.cronometro_vida.getTempo());
     }
 
 
@@ -29,7 +29,7 @@ class Herbivoro extends Organismo{
         return new Herbivoro(
             this.posicao.x, this.posicao.y, filho.raio, filho.vel_max, filho.forca_max, 
             filho.cor, filho.raio_deteccao, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
-            filho.tempo_vida
+            filho.tempo_vida_min, filho.tempo_vida_max
         );
         
     }

@@ -20,7 +20,8 @@ var energia_max;
 var taxa_gasto_energia;
 var cansaco_max;
 var taxa_aum_cansaco;
-var tempo_vida;
+var tempo_vida_min;
+var tempo_vida_max;
 
 
 
@@ -42,11 +43,12 @@ for(var i = 0; i < n_carnivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida = Math.random()*30000+40000;
+    tempo_vida_min = 20000;
+    tempo_vida_max = 40000;
 
     new Carnivoro(
         x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
-        cansaco_max, taxa_aum_cansaco, tempo_vida
+        cansaco_max, tempo_vida_min, tempo_vida_max
     );
 }
 
@@ -70,11 +72,12 @@ for(var i = 0; i < n_herbivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida = 10000;
+    tempo_vida_min = 20000;
+    tempo_vida_max = 40000;
 
     new Herbivoro(
         x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max,
-        cansaco_max, taxa_aum_cansaco, tempo_vida
+        cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
     );
 }
 
@@ -146,6 +149,11 @@ function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em 
     //     return newMutacao(valor, porcent, valor_minimo);
     // }
     return parseFloat(calculo);
+}
+
+function geraNumeroPorIntervalo(min, max) {
+    let delta = max - min; // exemplo: 4000 e 6000. 6000 - 4000 = 2000
+    return Math.random() * delta + min; // Math.random() * 2000 + 4000
 }
 
 function desenhaOval(ctx, x, y, w, h, style) {
