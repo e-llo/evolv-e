@@ -116,39 +116,45 @@ function geraCor(){
 }
 
 function corMutacao(estilo) {
-    let cores = [];
-    estilo.substring(4, estilo.length - 1) // remover os caracteres de texto. ex: "rgb(256,20,40)"
+    let cores = estilo.substring(4, estilo.length - 1) // remover os caracteres de texto. ex: "rgb(256,20,40)"
         .split(',') // retornar um array com os elementos separados por virgula. ex: 256,20,40
-        .forEach(cor => { //pegar cada elemento do array e fazer os cálculos a seguir
+        .map(function(cor) { //pegar cada elemento do array e fazer os cálculos a seguir
+            cor = parseInt(cor);
+            let operacao = "";
+
             if(cor <= 10) { //para não gerar números negativos
-                cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
+                operacao = "adicao"
             } else if(cor >= 246) { //para não gerar valores maiores que 256
-                cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
+                operacao = "subtracao"
 
             } else { //randomiza se vai ser add ou subtraido valores caso a cor estiver entre 10 e 246
                 if(Math.random() < 0.5) {
-                    cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
+                    operacao = "adicao"
                 } else {
-                    cores.push(parseInt(cor) - Math.ceil(Math.random() * 10)) // salva o valor novo no array cores
+                    operacao = "subtracao"
                 }
+            }
+
+            if(operacao == "adicao") {
+                return cor + Math.ceil(Math.random() * 10)
+            } else { //subtração
+                return cor - Math.ceil(Math.random() * 10)
             }
         });
 
     return `rgb(${cores[0]}, ${cores[1]}, ${cores[2]})`
 }
 
-function mutacao(porcent) { //porcentagem em decimal
-    let calculo = ((Math.random() - 0.5) * porcent).toFixed(4);
-    return parseFloat(calculo);
-}
+function newMutacao(valor, porcent) {// exemplo: valor = 20;  porcent = 0.1 || 10%
+    let variacao = valor * porcent; //  variacao = 20 * 0.1 = 2, ou seja, poderá variar de +2 a -2 no resultado
+    let minimo = valor - variacao;  //  minimo = 20 - 2 = 18. Para que não precise sub-dividir o return em adição ou subtração
+    variacao *= 2                   //  puxo o ponto de referência para o menor valor possível. Logo, o resultado variará de
+                                    //  0 a +4, afinal a distância de 2 até -2 é 4.
+    if(minimo <= 0) {
+        minimo = valor;
+    }
 
-function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em decimal)
-    //o valor_minimo é um parametro opcional, que se não for definido na chamada da função recebe o valor 0.
-    let calculo = (valor + mutacao(porcent)).toFixed(4);
-    // if(calculo <= valor_minimo) {
-    //     return newMutacao(valor, porcent, valor_minimo);
-    // }
-    return parseFloat(calculo);
+    return minimo + Math.random() * variacao; // 18 + Math.randon() * 4. O resultado estará entre o intervalo [18, 22]
 }
 
 function geraNumeroPorIntervalo(min, max) {
