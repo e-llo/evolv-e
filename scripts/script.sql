@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS `evolve`.`Organismo` ;
 
 CREATE TABLE IF NOT EXISTS `evolve`.`Organismo` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `raio` DOUBLE NOT NULL,
+  `raio_min` DOUBLE NOT NULL,
   `vel_max` DOUBLE NOT NULL,
   `forca_max` DOUBLE NOT NULL,
   `cor` VARCHAR(16) NOT NULL,

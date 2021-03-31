@@ -1,9 +1,10 @@
 class Organismo{
     static n_total_organismos = 0;
 
-    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida){
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida){
         this.posicao = new Vetor(x, y);
-        this.raio = raio;
+        this.raio_min = raio_min;
+        this.raio = this.raio_min;
         this.vel = new Vetor(1, 1);
         this.acel = new Vetor(0, 0);
         this.vel_max = vel_max;
@@ -12,7 +13,7 @@ class Organismo{
         this.raio_deteccao = raio_deteccao;
         this.energia_max = energia_max;
         this.energia = this.energia_max; // Começa com energia máxima
-        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(vel_max, 2)) / 1000;
+        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(vel_max, 2)) / 50000;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.tempo_vida = tempo_vida; //em milissegundos
@@ -39,13 +40,12 @@ class Organismo{
     _reproduzir(){ 
         var probabilidade_mutacao = 0.2 // chances de cada gene (atributo) sofrer mutação
 
-        // raio
-        var raio_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio, 0.1) : this.raio;
-        if(raio_filho < 3){
-            raio_filho = 3;
+        // raio mínimo
+        var raio_min_filho = Math.random() < probabilidade_mutacao ?
+                newMutacao(this.raio_min, 0.1) : this.raio_min;
+        if(raio_min_filho < 3){
+            raio_min_filho = 3;
         }
-
         // velocidade máxima
         var vel_max_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.vel_max, 0.1) : this.vel_max;
@@ -85,7 +85,7 @@ class Organismo{
         /*var tempo_vida_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.tempo_vida, 0.1) : this.tempo_vida; */
 
-        var dados_filho = {raio: raio_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
+        var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
         raio_deteccao: raio_deteccao_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,
         taxa_aum_cansaco: taxa_aum_cansaco_filho, tempo_vida: tempo_vida_filho};
 

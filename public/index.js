@@ -11,6 +11,7 @@ const c = canvas.getContext('2d');
 var x;
 var y;
 var raio;
+var raio_min;
 var vel_max; // Altere esse valor para ver o comportamento do bicho!
 var forca_max; // Altere esse valor para ver o comportamento do bicho!
 var cor = geraCor();
@@ -33,7 +34,7 @@ var n_carnivoros = 4;
 for(var i = 0; i < n_carnivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
     y = Math.random() * (canvas.height - 50) + 25;
-    raio = Math.random() * 3 + 4;
+    raio_min = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
     forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
@@ -45,14 +46,14 @@ for(var i = 0; i < n_carnivoros; i++){
     tempo_vida = Math.random()*30000+40000;
 
     new Carnivoro(
-        x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
+        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
         cansaco_max, taxa_aum_cansaco, tempo_vida
     );
 }
 
 
 // ------------------------------------------------------------------------------------
-//                     Criação da primeira getação de herbívoros
+//                     Criação da primeira geração de herbívoros
 // ------------------------------------------------------------------------------------
 
 
@@ -61,7 +62,7 @@ var n_herbivoros = 40;
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
     y = Math.random() * (canvas.height - 50) + 25;
-    raio = Math.random() * 3 + 4;
+    raio_min = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
     forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
@@ -73,7 +74,7 @@ for(var i = 0; i < n_herbivoros; i++){
     tempo_vida = 10000;
 
     new Herbivoro(
-        x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max,
+        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max,
         cansaco_max, taxa_aum_cansaco, tempo_vida
     );
 }

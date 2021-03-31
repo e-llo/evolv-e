@@ -1,33 +1,22 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
-    constructor(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida){
-        super(x, y, raio, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida);
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida){
+        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
 
         Herbivoro.herbivoros.push(this);
-        console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio: "+parseFloat(this.raio.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
+        console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | raio: "+parseFloat(this.raio.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
             + " | vida: " + this.tempo_vida);
     }
 
 
     reproduzir(){
         var filho = this._reproduzir();
-        // //pegando as variáveis do método privado e repassando para o público
-        // var raio_filho = dados_filho[0];
-        // var vel_max_filho = dados_filho[1];
-        // var forca_max_filho = dados_filho[2];
-        // var cor_filho = dados_filho[3]
-        // var raio_deteccao_filho = dados_filho[4];
-        // var energia_max_filho = dados_filho[5];
-        // // var taxa_gasto_energia_filho = dados_filho[6];
-        // var cansaco_max_filho = dados_filho[6];
-        // var taxa_aum_cansaco_filho = dados_filho [7];
-        // var tempo_vida_filho = dados_filho [8];
-
+        
         return new Herbivoro(
-            this.posicao.x, this.posicao.y, filho.raio, filho.vel_max, filho.forca_max, 
+            this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
             filho.cor, filho.raio_deteccao, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
             filho.tempo_vida
         );
@@ -88,6 +77,14 @@ class Herbivoro extends Organismo{
         }
         
         Alimento.alimentos.splice(i, 1); // Retira o alimento da lista de alimentos
+        this.aumentaTamanho();
+    }
+
+    aumentaTamanho(){
+        if(this.raio<(this.raio_min*2)){
+            this.raio += 0.05*this.raio;
+            this.raio_deteccao += 0.05*this.raio_deteccao;
+        }
     }
 
     // Método para detectar um predador (basicamente idêntico ao buscarAlimento())
