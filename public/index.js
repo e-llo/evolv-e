@@ -21,7 +21,8 @@ var energia_max;
 var taxa_gasto_energia;
 var cansaco_max;
 var taxa_aum_cansaco;
-var tempo_vida;
+var tempo_vida_min;
+var tempo_vida_max;
 
 
 
@@ -43,11 +44,12 @@ for(var i = 0; i < n_carnivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida = Math.random()*30000+40000;
+    tempo_vida_min = 20000;
+    tempo_vida_max = 40000;
 
     new Carnivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
-        cansaco_max, taxa_aum_cansaco, tempo_vida
+        cansaco_max, tempo_vida_min, tempo_vida_max
     );
 }
 
@@ -71,11 +73,12 @@ for(var i = 0; i < n_herbivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida = 10000;
+    tempo_vida_min = 20000;
+    tempo_vida_max = 40000;
 
     new Herbivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max,
-        cansaco_max, taxa_aum_cansaco, tempo_vida
+        cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
     );
 }
 
@@ -114,39 +117,50 @@ function geraCor(){
 }
 
 function corMutacao(estilo) {
-    let cores = [];
-    estilo.substring(4, estilo.length - 1) // remover os caracteres de texto. ex: "rgb(256,20,40)"
+    let cores = estilo.substring(4, estilo.length - 1) // remover os caracteres de texto. ex: "rgb(256,20,40)"
         .split(',') // retornar um array com os elementos separados por virgula. ex: 256,20,40
-        .forEach(cor => { //pegar cada elemento do array e fazer os cálculos a seguir
+        .map(function(cor) { //pegar cada elemento do array e fazer os cálculos a seguir
+            cor = parseInt(cor);
+            let operacao = "";
+
             if(cor <= 10) { //para não gerar números negativos
-                cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
+                operacao = "adicao"
             } else if(cor >= 246) { //para não gerar valores maiores que 256
-                cores.push(parseInt(cor) - Math.ceil(Math.random() * 10))
+                operacao = "subtracao"
 
             } else { //randomiza se vai ser add ou subtraido valores caso a cor estiver entre 10 e 246
                 if(Math.random() < 0.5) {
-                    cores.push(parseInt(cor) + Math.ceil(Math.random() * 10))
+                    operacao = "adicao"
                 } else {
-                    cores.push(parseInt(cor) - Math.ceil(Math.random() * 10)) // salva o valor novo no array cores
+                    operacao = "subtracao"
                 }
+            }
+
+            if(operacao == "adicao") {
+                return cor + Math.ceil(Math.random() * 10)
+            } else { //subtração
+                return cor - Math.ceil(Math.random() * 10)
             }
         });
 
     return `rgb(${cores[0]}, ${cores[1]}, ${cores[2]})`
 }
 
-function mutacao(porcent) { //porcentagem em decimal
-    let calculo = ((Math.random() - 0.5) * porcent).toFixed(4);
-    return parseFloat(calculo);
+function newMutacao(valor, porcent) {// exemplo: valor = 20;  porcent = 0.1 || 10%
+    let variacao = valor * porcent; //  variacao = 20 * 0.1 = 2, ou seja, poderá variar de +2 a -2 no resultado
+    let minimo = valor - variacao;  //  minimo = 20 - 2 = 18. Para que não precise sub-dividir o return em adição ou subtração
+    variacao *= 2                   //  puxo o ponto de referência para o menor valor possível. Logo, o resultado variará de
+                                    //  0 a +4, afinal a distância de 2 até -2 é 4.
+    if(minimo <= 0) {
+        minimo = valor;
+    }
+
+    return minimo + Math.random() * variacao; // 18 + Math.randon() * 4. O resultado estará entre o intervalo [18, 22]
 }
 
-function newMutacao(valor, porcent) { //quanto menor a % menor a variação (em decimal)
-    //o valor_minimo é um parametro opcional, que se não for definido na chamada da função recebe o valor 0.
-    let calculo = (valor + mutacao(porcent)).toFixed(4);
-    // if(calculo <= valor_minimo) {
-    //     return newMutacao(valor, porcent, valor_minimo);
-    // }
-    return parseFloat(calculo);
+function geraNumeroPorIntervalo(min, max) {
+    let delta = max - min; // exemplo: 4000 e 6000. 6000 - 4000 = 2000
+    return Math.random() * delta + min; // Math.random() * 2000 + 4000
 }
 
 function desenhaOval(ctx, x, y, w, h, style) {
