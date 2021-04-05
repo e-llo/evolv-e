@@ -1,8 +1,8 @@
 class Carnivoro extends Organismo{
     static carnivoros = [];
    
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia, cansaco_max, tempo_vida_min, tempo_vida_max); // referenciando o construtor da classe mãe
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, taxa_gasto_energia, cansaco_max, tempo_vida_min, tempo_vida_max){
+        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, taxa_gasto_energia, cansaco_max, tempo_vida_min, tempo_vida_max); // referenciando o construtor da classe mãe
         
         // variável para contar quando um carnívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -17,7 +17,7 @@ class Carnivoro extends Organismo{
 
         return new Carnivoro(
             this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
-            filho.cor, filho.raio_deteccao, filho.energia_max, filho.taxa_gasto_energia, filho.cansaco_max,
+            filho.cor, filho.raio_deteccao_min, filho.energia_max, filho.taxa_gasto_energia, filho.cansaco_max,
             filho.tempo_vida_min, filho.tempo_vida_max
         );
         
@@ -39,7 +39,7 @@ class Carnivoro extends Organismo{
             var d = this.posicao.dist(lista_herbivoros[i].posicao);
             // Somente atualizará as variáveis se houver um herbivoro dentro do raio de detecção e o
             // tamanho do herbívoro(raio) for menor que o carnívoro + 20% do seu tamanho.
-            if(d < this.raio_deteccao && lista_herbivoros[i].raio < this.raio * 1.2){
+            if(d < this.raio_deteccao && lista_herbivoros[i].raio < this.raio * 2){
                 if (d <= recorde){ // Caso a distância seja menor que a distância recorde,
                     recorde = d; // recorde passa a ter o valor de d
                     i_mais_perto = i; // e o atual alimento passa a ser o i_mais_perto 
@@ -55,7 +55,7 @@ class Carnivoro extends Organismo{
 
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 6){ // se o carnívoro comer 4 herbívoros
+                if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }
@@ -85,7 +85,7 @@ class Carnivoro extends Organismo{
     aumentaTamanho(){
         if(this.raio<(this.raio_min*2)){
             this.raio += 0.1*this.raio;
-            this.raio_deteccao += 0.1*this.raio_deteccao;
+            // this.raio_deteccao += 0.1*this.raio_deteccao;
         }
        
     }

@@ -1,7 +1,7 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -17,7 +17,7 @@ class Herbivoro extends Organismo{
         
         return new Herbivoro(
             this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
-            filho.cor, filho.raio_deteccao, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
+            filho.cor, filho.raio_deteccao_min, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
             filho.tempo_vida_min, filho.tempo_vida_max
         );
         
@@ -53,7 +53,7 @@ class Herbivoro extends Organismo{
 
                 this.contagem_pra_reproducao++; 
 
-                if(this.contagem_pra_reproducao == 4){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }
@@ -83,7 +83,7 @@ class Herbivoro extends Organismo{
     aumentaTamanho(){
         if(this.raio<(this.raio_min*2)){
             this.raio += 0.05*this.raio;
-            this.raio_deteccao += 0.05*this.raio_deteccao;
+            this.raio_deteccao += 0.03*this.raio_deteccao;
         }
     }
 

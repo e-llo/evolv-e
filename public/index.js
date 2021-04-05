@@ -15,6 +15,7 @@ var raio_min;
 var vel_max; // Altere esse valor para ver o comportamento do bicho!
 var forca_max; // Altere esse valor para ver o comportamento do bicho!
 var cor = geraCor();
+var raio_deteccao_min;
 var raio_deteccao;
 var energia;
 var energia_max;
@@ -30,7 +31,7 @@ var tempo_vida_max;
 //                         Criação dos carnívoros
 // ------------------------------------------------------------------------------------
 
-var n_carnivoros = 4;
+var n_carnivoros = 10;
 
 for(var i = 0; i < n_carnivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
@@ -39,7 +40,7 @@ for(var i = 0; i < n_carnivoros; i++){
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
     forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
-    raio_deteccao = Math.random() * 50 + 40;
+    raio_deteccao_min = Math.random() * 50 + 40;
     energia_max = Math.random() * 100 + 80
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
@@ -48,7 +49,7 @@ for(var i = 0; i < n_carnivoros; i++){
     tempo_vida_max = 40000;
 
     new Carnivoro(
-        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max, taxa_gasto_energia,
+        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, taxa_gasto_energia,
         cansaco_max, tempo_vida_min, tempo_vida_max
     );
 }
@@ -68,7 +69,7 @@ for(var i = 0; i < n_herbivoros; i++){
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
     forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
-    raio_deteccao = Math.random() * 50 + 50;
+    raio_deteccao_min = Math.random() * 50 + 50;
     energia_max = Math.random() * 100 + 80
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
@@ -77,7 +78,7 @@ for(var i = 0; i < n_herbivoros; i++){
     tempo_vida_max = 40000;
 
     new Herbivoro(
-        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao, energia_max,
+        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max,
         cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
     );
 }
@@ -154,7 +155,6 @@ function newMutacao(valor, porcent) {// exemplo: valor = 20;  porcent = 0.1 || 1
     if(minimo <= 0) {
         minimo = valor;
     }
-
     return minimo + Math.random() * variacao; // 18 + Math.randon() * 4. O resultado estará entre o intervalo [18, 22]
 }
 
@@ -189,10 +189,9 @@ function criaAlimentosGradativo(){
         var y = Math.random() * (canvas.height - 50) + 25;
         var raio = Math.random() * 1.5 + 1;
 
-        Alimento.alimentos.push(new Alimento(x, y, raio));
-        // if(Alimento.alimentos.length < 200){ // Limitador para não sobrecarregar a simulação
-        //     Alimento.alimentos.push(new Alimento(x, y, raio));
-        // }
+        if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
+            Alimento.alimentos.push(new Alimento(x, y, raio));
+        }
     }
 } 
 
