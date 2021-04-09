@@ -1,8 +1,11 @@
 import ejs from "ejs";
 import path from "path";
 import express from "express";
+import consign from "consign";
+import db from './config/db.js';
 const app = express();
 
+app.db = db
 
 // Define o view engine como o ejs 
 app.set("view engine", "ejs");
@@ -13,8 +16,13 @@ app.use(express.static(path.join(__dirname, "public"), {
     etag: false,
     maxAge: "30d"
 }));
+app.use(express.json())
 
-
+// auto-loader
+consign()
+    .include("./api")
+    .then("./config/routes.cjs")
+    .into(app)
 
 //direcionamento da página
 app.get("/", (req, res) => {
@@ -23,5 +31,5 @@ app.get("/", (req, res) => {
 
 
 app.listen(1337, () => {
-    // console.log('Servidor executando na porta 1337...')
+    console.log('Servidor executando na porta 1337...')
 })
