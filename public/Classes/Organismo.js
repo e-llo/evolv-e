@@ -255,8 +255,7 @@ class Organismo{
         c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        
         c.fillStyle = this.cor;
         c.fill();
-        c.strokeStyle = "red";
-        c.stroke();
+       
         
         // desenhando o raio de detecção
         // c.beginPath();

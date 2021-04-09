@@ -21,7 +21,7 @@ module.exports = app => {
 
     const listar = (req, res) => {
         app.db("organismo")
-            .select("id", "raio", "cor", "tipo")
+            .select("id", "raio_min", "vel_max", "forca_max","cor", "raio_deteccao_min", "energia_max", "cansaco_max","taxa_aum_cansaco", "tempo_vida_min", "tempo_vida_max","tipo")
             .then(lista => res.status(200).json(lista))
             .catch(err => res.status(500).send(err))
     }

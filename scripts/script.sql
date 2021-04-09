@@ -11,10 +11,12 @@ CREATE TABLE IF NOT EXISTS `evolve`.`Organismo` (
   `vel_max` DOUBLE NOT NULL,
   `forca_max` DOUBLE NOT NULL,
   `cor` VARCHAR(16) NOT NULL,
-  `raio_deteccao` DOUBLE NOT NULL,
+  `raio_deteccao_min` DOUBLE NOT NULL,
   `energia_max` DOUBLE NOT NULL,
   `cansaco_max` DOUBLE NOT NULL,
   `taxa_aum_cansaco` DOUBLE NOT NULL,
+  `tempo_vida_min` DOUBLE NOT NULL,
+  `tempo_vida_max` DOUBLE NOT NULL,
   `tipo` CHAR NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
