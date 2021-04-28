@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="style.css">
     <title>Evolv-e</title>
 
+    <script type="text/javascript">
+        var hora = minuto = segundo = milisegundo = 0;
+    </script>
+
     <!-- A ordem de importar o script deve ser do que não depende de nada até os que dependem... (pra n bugar)-->
     <script type="text/javascript" src="/Classes/Vetor.js"></script>
     <script type="text/javascript" src="/Classes/Alimento.js"></script>
     <script type="text/javascript" src="/Classes/Organismo.js"></script>
     <script type="text/javascript" src="/Classes/Herbivoro.js"></script>
     <script type="text/javascript" src="/Classes/Carnivoro.js"></script>
-    <script type="text/javascript" src="/Classes/Cronometro.js"></script>
 
     <style>
         body{
@@ -24,6 +27,9 @@
 
 <body>
     <canvas></canvas>
+    <div class="cronometro">
+        <span id="hora">00</span>:<span id="minuto">00</span>:<span id="segundo">00</span>:<span id="milisegundo">00</span>
+    </div>
 </body>
 
 <script type="text/javascript" src="/index.js"></script>
