@@ -20,11 +20,16 @@
             margin: 0
         }
     </style>
+    <script type="text/javascript">
+        var hora = minuto = segundo = milisegundo = 0;
+    </script>
 </head>
 
 <body>
     <canvas></canvas>
-
+    <div class="cronometro">
+        <span id="hora">00</span>:<span id="minuto">00</span>:<span id="segundo">00</span>:<span id="milisegundo">00</span>
+    </div>
     <div id="painel">
         <div id="info">
             <input type="text" id= "text" name="text">

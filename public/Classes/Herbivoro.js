@@ -7,8 +7,13 @@ class Herbivoro extends Organismo{
         this.contagem_pra_reproducao = 0;
 
         Herbivoro.herbivoros.push(this);
+<<<<<<< HEAD
         // console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
         // + " | vida: " + this.cronometro_vida.getTempo());
+=======
+        console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
+        + " | vida: " + this.tempo_vida.real);
+>>>>>>> b0da772a83f224cb2b6b79afaab622d62d2a70b6
     }
 
 

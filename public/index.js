@@ -163,7 +163,7 @@ function newMutacao(valor, porcent) {// exemplo: valor = 20;  porcent = 0.1 || 1
 
 function geraNumeroPorIntervalo(min, max) {
     let delta = max - min; // exemplo: 4000 e 6000. 6000 - 4000 = 2000
-    return Math.random() * delta + min; // Math.random() * 2000 + 4000
+    return (Math.random() * delta + min).toFixed(0); // Math.random() * 2000 + 4000
 }
 
 function desenhaOval(ctx, x, y, w, h, style) {
@@ -217,4 +217,32 @@ function animate(){
         carnivoro.vagueia();
         carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
     })
+}
+
+// ----------------------------------------------------------------------------------------------
+//                                         Cronômetro
+// ----------------------------------------------------------------------------------------------
+var cronometro = setInterval(() => { timer(); }, 10);
+
+function timer() {
+    if ((milisegundo += 10) == 1000) {
+      milisegundo = 0;
+      segundo++;
+    }
+    if (segundo == 60) {
+      segundo = 0;
+      minuto++;
+    }
+    if (minuto == 60) {
+      minuto = 0;
+      hora++;
+    }
+    document.getElementById('hora').innerText = returnData(hora);
+    document.getElementById('minuto').innerText = returnData(minuto);
+    document.getElementById('segundo').innerText = returnData(segundo);
+    document.getElementById('milisegundo').innerText = returnData(milisegundo);
+}
+  
+function returnData(input) {
+    return input > 10 ? input : `0${input}`
 }

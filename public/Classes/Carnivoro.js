@@ -11,7 +11,7 @@ class Carnivoro extends Organismo{
         
         Carnivoro.carnivoros.push(this);
         // console.log("C - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
-        // + " | vida: " + this.cronometro_vida.getTempo());
+        // + " | vida: " + this.tempo_vida.real);
     }
     // Método de reprodução (com mutações)
     reproduzir(){

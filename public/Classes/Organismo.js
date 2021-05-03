@@ -17,10 +17,14 @@ class Organismo{
         this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
-        this.tempo_vida_min = tempo_vida_min; //em milissegundos
-        this.tempo_vida_max = tempo_vida_max;
-        this.cronometro_vida = new Cronometro(geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max)) // contador do tempo de vida
         this.chance_de_reproducao = 0.5;
+
+        // Tempo de vida
+        this.tempo_vida = {};
+        this.tempo_vida.min = tempo_vida_min; //em milissegundos
+        this.tempo_vida.max = tempo_vida_max;
+        this.tempo_vida.real = geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max); //tempo de vida do organismo
+        let cronometro_morte = setTimeout(() => {this.morre()}, this.tempo_vida.real); // variável que guarda a função de matar o indivíduo depois do tempo de vida real
 
         // Variáveis booleanas usadas no método vagueia()
         this.comendo = false;
@@ -84,11 +88,11 @@ class Organismo{
         
         // tempo de vida mínimo
         var tempo_vida_min_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.tempo_vida_min, 0.1) : this.tempo_vida_min;
+                newMutacao(this.tempo_vida.min, 0.1) : this.tempo_vida.min;
     
         //tempo de vida máximo
         var tempo_vida_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.tempo_vida_max, 0.1) : this.tempo_vida_max;
+                newMutacao(this.tempo_vida.max, 0.1) : this.tempo_vida.max;
 
         var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
         raio_deteccao_min: raio_deteccao_min_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,
@@ -106,11 +110,6 @@ class Organismo{
             this.morre();
             // console.log("morri de fome!");
         }
-
-        // Função para matar o organismo quando o tempo de vida acabar
-        // if(this.cronometro_vida.getTempo() <= 0) {
-        //     this.morre();
-        // }
         
         this.limitaBordas(); // Faz com que o organismo verifique se está próximo às bordas a cada frame
 
