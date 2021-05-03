@@ -104,7 +104,7 @@ class Organismo{
             this.energia -= this.taxa_gasto_energia;
         } else{
             this.morre();
-            console.log("morri de fome!");
+            // console.log("morri de fome!");
         }
 
         // Função para matar o organismo quando o tempo de vida acabar
@@ -274,4 +274,5 @@ class Organismo{
         }
         return lista;
     }
+    
 }

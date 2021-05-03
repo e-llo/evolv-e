@@ -7,20 +7,20 @@ class Herbivoro extends Organismo{
         this.contagem_pra_reproducao = 0;
 
         Herbivoro.herbivoros.push(this);
-        console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
-        + " | vida: " + this.cronometro_vida.getTempo());
+        // console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
+        // + " | vida: " + this.cronometro_vida.getTempo());
     }
 
 
     reproduzir(){
+    
         var filho = this._reproduzir();
-        
+    
         return new Herbivoro(
             this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
             filho.cor, filho.raio_deteccao_min, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
             filho.tempo_vida_min, filho.tempo_vida_max
         );
-        
     }
 
     morre(){
@@ -47,13 +47,15 @@ class Herbivoro extends Organismo{
         }
         // Momento em que ele vai comer!
         if(recorde <= this.raio_deteccao){
+            // console.log("tempo de vida"+this.tempo_vida_min);
+            // console.log(this.cronometro_vida.getTempo());
             this.comendo = true;
             if(recorde <= 5){
                 this.comeAlimento(lista_alimentos[i_mais_perto], i_mais_perto);
 
                 this.contagem_pra_reproducao++; 
 
-                if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                if(this.contagem_pra_reproducao == 6 && this.cronometro_vida.getTempo()< this.tempo_vida_min*0.8){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }

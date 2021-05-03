@@ -1,4 +1,7 @@
-const tela = {width: innerWidth - 8, height: innerHeight - 8}
+// import Organismo from Organismo.js;
+// import Carnivoro from Carnivoro.js;
+
+const tela = {width: innerWidth - 400, height: innerHeight - 8}
 const canvas = document.querySelector("canvas");
 canvas.width = tela.width;
 canvas.height = tela.height;

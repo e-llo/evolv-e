@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./public/style.css">
+    <title>Evolv-e</title>
+
+    <!-- A ordem de importar o script deve ser do que não depende de nada até os que dependem... (pra n bugar)-->
+    <script type="text/javascript" src="./public/Classes/Vetor.js"></script>
+    <script type="text/javascript" src="./public/Classes/Alimento.js"></script>
+    <script type="text/javascript" src="./public/Classes/Organismo.js"></script>
+    <script type="text/javascript" src="./public/Classes/Herbivoro.js"></script>
+    <script type="text/javascript" src="./public/Classes/Carnivoro.js"></script>
+    <script type="text/javascript" src="./public/Classes/Cronometro.js"></script>
+
+    <style>
+        body{
+            margin: 0
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+
+    <div id="painel">
+        <div id="info">
+            <input type="text" id= "text" name="text">
+        </div>
+
+    </div>
+</body>
+
+<script type="text/javascript" src="./public/index.js"></script>
+<script type="text/javascript" src="./public/websocket.js"></script>
+</html>

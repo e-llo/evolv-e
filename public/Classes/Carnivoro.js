@@ -1,3 +1,5 @@
+
+
 class Carnivoro extends Organismo{
     static carnivoros = [];
    
@@ -8,8 +10,8 @@ class Carnivoro extends Organismo{
         this.contagem_pra_reproducao = 0;
         
         Carnivoro.carnivoros.push(this);
-        console.log("C - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
-        + " | vida: " + this.cronometro_vida.getTempo());
+        // console.log("C - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
+        // + " | vida: " + this.cronometro_vida.getTempo());
     }
     // Método de reprodução (com mutações)
     reproduzir(){
@@ -49,14 +51,16 @@ class Carnivoro extends Organismo{
         }
         // Momento em que ele vai comer!
         if(recorde <= this.raio_deteccao){
+           
+                
             this.comendo = true;
             if(recorde <= 5){
                 this.comeHerbivoro(lista_herbivoros, i_mais_perto);
 
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros
-                    if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
+                if(this.contagem_pra_reproducao == 4 && this.cronometro_vida.getTempo()< this.tempo_vida_min*0.8){ // se o carnívoro comer 4 herbívoros e já tiver vivido o suficiente
+                    if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
                         this.reproduzir();
                     }
                     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes

@@ -1,35 +1,37 @@
 import ejs from "ejs";
 import path from "path";
 import express from "express";
-import consign from "consign";
-import db from './config/db.js';
+import ws from "ws";
+import uuid from "node-uuid";
 const app = express();
 
-app.db = db
-
-// Define o view engine como o ejs 
-app.set("view engine", "ejs");
-let __dirname = path.resolve(path.dirname(''))
-app.set("views", path.join(__dirname));
-app.use(express.static(path.join(__dirname, "public"), {
-    cacheControl: true,
-    etag: false,
-    maxAge: "30d"
-}));
-app.use(express.json())
-
-// auto-loader
-consign()
-    .include("./api")
-    .then("./config/routes.cjs")
-    .into(app)
-
-//direcionamento da página
-app.get("/", (req, res) => {
-    res.render("index");
-})
+var WebSocketServer = ws.Server,
+    wss = new WebSocketServer({port: 8181});
 
 
-app.listen(1337, () => {
-    console.log('Servidor executando na porta 1337...')
-})
+
+wss.on('connection', function(ws) {
+    var client_uuid = uuid.v4();
+    console.log('client [%s] connected', client_uuid);
+
+    var atualizaGrafico = function(ws) {
+        if(ws.readyState == 1) {
+            // var lista = Carnivoro.carnivoros;
+
+            // ws.send(JSON.stringify(lista.length));
+            ws.send("oie");
+        }
+    };
+
+    atualizaGrafico(ws);
+
+    ws.on('message', function(message) {
+      atualizaGrafico(ws);
+    });
+
+    ws.on('close', function() {
+        
+    });
+});
+
+
