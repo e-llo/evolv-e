@@ -1,36 +1,36 @@
-import ejs from "ejs";
 import path from "path";
-import express from "express";
 import ws from "ws";
 import uuid from "node-uuid";
-const app = express();
 
 var WebSocketServer = ws.Server,
     wss = new WebSocketServer({port: 8181});
 
-
+var grafico = [];
 
 wss.on('connection', function(ws) {
     var client_uuid = uuid.v4();
     console.log('client [%s] connected', client_uuid);
 
-    var atualizaGrafico = function(ws) {
-        if(ws.readyState == 1) {
-            // var lista = Carnivoro.carnivoros;
+    ws.on('message', function(dadosEmJson) {
+      var novoDado = JSON.parse(dadosEmJson);
+      atualizaGrafico(ws, novoDado);
+    });
 
-            // ws.send(JSON.stringify(lista.length));
-            ws.send("oie");
+    var atualizaGrafico = function(ws, novoDado) {
+        if(ws.readyState == 1) { // se a conexão com o client estiver aberta
+
+            // add o novo dado no array
+            grafico.push(novoDado);
+
+            // envia o array de valores para o client (em json)
+            ws.send(JSON.stringify(grafico));
         }
     };
 
-    atualizaGrafico(ws);
-
-    ws.on('message', function(message) {
-      atualizaGrafico(ws);
-    });
-
     ws.on('close', function() {
-        
+        console.log('client [%s] desconnected', client_uuid);
+        // resetar os dados
+        grafico.length = 0;
     });
 });
 
