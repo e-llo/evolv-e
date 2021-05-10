@@ -1,6 +1,7 @@
 import path from "path";
 import ws from "ws";
 import uuid from "node-uuid";
+// import * as echarts from 'echarts';
 
 var WebSocketServer = ws.Server,
     wss = new WebSocketServer({port: 8181});

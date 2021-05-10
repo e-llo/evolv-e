@@ -1,5 +1,4 @@
 class Alimento{
-    static n_total_alimentos = 0;
     static alimentos = [];
 
     constructor(x, y, raio){
@@ -8,7 +7,6 @@ class Alimento{
         // a energia do pedaço de alimento é proporcinal à sua área
         this.energia_alimento = Math.floor(Math.PI * Math.pow(this.raio, 2));
 
-        Alimento.n_total_alimentos++;
         Alimento.alimentos.push(this);
     }
 

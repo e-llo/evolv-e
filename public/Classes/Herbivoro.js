@@ -55,12 +55,12 @@ class Herbivoro extends Organismo{
 
                 this.contagem_pra_reproducao++; 
 
-                // if(this.contagem_pra_reproducao == 6 && this.cronometro_vida.getTempo()< this.tempo_vida_min*0.8){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
-                //     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
-                //         this.reproduzir();
-                //     }
-                //     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
-                // }
+                if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                    if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
+                        this.reproduzir();
+                    }
+                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                }
                 
             } else if(lista_alimentos.length != 0){
                 this.persegue(lista_alimentos[i_mais_perto]);

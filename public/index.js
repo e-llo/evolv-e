@@ -34,7 +34,7 @@ var tempo_vida_max;
 //                         Criação dos carnívoros
 // ------------------------------------------------------------------------------------
 
-var n_carnivoros = 10;
+var n_carnivoros = 30;
 
 for(var i = 0; i < n_carnivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
@@ -48,8 +48,8 @@ for(var i = 0; i < n_carnivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida_min = 20000;
-    tempo_vida_max = 40000;
+    tempo_vida_min = 80000;
+    tempo_vida_max = 140000;
 
     new Carnivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, taxa_gasto_energia,
@@ -63,7 +63,7 @@ for(var i = 0; i < n_carnivoros; i++){
 // ------------------------------------------------------------------------------------
 
 
-var n_herbivoros = 40;
+var n_herbivoros = 70;
 
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
@@ -77,8 +77,8 @@ for(var i = 0; i < n_herbivoros; i++){
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida_min = 20000;
-    tempo_vida_max = 40000;
+    tempo_vida_min = 80000;
+    tempo_vida_max = 140000;
 
     new Herbivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max,

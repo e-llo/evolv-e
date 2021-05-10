@@ -1,7 +1,7 @@
 var ws = new WebSocket("ws://localhost:8181");
 
 var texto = document.getElementById("text");
-var intervalo = 5000; // período de tempo em que os dados serão enviados para o back (em milisegundos)
+var intervalo = 1000; // período de tempo em que os dados serão enviados para o back (em milisegundos)
 
 ws.onopen = function(e) {
     console.log('Connection to server opened');
@@ -18,11 +18,11 @@ ws.onopen = function(e) {
   }
 
   var enviaValoresAtuais = function() {
-    let valoresAtuais = {
-      "numCarnivoros": Carnivoro.carnivoros.length,
-      "numHerbivoros": Herbivoro.herbivoros.length,
-      "numAlimentos": Alimento.n_total_alimentos
-    };
+    let valoresAtuais = [
+     segundo,
+     Carnivoro.carnivoros.length,
+     Herbivoro.herbivoros.length
+    ];
     ws.send(JSON.stringify(valoresAtuais)); // envia os valores em json
   }
 
@@ -39,8 +39,11 @@ ws.onopen = function(e) {
 
   // CHAMADO A PARTIR DO MÉTODO WS.ONMESSAGE()
   var atualizaGrafico = function(dados){
+    console.log(dados);
+    
     //TODO: atualizar o valor dos gráficos
     texto.value = dados.length;
+    drawChart(dados);
   }
 
   // setamos um temporizador que envia os dados para o servidor no período de tempo desejado
