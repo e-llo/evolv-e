@@ -63,7 +63,7 @@ for(var i = 0; i < n_carnivoros; i++){
 // ------------------------------------------------------------------------------------
 
 
-var n_herbivoros = 00;
+var n_herbivoros = 70;
 
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
