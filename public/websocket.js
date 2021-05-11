@@ -18,12 +18,36 @@ ws.onopen = function(e) {
   }
 
   var enviaValoresAtuais = function() {
-    let valoresAtuais = [
-     segundo,
-     Carnivoro.carnivoros.length,
-     Herbivoro.herbivoros.length
-    ];
+    if(Carnivoro.carnivoros.length!=0 || Herbivoro.herbivoros.length!=0){
+      let valoresAtuais = [
+        segundo,
+        Carnivoro.carnivoros.length,
+        Herbivoro.herbivoros.length
+       ];
+   
+     if(minuto!=0 && hora==0){
+       valoresAtuais = [
+        segundo+(60*minuto),
+        Carnivoro.carnivoros.length,
+        Herbivoro.herbivoros.length
+       ];
+    }else if(minuto==0 && hora !=0){
+       valoresAtuais = [
+        segundo+(360*hora),
+        Carnivoro.carnivoros.length,
+        Herbivoro.herbivoros.length
+       ];
+    }else if(minuto!=0 && hora !=0){
+       valoresAtuais = [
+        segundo+(360*hora)+(60*minuto),
+        Carnivoro.carnivoros.length,
+        Herbivoro.herbivoros.length
+       ];
+    }
+    
     ws.send(JSON.stringify(valoresAtuais)); // envia os valores em json
+    }
+      
   }
 
   ws.onmessage = function(event) { // método padrão do websocket para conversar com o servidor
