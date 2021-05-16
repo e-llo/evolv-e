@@ -1,8 +1,9 @@
 class Organismo{
-    static n_total_organismos = 0;
+    static organismos = [];
 
     constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
         this.posicao = new Vetor(x, y);
+        this.posicaoInicialX = this.posicao.x;
         this.raio_min = raio_min;
         this.raio = this.raio_min;
         this.vel = new Vetor(1, 1);
@@ -32,14 +33,18 @@ class Organismo{
         // this.perto_da_borda;
 
         // Variável que delimita a distância da borda a partir da qual os organismos começarão a fazer a curva para não bater nas bordas 
-        this.d = 30; 
+        this.d = 25; 
 
         // variáveis usadas para o método vagueia()
         this.d_circulo = 2;
         this.raio_circulo = 1;
         this.angulo_vagueio = Math.random() * 360;
 
-        Organismo.n_total_organismos++;
+        // variável para separar os organismos que nasceram antes da divisão da tela dos que nasceram depois
+        this.antes_da_divisao = false;
+        this.posicao_fixa_momentanea = new Vetor(x, y);
+
+        Organismo.organismos.push(this);
     }
   
     // Criando um método de reprodução comum a todos os organismos
@@ -111,21 +116,18 @@ class Organismo{
             // console.log("morri de fome!");
         }
         
-        this.limitaBordas(); // Faz com que o organismo verifique se está próximo às bordas a cada frame
 
-        // Limita posição pela borda do canvas caso o bicho não consiga desacelerar o suficiente
-        if(this.posicao.x + 2*this.raio > canvas.width) //direita
-            this.vel.x = this.vel.x * -1; //inverte a velocidade x se ultrapassa a borda do canvas
+        if(telaDividida){
+            this.criaBordas(this.posicao.x, true);
+        } else{
+            this.criaBordas(this.posicao.x, false);
+        }
+        
+        // this.delimitaBordas(this.posicao.x); // Limita posição pela borda do canvas caso o bicho não consiga desacelerar o suficiente
 
-        if(this.posicao.x < 0) //esquerda
-            this.vel.x = this.vel.x * -1;
+        // this.evitaBordas(this.posicao.x); // Faz com que o organismo verifique se está próximo às bordas a cada frame
 
-        if(this.posicao.y + this.raio > canvas.height) //baixo
-            this.vel.y = this.vel.y* -1;
-
-        if(this.posicao.y < 0) //cima
-            this.vel.y = this.vel.y * -1;
-
+    
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
         this.vel.add(this.acel);
         // Limita velocidade
@@ -141,33 +143,136 @@ class Organismo{
         this.display();
     }
 
-    // Método para aplicar força ao organismo que o impeça de continuar a seguir por uma trajetória para fora da tela
-    limitaBordas(){
+    // Método para criar bordas que delimitarão o espaço do organismo
+    criaBordas(telaDividida){ // telaDividida: boolean
+        this.delimitaBordas(telaDividida);
+        this.evitaBordas(telaDividida);
+    }
+
+    // Método para impedir a passagem dos organismos para fora da tela
+    delimitaBordas(telaDividida){
+        if(telaDividida == true){
+            // Delimitação para quem ficou no lado esquerdo
+            if(this.posicao.x <= canvas.width/2){
+                if(this.posicao.x + 2*this.raio > canvas.width / 2) // borda direita (a divisão, ou seja, na metade da tela)
+                    this.vel.x = this.vel.x * -1; // inverte a velocidade x se ultrapassa a borda
+
+                if(this.posicao.x < 0) // borda esquerda
+                    this.vel.x = this.vel.x * -1;
+
+                if(this.posicao.y + this.raio > canvas.height) // borda baixo
+                    this.vel.y = this.vel.y* -1;
+
+                if(this.posicao.y < 0) // borda cima
+                    this.vel.y = this.vel.y * -1;
+            } else{ // Delimitação para quem ficou no lado direito
+                if(this.posicao.x + 2*this.raio > canvas.width) // borda direita
+                    this.vel.x = this.vel.x * -1; //inverte a velocidade x se ultrapassa a borda do canvas
+
+                if(this.posicao.x - this.raio < canvas.width / 2) // borda esquerda (a divisão, ou seja, na metade da tela)
+                    this.vel.x = this.vel.x * -1;
+
+                if(this.posicao.y + this.raio > canvas.height) // borda baixo
+                    this.vel.y = this.vel.y* -1;
+
+                if(this.posicao.y < 0) // borda cima
+                    this.vel.y = this.vel.y * -1;
+            }
+            
+        } else{ // se a tela NÃO estiver dividida
+            if(this.posicao.x + 2*this.raio > canvas.width) // borda direita
+                this.vel.x = this.vel.x * -1; //inverte a velocidade x se ultrapassa a borda do canvas
+
+            if(this.posicao.x - this.raio < 0) // borda esquerda
+                this.vel.x = this.vel.x * -1;
+
+            if(this.posicao.y + this.raio > canvas.height) // borda baixo
+                this.vel.y = this.vel.y* -1;
+
+            if(this.posicao.y < 0) // borda cima
+                this.vel.y = this.vel.y * -1;
+        }
         
+    }
+
+
+    // Método para aplicar força ao organismo que o impeça de continuar a seguir por uma trajetória para fora da tela
+    evitaBordas(telaDividida){
         var vel_desejada = null; // Esta velocidade será o vetor que dirá para onde o organismo deve ir para não sair da borda
         this.perto_da_borda = false;
 
-        // Borda esquerda
-        if(this.posicao.x < this.d){ 
-            vel_desejada = new Vetor(this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção x (para a direita)
-            this.perto_da_borda = true;
-        } 
-        // Borda direita
-        else if(this.posicao.x > canvas.width - this.d){
-            vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
-            this.perto_da_borda = true;
-        }
+        if(telaDividida == true){
+            // Para quem ficou na parte esquerda
+            if(this.posicao.x <= canvas.width/2){
+                // Borda esquerda
+                if(this.posicao.x - this.raio < this.d){ // d é um atributo de todo organismo que delimita a distância de uma borda a partir da qual ele começará a manobrar
+                    vel_desejada = new Vetor(this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção x (para a direita)
+                    this.perto_da_borda = true;
+                } 
+                // Borda direita
+                else if(this.posicao.x + 2*this.raio > canvas.width / 2 - this.d){ // a borda direita é a metade do canvas (na tela dividida)
+                    vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
+                    this.perto_da_borda = true;
+                }
+                // Borda de cima
+                if(this.posicao.y - this.raio < this.d){
+                    vel_desejada = new Vetor(this.vel.x, this.vel_max); // Faz sua velocidade ser máxima na direção y (para a baixo)
+                    this.perto_da_borda = true;
+                }
+                // Borda de baixo
+                else if(this.posicao.y + this.raio > canvas.height - this.d){
+                    vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
+                    this.perto_da_borda = true;
+                }
+            }
 
-        // Borda de cima
-        if(this.posicao.y < this.d){
-            vel_desejada = new Vetor(this.vel.x, this.vel_max); // Faz sua velocidade ser máxima na direção y (para a baixo)
-            this.perto_da_borda = true;
+            // Para quem ficou na parte direita
+            else{
+                // Borda esquerda
+                if(this.posicao.x - this.raio < canvas.width/2 + this.d){ // a borda esquerda é a metade do canvas (na tela dividida)
+                    vel_desejada = new Vetor(this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção x (para a direita)
+                    this.perto_da_borda = true;
+                } 
+                // Borda direita
+                else if(this.posicao.x + 2*this.raio > canvas.width - this.d){
+                    vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
+                    this.perto_da_borda = true;
+                }
+                // Borda de cima
+                if(this.posicao.y < this.d){
+                    vel_desejada = new Vetor(this.vel.x, this.vel_max); // Faz sua velocidade ser máxima na direção y (para a baixo)
+                    this.perto_da_borda = true;
+                }
+                // Borda de baixo
+                else if(this.posicao.y > canvas.height - this.d){
+                    vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
+                    this.perto_da_borda = true;
+                }
+            }
+            
+        } else{ // se a tela NÃO estiver dividida
+             // Borda esquerda
+             if(this.posicao.x - this.raio < this.d){ 
+                vel_desejada = new Vetor(this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção x (para a direita)
+                this.perto_da_borda = true;
+            } 
+            // Borda direita
+            else if(this.posicao.x + this.raio > canvas.width - this.d){
+                vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
+                this.perto_da_borda = true;
+            }
+            // Borda de cima
+            if(this.posicao.y - this.raio < this.d){
+                vel_desejada = new Vetor(this.vel.x, this.vel_max); // Faz sua velocidade ser máxima na direção y (para a baixo)
+                this.perto_da_borda = true;
+            }
+            // Borda de baixo
+            else if(this.posicao.y + this.raio> canvas.height - this.d){
+                vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
+                this.perto_da_borda = true;
+            }
         }
-        // Borda de baixo
-        else if(this.posicao.y > canvas.height - this.d){
-            vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
-            this.perto_da_borda = true;
-        }
+        
 
         if(vel_desejada != null){ // Caso qualquer uma das condições anteriores tenha sido satisfeita
             vel_desejada.normalize(); // Normaliza (transforma para ter tamanho 1) o vetor vel_desejada
@@ -249,6 +354,8 @@ class Organismo{
         return this.energia <= 0;
     }
     
+    
+
     display(){
         c.beginPath();
         c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        

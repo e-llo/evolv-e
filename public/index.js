@@ -34,7 +34,8 @@ var tempo_vida_max;
 //                         Criação dos carnívoros
 // ------------------------------------------------------------------------------------
 
-var n_carnivoros = 30;
+var n_carnivoros = 14;
+var fome_c = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
 
 for(var i = 0; i < n_carnivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
@@ -63,17 +64,18 @@ for(var i = 0; i < n_carnivoros; i++){
 // ------------------------------------------------------------------------------------
 
 
-var n_herbivoros = 70;
+var n_herbivoros = 100;
+var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
 
 for(var i = 0; i < n_herbivoros; i++){
     x = Math.random() * (canvas.width - 50) + 25;
-    y = Math.random() * (canvas.height - 50) + 25;
+    y = Math.random() * (canvas.height - 50) + 25;    
     raio_min = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
     forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
     cor = geraCor();
     raio_deteccao_min = Math.random() * 50 + 50;
-    energia_max = Math.random() * 100 + 80
+    energia_max = Math.random() * 100 + 80;
     taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
@@ -102,6 +104,11 @@ for(var i = 0; i < n_alimentos; i++){
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
 const novosAlimentos = setInterval(criaAlimentosGradativo, 80); 
+
+// variáveis de auxílio para a implementação da divisão de tela
+var checkbox_divisao = document.getElementById('divisao');
+var telaDividida;
+var limitador_de_loop = 0;
 
 
 animate();
@@ -166,30 +173,10 @@ function geraNumeroPorIntervalo(min, max) {
     return (Math.random() * delta + min).toFixed(0); // Math.random() * 2000 + 4000
 }
 
-function desenhaOval(ctx, x, y, w, h, style) {
-
-    var kappa = .5522848,
-        ox = (w / 2) * kappa, // control point offset horizontal
-        oy = (h / 2) * kappa, // control point offset vertical
-        xe = x + w,           // x-end
-        ye = y + h,           // y-end
-        xm = x + w / 2,       // x-middle
-        ym = y + h / 2;       // y-middle
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(x, ym);
-    ctx.quadraticCurveTo(x,y,xm,y);
-    ctx.quadraticCurveTo(xe,y,xe,ym);
-    ctx.quadraticCurveTo(xe,ye,xm,ye);
-    ctx.quadraticCurveTo(x,ye,x,ym);
-    ctx.restore();
-    }
-
 function criaAlimentosGradativo(){
     for(var i = 0; i < 2; i++){
-        var x = Math.random() * (canvas.width - 50) + 25;
-        var y = Math.random() * (canvas.height - 50) + 25;
+        var x = Math.random() * (canvas.width - 62) + 31;
+        var y = Math.random() * (canvas.height - 62) + 31;
         var raio = Math.random() * 1.5 + 1;
 
         if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
@@ -198,25 +185,100 @@ function criaAlimentosGradativo(){
     }
 } 
 
+function desenhaDivisao(){
+    c.beginPath();
+    c.moveTo(canvas.width / 2, 0);
+    c.lineTo(canvas.width / 2, canvas.height);
+    c.strokeStyle = "black";
+    c.stroke();
+}
+
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
-    Alimento.alimentos.forEach((alimento) => {
-        alimento.display();
-    })
-    
-    Herbivoro.herbivoros.forEach(herbivoro => {
-        herbivoro.update();
-        herbivoro.vagueia();
-        herbivoro.buscarAlimento(Alimento.alimentos);
-        herbivoro.detectaPredador(Carnivoro.carnivoros);
-    })
 
-    Carnivoro.carnivoros.forEach(carnivoro => {
-        carnivoro.update();
-        carnivoro.vagueia();
-        carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-    })
+    if(checkbox_divisao.checked){
+        telaDividida = true;
+    } else{
+        telaDividida = false;
+    }
+
+    if(telaDividida){
+        desenhaDivisao();
+
+        Alimento.alimentos.forEach((alimento, i) => {
+            alimento.display();
+            // remove alimentos próximos da divisão para evitar que organismos se atraiam para perto dela
+            if(alimento.posicao.x - canvas.width / 2 < 30 && alimento.posicao.x - canvas.width / 2 > -30){ 
+                Alimento.alimentos.splice(i, 1);
+            }
+        })
+
+        if(limitador_de_loop < 10){
+            limitador_de_loop++;
+        }
+        
+        Organismo.organismos.forEach((organismo) => {
+            if(organismo.posicao.x <= canvas.width/2){ // se o organismo estiver na parte esquerda
+                if(limitador_de_loop == 1 && canvas.width/2 - organismo.posicao.x < 10){ // empurra os organismos pertos da borda para o lado
+                    organismo.posicao.x -= 10;
+                }
+                organismo.criaBordas(true); // telaDividida: true
+            } else{ // se o organismo estiver na parte direita
+                if(limitador_de_loop == 1 && organismo.posicao.x - canvas.width/2 < 10){ // empurra os organismos pertos da borda para o lado
+                    organismo.posicao.x += 10;
+                }
+                organismo.criaBordas(true); // telaDividida: true
+            }
+        })
+
+
+        Herbivoro.herbivoros.forEach(herbivoro => {
+            herbivoro.update();
+            herbivoro.vagueia();
+            if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
+                herbivoro.buscarAlimento(Alimento.alimentos);
+            }
+            herbivoro.detectaPredador(Carnivoro.carnivoros);
+        })
+    
+        Carnivoro.carnivoros.forEach(carnivoro => {
+            carnivoro.update();
+            carnivoro.vagueia();
+            if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
+                carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
+            }
+        })
+
+    } else{ // se a tela não estiver dividida
+
+        limitador_de_loop = 0;
+
+        Alimento.alimentos.forEach(alimento => {
+            alimento.display();
+        })
+
+        Organismo.organismos.forEach((organismo) => {
+            organismo.criaBordas(false); // telaDividida: false
+        })
+
+        Herbivoro.herbivoros.forEach(herbivoro => {
+            herbivoro.update();
+            herbivoro.vagueia();
+            if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
+                herbivoro.buscarAlimento(Alimento.alimentos);
+            }
+            herbivoro.detectaPredador(Carnivoro.carnivoros);
+        })
+    
+        Carnivoro.carnivoros.forEach(carnivoro => {
+            carnivoro.update();
+            carnivoro.vagueia();
+            if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
+                carnivoro.buscarHerbivoro(Herbivoro.herbivoros, false);
+            }
+        })
+    }
 }
 
 // ----------------------------------------------------------------------------------------------

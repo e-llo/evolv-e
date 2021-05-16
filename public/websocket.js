@@ -63,7 +63,7 @@ ws.onopen = function(e) {
 
   // CHAMADO A PARTIR DO MÉTODO WS.ONMESSAGE()
   var atualizaGrafico = function(dados){
-    console.log(dados);
+    // console.log(dados);
     
     //TODO: atualizar o valor dos gráficos
     texto.value = dados.length;
