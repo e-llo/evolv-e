@@ -34,7 +34,10 @@
     </div>
     <div id="painel">
         <div id="info">
-            dados recebidos:<input type="text" id= "text" name="text">
+            <div class="slidecontainer">
+                <input type="range" min="0" max="100" value="50" class="slider" id="inputCarnivoros" onchange="atualizaMinC()">
+                <label id="minCarn" name="min" for="inputCarnivoros">50</label>
+            </div>
         </div>
         <div id="">
             <div id="chart"></div>
@@ -45,7 +48,13 @@
         </div>
     </div>
 </body>
-
+<script type="text/javascript">
+    var input = document.getElementById("inputCarnivoros");
+    var minCarn = document.getElementById("minCarn");
+    function atualizaMinC(){
+        minCarn.textContent = input.value;
+    }
+</script>
 <script type="text/javascript" src="./public/index.js"></script>
 <script type="text/javascript" src="./public/websocket.js"></script>
 <script type="text/javascript" src="./public/chart.js"></script>
