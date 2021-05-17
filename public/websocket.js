@@ -23,8 +23,7 @@ ws.onopen = function(e) {
         segundo,
         Carnivoro.carnivoros.length,
         Herbivoro.herbivoros.length
-       ];
-   
+      ]
      if(minuto!=0 && hora==0){
        valoresAtuais = [
         segundo+(60*minuto),
@@ -46,6 +45,7 @@ ws.onopen = function(e) {
     }
     
     ws.send(JSON.stringify(valoresAtuais)); // envia os valores em json
+  
     }
       
   }
@@ -67,7 +67,8 @@ ws.onopen = function(e) {
     
     //TODO: atualizar o valor dos gráficos
     texto.value = dados.length;
-    drawChart(dados);
+
+    getData(dados);
   }
 
   // setamos um temporizador que envia os dados para o servidor no período de tempo desejado

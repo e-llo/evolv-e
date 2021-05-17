@@ -1,132 +1,106 @@
-// // import * as echarts from 'echarts';
 
-// var ROOT_PATH = 'https://echarts.apache.org/examples';
 
-// var chartDom = document.getElementById('chart');
-// var myChart = echarts.init(chartDom, 'dark');
-// var option;
+// google.charts.load('current', {'packages':['line']});
+//       google.charts.setOnLoadCallback(drawChart);
 
-// $.get(ROOT_PATH + '/data/asset/data/life-expectancy-table.json', function (_rawData) {
-//     run(_rawData);
-// });
+//     function drawChart(array) {
 
-// function run(_rawData) {
+//       var data = new google.visualization.DataTable();
+//       data.addColumn('number', 'Segundos');
+//       data.addColumn('number', 'Carnívoros');
+//       data.addColumn('number', 'Herbívoros');
+//     //   data.addColumn('number', 'Alimentos');
 
-//     option = {
-//         dataset: [{
-//             id: 'dataset_raw',
-//             source: _rawData
-//         }, {
-//             id: 'dataset_since_1950_of_germany',
-//             fromDatasetId: 'dataset_raw',
-//             transform: {
-//                 type: 'filter',
-//                 config: {
-//                     and: [
-//                         { dimension: 'Year', gte: 1950 },
-//                         { dimension: 'Country', '=': 'Germany' }
-//                     ]
-//                 }
-//             }
-//         }, {
-//             id: 'dataset_since_1950_of_france',
-//             fromDatasetId: 'dataset_raw',
-//             transform: {
-//                 type: 'filter',
-//                 config: {
-//                     and: [
-//                         { dimension: 'Year', gte: 1950 },
-//                         { dimension: 'Country', '=': 'France' }
-//                     ]
-//                 }
-//             }
-//         }],
-//         title: {
-//             text: 'Income of Germany and France since 1950'
+//       data.addRows(array);
+
+//       var options = {
+//         chart: {
+//           title: 'População',
 //         },
-//         tooltip: {
-//             trigger: 'axis'
-//         },
-//         xAxis: {
-//             type: 'category',
-//             nameLocation: 'middle'
-//         },
-//         yAxis: {
-//             name: 'Income'
-//         },
-//         series: [{
-//             type: 'line',
-//             datasetId: 'dataset_since_1950_of_germany',
-//             showSymbol: false,
-//             encode: {
-//                 x: 'Year',
-//                 y: 'Income',
-//                 itemName: 'Year',
-//                 tooltip: ['Income'],
-//             }
-//         }, {
-//             type: 'line',
-//             datasetId: 'dataset_since_1950_of_france',
-//             showSymbol: false,
-//             encode: {
-//                 x: 'Year',
-//                 y: 'Income',
-//                 itemName: 'Year',
-//                 tooltip: ['Income'],
-//             }
-//         }]
-//     };
+//         width: 380,
+//         height: 300,
+//         // colors: ['#ff0000', '#008f39', '#ffe135'],
+//         colors: ['#ff0000', '#008f39'],
+//         axes: {
+//           x: {
+//             0: {side: 'bottom'}
+//           }
+//         }
+//       };
 
-//     myChart.setOption(option);
+//       var chart = new google.charts.Line(document.getElementById('chart'));
 
-// }
-
-// option && myChart.setOption(option);
+//       chart.draw(data, options);
+//     }
+var cnt = 0;
+function getData(dados) { 
+  
+  var carnivoros =[dados[dados.length-1][1]];
+  
+  var herbivoros = [dados[dados.length-1][2]];
+  var segundos = [dados[dados.length-1][0]];
+  var valores = [carnivoros, herbivoros];
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-google.charts.load('current', {'packages':['line']});
-      google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart(array) {
-
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', 'Segundos');
-      data.addColumn('number', 'Carnívoros');
-      data.addColumn('number', 'Herbívoros');
-    //   data.addColumn('number', 'Alimentos');
-
-      data.addRows(array);
-
-      var options = {
-        chart: {
-          title: 'População',
-        },
-        width: 380,
-        height: 300,
-        // colors: ['#ff0000', '#008f39', '#ffe135'],
-        colors: ['#ff0000', '#008f39'],
-        axes: {
-          x: {
-            0: {side: 'bottom'}
+  Plotly.extendTraces('chart',{y: valores}, [0,1]);
+  cnt++;
+  if(cnt >500) {
+      Plotly.relayout('chart',{
+          xaxis: {
+              range: [cnt-500,cnt]
           }
-        }
-      };
+      });
+  }
+  
+}  
 
-      var chart = new google.charts.Line(document.getElementById('chart'));
 
-      chart.draw(data, options);
-    }
+var carnivoros = {
+  y: [Carnivoro.carnivoros.length],
+  type: 'scatter',
+  mode: 'lines',
+  name: 'Carnívoros',
+  line: {
+    color: 'red',
+    shape: 'spline'
+  }
+};
+
+var herbivoros = {
+  y: [Herbivoro.herbivoros.length],
+  type: 'scatter',
+  mode: 'lines',
+  name: 'Herbívoros',
+  line: {
+    color: 'green',
+    shape: 'spline'
+  }
+};
+
+var data = [carnivoros, herbivoros];
+
+var layout = {
+  title: "População",
+  xaxis: {
+    showline: true,
+    domain: [0, 1],
+    title: "Segundos",
+    showgrid: true
+  },
+  yaxis: { 
+    showline: true, 
+    title: "N° Indivíduos", 
+    rangemode: "tozero" 
+  },
+  legend: {
+    orientation: 'h',
+          traceorder: 'reversed',
+    x: 0.05,
+    y: -.3
+  }
+
+};
+
+Plotly.newPlot('chart', data, layout);
+
+
