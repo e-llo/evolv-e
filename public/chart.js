@@ -33,29 +33,40 @@
 //       chart.draw(data, options);
 //     }
 var cnt = 0;
+var segundoRepetido = -1;
 function getData(dados) { 
   
   var carnivoros =[dados[dados.length-1][1]];
-  
   var herbivoros = [dados[dados.length-1][2]];
-  var segundos = [dados[dados.length-1][0]];
   var valores = [carnivoros, herbivoros];
+  let seconds = dados[dados.length-1][0];
+  var valsegundos = [];
 
+  if(seconds != segundoRepetido) {
+    // console.log("não entrou: "+seconds);
+    valsegundos.push([seconds], [seconds]);
 
-  Plotly.extendTraces('chart',{y: valores}, [0,1]);
-  cnt++;
-  if(cnt >500) {
-      Plotly.relayout('chart',{
-          xaxis: {
-              range: [cnt-500,cnt]
-          }
-      });
+    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
+    cnt++;
+    if(cnt >500) {
+        Plotly.relayout('chart',{
+            xaxis: {
+                range: [cnt-500,cnt]
+            }
+        });
+    }
+
+  } else {
+    // console.log("entrou : "+seconds+"s");
+    // Se for pra repetir segundo e dados nem envia!
   }
+  segundoRepetido = seconds;
   
 }  
 
 
 var carnivoros = {
+  x: [segundos],
   y: [Carnivoro.carnivoros.length],
   type: 'scatter',
   mode: 'lines',
@@ -67,6 +78,7 @@ var carnivoros = {
 };
 
 var herbivoros = {
+  x: [segundos],
   y: [Herbivoro.herbivoros.length],
   type: 'scatter',
   mode: 'lines',
@@ -83,7 +95,7 @@ var layout = {
   title: "População",
   xaxis: {
     showline: true,
-    domain: [0, 1],
+    domain: [0],
     title: "Segundos",
     showgrid: true
   },
