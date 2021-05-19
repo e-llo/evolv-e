@@ -24,6 +24,7 @@
     </style>
     <script type="text/javascript">
         var hora = minuto = segundo = milisegundo = 0;
+        var segundos = 0;
     </script>
 </head>
 
@@ -35,7 +36,7 @@
     <div id="painel">
         <div id="info">
             <div class="slidecontainer">
-                <input type="range" min="0" max="100" value="50" class="slider" id="inputCarnivoros" onchange="atualizaMinC()">
+                <input type="range" min="0" max="100" value="50" class="slider" id="inputCarnivoros" oninput="minCarn.textContent=inputCarnivoros.value">
                 <label id="minCarn" name="min" for="inputCarnivoros">50</label>
             </div>
         </div>
@@ -49,11 +50,7 @@
     </div>
 </body>
 <script type="text/javascript">
-    var input = document.getElementById("inputCarnivoros");
-    var minCarn = document.getElementById("minCarn");
-    function atualizaMinC(){
-        minCarn.textContent = input.value;
-    }
+    
 </script>
 <script type="text/javascript" src="./public/index.js"></script>
 <script type="text/javascript" src="./public/websocket.js"></script>

@@ -20,29 +20,10 @@ ws.onopen = function(e) {
   var enviaValoresAtuais = function() {
     if(Carnivoro.carnivoros.length!=0 || Herbivoro.herbivoros.length!=0){
       let valoresAtuais = [
-        segundo,
+        segundos,
         Carnivoro.carnivoros.length,
         Herbivoro.herbivoros.length
       ]
-     if(minuto!=0 && hora==0){
-       valoresAtuais = [
-        segundo+(60*minuto),
-        Carnivoro.carnivoros.length,
-        Herbivoro.herbivoros.length
-       ];
-    }else if(minuto==0 && hora !=0){
-       valoresAtuais = [
-        segundo+(360*hora),
-        Carnivoro.carnivoros.length,
-        Herbivoro.herbivoros.length
-       ];
-    }else if(minuto!=0 && hora !=0){
-       valoresAtuais = [
-        segundo+(360*hora)+(60*minuto),
-        Carnivoro.carnivoros.length,
-        Herbivoro.herbivoros.length
-       ];
-    }
     
     ws.send(JSON.stringify(valoresAtuais)); // envia os valores em json
   
@@ -66,7 +47,7 @@ ws.onopen = function(e) {
     // console.log(dados);
     
     //TODO: atualizar o valor dos gráficos
-    texto.value = dados.length;
+    //texto.value = dados.length;
 
     getData(dados);
   }

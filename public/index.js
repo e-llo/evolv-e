@@ -289,6 +289,7 @@ function timer() {
     if ((milisegundo += 10) == 1000) {
       milisegundo = 0;
       segundo++;
+      segundos++;
     }
     if (segundo == 60) {
       segundo = 0;
