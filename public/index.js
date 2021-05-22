@@ -36,11 +36,62 @@ var n_carnivoros;
 var fome_c = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
 
 for(var i = 0; i < n_carnivoros; i++){
+   geraCarnivoro();
+}
+
+// ------------------------------------------------------------------------------------
+//                     Criação da primeira geração de herbívoros
+// ------------------------------------------------------------------------------------
+var n_herbivoros;
+var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
+
+for(var i = 0; i < n_herbivoros; i++){
+   geraHerbivoro(); 
+}
+
+
+// ------------------------------------------------------------------------------------
+//                    Criação de alimentos aleatórios no início
+// ------------------------------------------------------------------------------------
+var alimentos = [];
+var n_alimentos;
+for(var i = 0; i < n_alimentos; i++){
+    geraAlimento();
+}
+
+// cria mais alimentos ao longo do tempo
+// a função setInterval() permite que ele chame o loop a cada x milisegundos
+const novosAlimentos = setInterval(criaAlimentosGradativo, 80); 
+
+// variáveis de auxílio para a implementação da divisão de tela
+var checkbox_divisao = document.getElementById('divisao');
+var telaDividida;
+var limitador_de_loop = 0;
+
+
+
+ if(iniciar==true){ 
+    animate();
+ }
+
+// ----------------------------------------------------------------------------------------------
+//                                         Funções
+// ----------------------------------------------------------------------------------------------
+function geraAlimento(){
+    var x = Math.random() * (canvas.width - 50) + 25;
+    var y = Math.random() * (canvas.height - 50) + 25;
+    var raio = Math.random() + 1;
+
+    alimentos.push(new Alimento(x, y, raio));
+}
+
+
+function geraCarnivoro(){ // função para poder adicionar mais carnívoros manualmente
     x = Math.random() * (canvas.width - 50) + 25;
     y = Math.random() * (canvas.height - 50) + 25;
     raio_min = Math.random() * 3 + 4;
-    vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
-    forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
+    vel_max = Math.random() * 1.2 + 1; 
+    forca_max = Math.random()/20 + 0.001; 
     cor = geraCor();
     raio_deteccao_min = Math.random() * 50 + 40;
     energia_max = Math.random() * 100 + 80
@@ -57,15 +108,7 @@ for(var i = 0; i < n_carnivoros; i++){
 }
 
 
-// ------------------------------------------------------------------------------------
-//                     Criação da primeira geração de herbívoros
-// ------------------------------------------------------------------------------------
-
-
-var n_herbivoros;
-var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
-
-for(var i = 0; i < n_herbivoros; i++){
+function geraHerbivoro(){ // função para poder adicionar mais herbivoros manualmente
     x = Math.random() * (canvas.width - 50) + 25;
     y = Math.random() * (canvas.height - 50) + 25;    
     raio_min = Math.random() * 3 + 4;
@@ -86,37 +129,6 @@ for(var i = 0; i < n_herbivoros; i++){
     );
 }
 
-
-// ------------------------------------------------------------------------------------
-//                    Criação de alimentos aleatórios no início
-// ------------------------------------------------------------------------------------
-var alimentos = [];
-var n_alimentos;
-for(var i = 0; i < n_alimentos; i++){
-    var x = Math.random() * (canvas.width - 50) + 25;
-    var y = Math.random() * (canvas.height - 50) + 25;
-    var raio = Math.random() + 1;
-
-    alimentos.push(new Alimento(x, y, raio));
-}
-// cria mais alimentos ao longo do tempo
-// a função setInterval() permite que ele chame o loop a cada x milisegundos
-const novosAlimentos = setInterval(criaAlimentosGradativo, 80); 
-
-// variáveis de auxílio para a implementação da divisão de tela
-var checkbox_divisao = document.getElementById('divisao');
-var telaDividida;
-var limitador_de_loop = 0;
-
-
-
- if(iniciar==true){ 
-    animate();
- }
-
-// ----------------------------------------------------------------------------------------------
-//                                         Funções
-// ----------------------------------------------------------------------------------------------
 
 function geraCor(){
     // variáveis para a geração de cores
