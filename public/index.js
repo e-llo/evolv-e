@@ -25,54 +25,32 @@ var cansaco_max;
 var taxa_aum_cansaco;
 var tempo_vida_min;
 var tempo_vida_max;
-
-
-
-// ------------------------------------------------------------------------------------
-//                         Criação dos carnívoros
-// ------------------------------------------------------------------------------------
-
-var n_carnivoros;
 var fome_c = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
-
-for(var i = 0; i < n_carnivoros; i++){
-   geraCarnivoro();
-}
-
-// ------------------------------------------------------------------------------------
-//                     Criação da primeira geração de herbívoros
-// ------------------------------------------------------------------------------------
-var n_herbivoros;
 var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
 
-for(var i = 0; i < n_herbivoros; i++){
-   geraHerbivoro(); 
-}
 
 
-// ------------------------------------------------------------------------------------
-//                    Criação de alimentos aleatórios no início
-// ------------------------------------------------------------------------------------
-var alimentos = [];
-var n_alimentos;
-for(var i = 0; i < n_alimentos; i++){
-    geraAlimento();
+function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
+    for(var i = 0; i < n_carnivoros; i++){
+        geraCarnivoro();
+    }
+    for(var i = 0; i < n_herbivoros; i++){
+        geraHerbivoro(); 
+    }
+    for(var i = 0; i < n_alimentos; i++){
+        geraAlimento();
+    }
 }
 
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
-const novosAlimentos = setInterval(criaAlimentosGradativo, 80); 
+setInterval(criaAlimentosGradativo, 80); 
 
 // variáveis de auxílio para a implementação da divisão de tela
 var checkbox_divisao = document.getElementById('divisao');
 var telaDividida;
 var limitador_de_loop = 0;
 
-
-
- if(iniciar==true){ 
-    animate();
- }
 
 // ----------------------------------------------------------------------------------------------
 //                                         Funções
@@ -82,7 +60,7 @@ function geraAlimento(){
     var y = Math.random() * (canvas.height - 50) + 25;
     var raio = Math.random() + 1;
 
-    alimentos.push(new Alimento(x, y, raio));
+    Alimento.alimentos.push(new Alimento(x, y, raio));
 }
 
 
@@ -297,7 +275,9 @@ function animate(){
 // ----------------------------------------------------------------------------------------------
 //                                         Cronômetro
 // ----------------------------------------------------------------------------------------------
-var cronometro = setInterval(() => { timer(); }, 10);
+function criaCronometro(){
+    var cronometro = setInterval(() => { timer(); }, 10);
+}
 
 function timer() {
     if ((milisegundo += 10) == 1000) {
