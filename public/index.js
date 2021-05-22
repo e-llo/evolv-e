@@ -8,8 +8,7 @@ canvas.height = tela.height;
 
 const c = canvas.getContext('2d');
 
-
-
+var iniciar;
 var x;
 var y;
 var raio;
@@ -33,7 +32,7 @@ var tempo_vida_max;
 //                         Criação dos carnívoros
 // ------------------------------------------------------------------------------------
 
-var n_carnivoros = 14;
+var n_carnivoros;
 var fome_c = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
 
 for(var i = 0; i < n_carnivoros; i++){
@@ -63,7 +62,7 @@ for(var i = 0; i < n_carnivoros; i++){
 // ------------------------------------------------------------------------------------
 
 
-var n_herbivoros = 100;
+var n_herbivoros;
 var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
 
 for(var i = 0; i < n_herbivoros; i++){
@@ -92,7 +91,7 @@ for(var i = 0; i < n_herbivoros; i++){
 //                    Criação de alimentos aleatórios no início
 // ------------------------------------------------------------------------------------
 var alimentos = [];
-var n_alimentos = 150;
+var n_alimentos;
 for(var i = 0; i < n_alimentos; i++){
     var x = Math.random() * (canvas.width - 50) + 25;
     var y = Math.random() * (canvas.height - 50) + 25;
@@ -110,7 +109,10 @@ var telaDividida;
 var limitador_de_loop = 0;
 
 
-animate();
+
+ if(iniciar==true){ 
+    animate();
+ }
 
 // ----------------------------------------------------------------------------------------------
 //                                         Funções
