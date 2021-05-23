@@ -42,6 +42,18 @@ function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
     }
 }
 
+function destroiObjetos(){
+    Carnivoro.carnivoros.length = 0;
+    Herbivoro.herbivoros.length = 0;
+    Alimento.alimentos.length = 0;
+    hora = minuto = segundo = milisegundo = segundos = 0;
+
+    //limpar o cronometro se ele existe.
+    try {
+        clearInterval(cronometro);
+    } catch(e){}
+}
+
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
 var intervaloTaxaAlimentos;

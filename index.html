@@ -118,6 +118,7 @@
 
         function iniciarSimulacao(){ // não ta funcionando se coloco só no click do botão
             rodando = true;
+            destroiObjetos();
             criaCronometro();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
             mudaIntervaloAlimentos(80, true);
