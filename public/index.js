@@ -44,7 +44,7 @@ function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
 
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
-setInterval(criaAlimentosGradativo, 80); 
+var intervaloTaxaAlimentos;
 
 // variáveis de auxílio para a implementação da divisão de tela
 var checkbox_divisao = document.getElementById('divisao');
@@ -174,7 +174,14 @@ function criaAlimentosGradativo(){
             Alimento.alimentos.push(new Alimento(x, y, raio));
         }
     }
-} 
+}
+
+function mudaIntervaloAlimentos(novoTempo, criar=false) {
+    if(!criar) {
+        clearInterval(intervaloTaxaAlimentos);
+    }
+    intervaloTaxaAlimentos = setInterval(criaAlimentosGradativo, novoTempo)
+}
 
 function desenhaDivisao(){
     c.beginPath();

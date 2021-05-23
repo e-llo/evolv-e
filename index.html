@@ -37,24 +37,31 @@
     <div id="painel">
         <div id="info">
             <div class="container" class="slidecontainer">
-                <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label>
-                <input type="range" min="0" max="200" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
-                <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label>
-                <input type="range" min="0" max="200" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
-                <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label>
-                <input type="range" min="0" max="200" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">
-                <div class ="row mt-3">
-                    <div class="col-sm-3 d-grid gap-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="restaurarPadroes()">Default</button>
-                    </div>
-                    <div class="col-sm-9 d-grid gap-2">
-                        <button type="button" class="btn btn-sm btn-success" onclick="iniciarSimulacao()">Play</button>
+                <div id="painelInicial">
+                    <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
+                    <input type="range" min="0" max="200" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
+                    <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
+                    <input type="range" min="0" max="200" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
+                    <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
+                    <input type="range" min="0" max="200" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">
+                    <div id="botoesIniciais" class ="row mt-3">
+                        <div class="col-sm-3 d-grid gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="restaurarPadroes()">Default</button>
+                        </div>
+                        <div class="col-sm-9 d-grid gap-2">
+                            <button type="button" class="btn btn-sm btn-success" onclick="iniciarSimulacao()">Play</button>
+                        </div>
                     </div>
                 </div>
-                <div class="d-grid gap-2 mt-4">
-                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
-                    <button type="button" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
-                    <button type="button" class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
+                <div id="painelSecundario" class="d-none">
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
+                        <button type="button" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
+                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
+                        <input type="range" min="0" max="200" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="numTaxaAli.textContent=inputTaxaAlimentos.value"
+                            onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
+                    </div>
                 </div>
 
             </div>
@@ -70,7 +77,6 @@
     
 
     <script type="text/javascript">
-
         var n_carnivoros;
         var n_herbivoros;
         var n_alimentos;
@@ -114,9 +120,10 @@
             rodando = true;
             criaCronometro();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
+            mudaIntervaloAlimentos(80, true);
             animate();
+            document.getElementById("painelSecundario").classList.remove("d-none");
             iniciar = true;
-            
         }
        
         function restaurarPadroes(){// volta os parâmetros para o padrão inicial
