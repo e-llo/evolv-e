@@ -192,6 +192,7 @@ function mudaIntervaloAlimentos(novoTempo, criar=false) {
     if(!criar) {
         clearInterval(intervaloTaxaAlimentos);
     }
+    if(novoTempo > 1000) return;
     intervaloTaxaAlimentos = setInterval(criaAlimentosGradativo, novoTempo)
 }
 

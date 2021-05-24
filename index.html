@@ -44,6 +44,9 @@
                     <input type="range" min="0" max="200" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
                     <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
                     <input type="range" min="0" max="200" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">
+                    <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
+                    <input type="range" min="1" max="1001" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
+                        onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                     <div id="botoesIniciais" class ="row mt-3">
                         <div class="col-sm-3 d-grid gap-2">
                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="restaurarPadroes()">Default</button>
@@ -58,9 +61,6 @@
                         <button type="button" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
                         <button type="button" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
                         <button type="button" class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
-                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
-                        <input type="range" min="0" max="200" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="numTaxaAli.textContent=inputTaxaAlimentos.value"
-                            onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                     </div>
                 </div>
 
@@ -77,6 +77,8 @@
     
 
     <script type="text/javascript">
+        const inputTalim = document.getElementById("inputTaxaAlimentos");
+        const labelTaxa = document.getElementById("numTaxaAli");
         var n_carnivoros;
         var n_herbivoros;
         var n_alimentos;
@@ -121,7 +123,7 @@
             destroiObjetos();
             criaCronometro();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
-            mudaIntervaloAlimentos(80, true);
+            mudaIntervaloAlimentos(inputTalim.value, true);
             animate();
             document.getElementById("painelSecundario").classList.remove("d-none");
             iniciar = true;
@@ -145,6 +147,14 @@
         }
         function addAlimento(){
             geraAlimento();
+        }
+
+        function mudouInputTaxa() {
+            if(inputTalim.value < 1001) {
+                labelTaxa.textContent = inputTalim.value;
+            } else {
+                labelTaxa.textContent = "nenhum";
+            }
         }
     </script>
     <script type="text/javascript" src="./public/index.js"></script>
