@@ -32,13 +32,18 @@ var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não come
 
 function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
     for(var i = 0; i < n_carnivoros; i++){
-        geraCarnivoro();
+        var x =(Math.random() * (canvas.width - 50) + 25);
+        var y = (Math.random() * (canvas.width - 50) + 25);
+        geraCarnivoro(x,y);
     }
     for(var i = 0; i < n_herbivoros; i++){
-        geraHerbivoro(); 
-    }
+        var x =(Math.random() * (canvas.width - 50) + 25);
+        var y = (Math.random() * (canvas.width - 50) + 25);
+        geraHerbivoro(x,y);    }
     for(var i = 0; i < n_alimentos; i++){
-        geraAlimento();
+        var x =(Math.random() * (canvas.width - 50) + 25);
+        var y = (Math.random() * (canvas.width - 50) + 25);
+        geraAlimento(x,y);
     }
 }
 
@@ -67,18 +72,13 @@ var limitador_de_loop = 0;
 // ----------------------------------------------------------------------------------------------
 //                                         Funções
 // ----------------------------------------------------------------------------------------------
-function geraAlimento(){
-    var x = Math.random() * (canvas.width - 50) + 25;
-    var y = Math.random() * (canvas.height - 50) + 25;
+function geraAlimento(x,y){
     var raio = Math.random() + 1;
-
     Alimento.alimentos.push(new Alimento(x, y, raio));
 }
 
 
-function geraCarnivoro(){ // função para poder adicionar mais carnívoros manualmente
-    x = Math.random() * (canvas.width - 50) + 25;
-    y = Math.random() * (canvas.height - 50) + 25;
+function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros manualmente 
     raio_min = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; 
     forca_max = Math.random()/20 + 0.001; 
@@ -98,9 +98,7 @@ function geraCarnivoro(){ // função para poder adicionar mais carnívoros manu
 }
 
 
-function geraHerbivoro(){ // função para poder adicionar mais herbivoros manualmente
-    x = Math.random() * (canvas.width - 50) + 25;
-    y = Math.random() * (canvas.height - 50) + 25;    
+function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros manualmente    
     raio_min = Math.random() * 3 + 4;
     vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
     forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!

@@ -58,9 +58,9 @@
                 </div>
                 <div id="painelSecundario" class="d-none">
                     <div class="d-grid gap-2 mt-4">
-                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
-                        <button type="button" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
-                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
+                        <button type="button" id="btnCarn" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
+                        <button type="button" id="btnHerb" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
+                        <button type="button" id="btnAli"  class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
                     </div>
                 </div>
 
@@ -140,13 +140,58 @@
             document.getElementById("inputAlimentos").value = 150;
         }
         function addCarnivoro(){
-            geraCarnivoro();
+            // na posição que o mouse clicar    
+            var btnCarn = document.getElementById("btnCarn");
+            if(btnCarn.classList.contains("active")){
+                btnCarn.classList.remove("active");
+                document.removeEventListener('click', geradorC, true);
+            }else{
+                btnCarn.classList.add("active");
+                document.addEventListener('click', geradorC, true); 
+            }
         }
+        function geradorC(e){
+            cursorX = e.pageX;
+            cursorY= e.pageY;
+            if(cursorX<=canvas.width && cursorY<=canvas.height){
+                geraCarnivoro(cursorX,cursorY);
+            }
+        }
+
+
+
         function addHerbivoro(){
-            geraHerbivoro();
+            var btnHerb = document.getElementById("btnHerb");
+            if(btnHerb.classList.contains("active")){
+                btnHerb.classList.remove("active");
+                document.removeEventListener('click', geradorH, true);
+            }else{
+                btnHerb.classList.add("active");
+                document.addEventListener('click', geradorH, true); 
+            }
         }
+
+        function geradorH(e){
+            cursorX = e.pageX;
+            cursorY= e.pageY;
+            if(cursorX<=canvas.width && cursorY<=canvas.height){
+                geraHerbivoro(cursorX,cursorY);
+            }
+            cursorX =null;
+            cursorY = null;
+        }
+
+
+
         function addAlimento(){
-            geraAlimento();
+            var btnAli = document.getElementById("btnAli");
+            if(btnAli.classList.contains("active")){
+                btnAli.classList.remove("active");
+                document.removeEventListener('click', geradorA, true);
+            }else{
+                btnAli.classList.add("active");
+                document.addEventListener('click', geradorA, true); 
+            }
         }
 
         function mudouInputTaxa() {
@@ -156,6 +201,14 @@
                 labelTaxa.textContent = "nenhum";
             }
         }
+        function geradorA(e){
+            cursorX = e.pageX;
+            cursorY= e.pageY;
+            if(cursorX<=canvas.width && cursorY<=canvas.height){
+                geraAlimento(cursorX,cursorY);
+            }
+        }
+
     </script>
     <script type="text/javascript" src="./public/index.js"></script>
     <script type="text/javascript" src="./public/websocket.js"></script>
