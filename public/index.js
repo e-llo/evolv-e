@@ -33,16 +33,16 @@ var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não come
 function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
     for(var i = 0; i < n_carnivoros; i++){
         var x =(Math.random() * (canvas.width - 50) + 25);
-        var y = (Math.random() * (canvas.width - 50) + 25);
+        var y = (Math.random() * (canvas.height - 50) + 25);
         geraCarnivoro(x,y);
     }
     for(var i = 0; i < n_herbivoros; i++){
         var x =(Math.random() * (canvas.width - 50) + 25);
-        var y = (Math.random() * (canvas.width - 50) + 25);
+        var y = (Math.random() * (canvas.height - 50) + 25);
         geraHerbivoro(x,y);    }
     for(var i = 0; i < n_alimentos; i++){
         var x =(Math.random() * (canvas.width - 50) + 25);
-        var y = (Math.random() * (canvas.width - 50) + 25);
+        var y = (Math.random() * (canvas.height - 50) + 25);
         geraAlimento(x,y);
     }
 }

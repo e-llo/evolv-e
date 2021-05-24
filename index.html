@@ -119,14 +119,13 @@
 
 
         function iniciarSimulacao(){ // não ta funcionando se coloco só no click do botão
-            rodando = true;
             destroiObjetos();
             criaCronometro();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
             mudaIntervaloAlimentos(inputTalim.value, true);
-            animate();
             document.getElementById("painelSecundario").classList.remove("d-none");
-            iniciar = true;
+            if(!rodando) { animate(); };
+            rodando = true;
         }
        
         function restaurarPadroes(){// volta os parâmetros para o padrão inicial
