@@ -22,7 +22,19 @@ ws.onopen = function(e) {
       let valoresAtuais = [
         segundos,
         Carnivoro.carnivoros.length,
-        Herbivoro.herbivoros.length
+        Herbivoro.herbivoros.length,
+        velMedC,
+        velMedH,
+        forcaMedC,
+        forcaMedH,
+        raioMedC,
+        raioMedH,
+        raioDetMedC,
+        raioDetMedH,
+        energMedC,
+        energMedH,
+        taxaEnergMedC,
+        taxaEnergMedH,
       ]
     
     ws.send(JSON.stringify(valoresAtuais)); // envia os valores em json
@@ -49,7 +61,7 @@ ws.onopen = function(e) {
     //TODO: atualizar o valor dos gráficos
     //texto.value = dados.length;
 
-    getData(dados);
+    getDataPop(dados);
   }
 
   // setamos um temporizador que envia os dados para o servidor no período de tempo desejado

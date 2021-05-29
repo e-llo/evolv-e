@@ -29,6 +29,22 @@ var fome_c = 0.9; // porcentagem da energia máxima acima da qual eles não come
 var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
 
 
+// Variáveis para o gráfico (herbívoro)
+var velMedH = 0;
+var forcaMedH = 0;
+var raioMedH = 0;
+var raioDetMedH = 0;
+var energMedH = 0;
+var taxaEnergMedH = 0;
+
+// Variáveis para o gráfico (carnívoro)
+var velMedC = 0;
+var forcaMedC = 0;
+var raioMedC = 0;
+var raioDetMedC = 0;
+var energMedC = 0;
+var taxaEnergMedC = 0;
+
 
 function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
     for(var i = 0; i < n_carnivoros; i++){
@@ -241,6 +257,13 @@ function animate(){
             }
         })
 
+        // resetando
+        velMedH = 0;
+        forcaMedH = 0;
+        raioMedH = 0;
+        raioDetMedH = 0;
+        energMedH = 0;
+        taxaEnergMedH = 0;
 
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
@@ -249,15 +272,52 @@ function animate(){
                 herbivoro.buscarAlimento(Alimento.alimentos);
             }
             herbivoro.detectaPredador(Carnivoro.carnivoros);
+            // Soma o valor das variáveis pra todos os herbívoros
+            velMedH += herbivoro.vel_max;
+            forcaMedH += herbivoro.forca_max;
+            raioMedH += herbivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+            energMedH += herbivoro.energia_max;
+            taxaEnergMedH += herbivoro.taxa_gasto_energia;
         })
-    
+        // Divide o valor (a soma total) pelo número de herbívoros para obter a média
+        velMedH /= Herbivoro.herbivoros.length;
+        forcaMedH /= Herbivoro.herbivoros.length;
+        raioMedH /= Herbivoro.herbivoros.length;
+        raioDetMedH /= Herbivoro.herbivoros.length;
+        energMedH /= Herbivoro.herbivoros.length;
+        taxaEnergMedH /= Herbivoro.herbivoros.length;
+
+
+        // resetando
+        velMedC = 0;
+        forcaMedC = 0;
+        raioMedC = 0;
+        raioDetMedC = 0;
+        energMedC = 0;
+        taxaEnergMedC = 0;
+
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
             if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
                 carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
             }
+            // Soma o valor das variáveis pra todos os carnívoros
+            velMedC += carnivoro.vel_max;
+            forcaMedC += carnivoro.forca_max;
+            raioMedC += carnivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+            energMedC += carnivoro.energia_max;
+            taxaEnergMedC += carnivoro.taxa_gasto_energia;
         })
+        // Divide o valor (a soma total) pelo número de carnívoros para obter a média
+        velMedC /= Carnivoro.carnivoros.length;
+        forcaMedC /= Herbivoro.herbivoros.length;
+        raioMedC /= Carnivoro.carnivoros.length;
+        raioDetMedC /= Carnivoro.carnivoros.length;
+        energMedC /= Carnivoro.carnivoros.length;
+        taxaEnergMedC /= Carnivoro.carnivoros.length;
 
     } else{ // se a tela não estiver dividida
 
@@ -271,6 +331,14 @@ function animate(){
             organismo.criaBordas(false); // telaDividida: false
         })
 
+        // resetando
+        velMedH = 0;
+        forcaMedH = 0;
+        raioMedH = 0;
+        raioDetMedH = 0;
+        energMedH = 0;
+        taxaEnergMedH = 0;
+
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
@@ -278,15 +346,54 @@ function animate(){
                 herbivoro.buscarAlimento(Alimento.alimentos);
             }
             herbivoro.detectaPredador(Carnivoro.carnivoros);
+            // Soma o valor das variáveis pra todos os herbívoros
+            velMedH += herbivoro.vel_max;
+            forcaMedH += herbivoro.forca_max;
+            raioMedH += herbivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+            energMedH += herbivoro.energia_max;
+            taxaEnergMedH += herbivoro.taxa_gasto_energia;
         })
-    
+
+        // Divide o valor (a soma total) pelo número de herbívoros para obter a média
+        velMedH /= Herbivoro.herbivoros.length;
+        forcaMedH /= Herbivoro.herbivoros.length;
+        raioMedH /= Herbivoro.herbivoros.length;
+        raioDetMedH /= Herbivoro.herbivoros.length;
+        energMedH /= Herbivoro.herbivoros.length;
+        taxaEnergMedH /= Herbivoro.herbivoros.length;
+
+
+        // resetando
+        velMedC = 0;
+        forcaMedC = 0;
+        raioMedC = 0;
+        raioDetMedC = 0;
+        energMedC = 0;
+        taxaEnergMedC = 0;
+
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
             if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
                 carnivoro.buscarHerbivoro(Herbivoro.herbivoros, false);
             }
+            // Soma o valor das variáveis pra todos os carnívoros
+            velMedC += carnivoro.vel_max;
+            forcaMedC += carnivoro.forca_max;
+            raioMedC += carnivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+            energMedC += carnivoro.energia_max;
+            taxaEnergMedC += carnivoro.taxa_gasto_energia;
         })
+
+        // Divide o valor (a soma total) pelo número de carnívoros para obter a média
+        velMedC /= Carnivoro.carnivoros.length;
+        forcaMedC /= Carnivoro.carnivoros.length;
+        raioMedC /= Carnivoro.carnivoros.length;
+        raioDetMedC /= Carnivoro.carnivoros.length;
+        energMedC /= Carnivoro.carnivoros.length;
+        taxaEnergMedC /= Carnivoro.carnivoros.length;
     }
 }
 

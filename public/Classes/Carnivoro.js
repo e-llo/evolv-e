@@ -91,7 +91,7 @@ class Carnivoro extends Organismo{
     aumentaTamanho(){
         if(this.raio<(this.raio_min*2)){
             this.raio += 0.1*this.raio;
-            // this.raio_deteccao += 0.1*this.raio_deteccao;
+            this.raio_deteccao += 0.03*this.raio_deteccao;
         }
        
     }
