@@ -34,6 +34,7 @@
 //     }
 var cnt = 0;
 var segundoRepetido = -1;
+
 function getDataPop(dados) { 
   
   var popCarnivoros =[dados[dados.length-1][1]];
