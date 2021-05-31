@@ -85,8 +85,18 @@
             </div>
         </div>
         <div>
-            <div id="chart"></div>
+            <label for = "divisao">Dividir populações</label>
+            <input type="checkbox" id="divisao" name="divisao">
         </div>
+        <!-- <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div id="chart"></div>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a>
+          </div> -->
+        
     </div>
     
   <script type="text/javascript">
@@ -98,11 +108,11 @@
         var n_herbivoros;
         var n_alimentos;
 
-        var rodando = false;
-
         n_carnivoros = parseInt(document.getElementById("numCarn").textContent);
         n_herbivoros = parseInt(document.getElementById("numHerb").textContent);
         n_alimentos = parseInt(document.getElementById("numAli").textContent);
+
+        var rodando = false;        
 
         // Variáveis para auxiliar a atualizar os valores dos sliders
         var sliderCarn = document.getElementById("inputCarnivoros");
@@ -116,6 +126,10 @@
         var sliderAli = document.getElementById("inputAlimentos");
         var outputAli = document.getElementById("numAli");
         outputAli.innerHTML = sliderAli.value;
+
+
+        // Variável para escolher o gráfico que será mostrado
+        var tipoGrafico = 1;
 
 
         // Update do valor do slider a cada vez que ele é modificado
@@ -220,6 +234,43 @@
                 geraAlimento(cursorX,cursorY);
             }
         }
+
+        function sendData(dados){
+            switch(tipoGrafico){
+                case 1:
+                    getDataPop(dados);
+                    break;
+                case 2:
+                    getDataVel(dados);
+                    break;
+                case 3:
+                    getDataForca(dados);
+                    break;
+                case 4:
+                    getDataRaio(dados);
+                    break;
+                case 5:
+                    getDataRaioDet(dados);
+                    break;
+                case 6:
+                    getDataEner(dados);
+                    break;
+                case 7:
+                    getDataTaxEner(dados);
+                    break;
+                }
+        }
+
+        /* Set the width of the side navigation to 250px */
+        function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        /* Set the width of the side navigation to 0 */
+        function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        }
+
     </script>
     <script type="text/javascript" src="./public/index.js"></script>
     <script type="text/javascript" src="./public/websocket.js"></script>

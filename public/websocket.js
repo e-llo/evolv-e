@@ -61,7 +61,7 @@ ws.onopen = function(e) {
     //TODO: atualizar o valor dos gráficos
     //texto.value = dados.length;
 
-    getDataPop(dados);
+    sendData(dados);   
   }
 
   // setamos um temporizador que envia os dados para o servidor no período de tempo desejado
