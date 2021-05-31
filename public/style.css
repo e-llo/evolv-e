@@ -13,16 +13,21 @@ canvas {
 }
 #painel{
     width: 485px;
-    height: 800px;
-    background-color: rgb(251, 249, 245);
+    height: 850px;
     display: inline-block;
     vertical-align: top;
     padding-top:20px;
 }
 #info{
-    width: 290px;
+    width: 320px;
     background-color: white;
     margin: 0 auto;
+    padding-bottom: 20px;
+}
+#chart{
+  width: 460px;
+  margin: 0 auto;
+
 }
 .cronometro {
     position: absolute;

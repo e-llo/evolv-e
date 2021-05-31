@@ -1,37 +1,3 @@
-
-
-// google.charts.load('current', {'packages':['line']});
-//       google.charts.setOnLoadCallback(drawChart);
-
-//     function drawChart(array) {
-
-//       var data = new google.visualization.DataTable();
-//       data.addColumn('number', 'Segundos');
-//       data.addColumn('number', 'Carnívoros');
-//       data.addColumn('number', 'Herbívoros');
-//     //   data.addColumn('number', 'Alimentos');
-
-//       data.addRows(array);
-
-//       var options = {
-//         chart: {
-//           title: 'População',
-//         },
-//         width: 380,
-//         height: 300,
-//         // colors: ['#ff0000', '#008f39', '#ffe135'],
-//         colors: ['#ff0000', '#008f39'],
-//         axes: {
-//           x: {
-//             0: {side: 'bottom'}
-//           }
-//         }
-//       };
-
-//       var chart = new google.charts.Line(document.getElementById('chart'));
-
-//       chart.draw(data, options);
-//     }
 var cnt = 0;
 var segundoRepetido = -1;
 function getDataPop(dados) { 
@@ -61,10 +27,8 @@ function getDataPop(dados) {
     // Se for pra repetir segundo e dados nem envia!
   }
   segundoRepetido = seconds;
-  
-}  
-
-
+} 
+ 
 function getDataVel(dados) { 
   
   var velCarnivoros =[dados[dados.length-1][3]];
@@ -279,6 +243,7 @@ var data = [carnivoros, herbivoros];
 
 var layout = {
   title: "População",
+
   xaxis: {
     showline: true,
     domain: [0],
