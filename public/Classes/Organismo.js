@@ -19,6 +19,8 @@ class Organismo{
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
+        this.tempo_vivido = 0;
+        // setInterval(this.updateTempoVivido, 1000);
 
         // Tempo de vida
         this.tempo_vida = {};
@@ -26,14 +28,15 @@ class Organismo{
         this.tempo_vida.max = tempo_vida_max;
         this.tempo_vida.real = geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max); //tempo de vida do organismo
         let cronometro_morte = setTimeout(() => {this.morre()}, this.tempo_vida.real); // variável que guarda a função de matar o indivíduo depois do tempo de vida real
-        
+        this.timer_reproducao = 0;
+
         // Variáveis booleanas usadas no método vagueia()
         this.comendo = false;
         this.fugindo = false;
         // this.perto_da_borda;
 
         // Variável que delimita a distância da borda a partir da qual os organismos começarão a fazer a curva para não bater nas bordas 
-        this.d = 25; 
+        this.d = 20; 
 
         // variáveis usadas para o método vagueia()
         this.d_circulo = 2;
@@ -108,6 +111,7 @@ class Organismo{
 
     // Método para atualizar o estado do organismo
     update(){
+        // this.tempo_vivido++;
         // Taxa de diminuição de energia
         if(this.energia > 0){
             this.energia -= this.taxa_gasto_energia;
@@ -291,7 +295,7 @@ class Organismo{
         this.acel.add(forca);
     }
 
-    // Teste para implementação de aprendizado
+    // Teste para implementação de aprendizado de comportamento
     comportamento(bom, ruim){
         
     }
@@ -354,7 +358,9 @@ class Organismo{
         return this.energia <= 0;
     }
     
-    
+    updateTempoVivido(){
+        this.tempo_vivido++;
+    }
 
     display(){
         c.beginPath();

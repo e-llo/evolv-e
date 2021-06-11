@@ -58,6 +58,7 @@ class Herbivoro extends Organismo{
                 this.comeAlimento(lista_alimentos[i_mais_perto], i_mais_perto);
 
                 this.contagem_pra_reproducao++; 
+                console.log("contagem para reproducao: " + this.contagem_pra_reproducao);
 
                 if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
@@ -76,8 +77,8 @@ class Herbivoro extends Organismo{
         // Absorção de energia ao comer alimento:
         // Se a energia do alimento for menor que o quanto falta para encher a barra de energia, 
         // o herbívoro adquire ela toda
-        if(this.energia_max - this.energia >= alimento.energia_alimento){
-            this.energia += alimento.energia_alimento;
+        if(this.energia_max - this.energia >= alimento.energia_alimento * 0.1){
+            this.energia += alimento.energia_alimento * 0.1;
         } else{ 
             this.energia = energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }
@@ -87,9 +88,9 @@ class Herbivoro extends Organismo{
     }
 
     aumentaTamanho(){
-        if(this.raio<(this.raio_min*2)){
-            this.raio += 0.05*this.raio;
-            this.raio_deteccao += 0.03*this.raio_deteccao;
+        if(this.raio<(this.raio_min*1.5)){
+            this.raio += 0.03*this.raio;
+            this.raio_deteccao += 0.02*this.raio_deteccao;
         }
     }
 

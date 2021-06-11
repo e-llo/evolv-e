@@ -78,8 +78,8 @@ class Carnivoro extends Organismo{
         // Absorção de energia ao comer o herbívoro
         // Se a energia que ele adquirá do herbívoro (1/8 da energia do herbívoro quando foi comido)
         // for menor que o quanto falta para encher a barra de energia, ela (o 1/8) será somada integralmente
-        if(this.energia_max - this.energia >= herbivoro.energia / 8){
-            this.energia += herbivoro.energia / 8; // O carnívoro, ao comer o herbívoro, ganha um quarto da energia deste
+        if(this.energia_max - this.energia >= herbivoro.energia * 0.1){
+            this.energia += herbivoro.energia * 0.1; // O carnívoro, ao comer o herbívoro, ganha um quarto da energia deste
         } else{
             this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }
@@ -89,9 +89,9 @@ class Carnivoro extends Organismo{
         
     }
     aumentaTamanho(){
-        if(this.raio<(this.raio_min*2)){
-            this.raio += 0.1*this.raio;
-            this.raio_deteccao += 0.03*this.raio_deteccao;
+        if(this.raio<(this.raio_min*1.5)){
+            this.raio += 0.03*this.raio;
+            this.raio_deteccao += 0.02*this.raio_deteccao;
         }
        
     }

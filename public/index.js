@@ -1,12 +1,15 @@
-
-
 const tela = {width: innerWidth - 500, height: innerHeight - 8}
 const canvas = document.querySelector("canvas");
 canvas.width = tela.width;
 canvas.height = tela.height;
 
-
 const c = canvas.getContext('2d');
+
+
+
+// // Criando um canvas offscreen
+// const offscreenCanvas = new OffscreenCanvas(canvas.width, canvas.height);
+// const oc = offscreenCanvas.getContext('2d');
 
 var iniciar;
 var x;
@@ -45,6 +48,22 @@ var raioDetMedC = 0;
 var energMedC = 0;
 var taxaEnergMedC = 0;
 
+// Variável para calcular frame rate (usada no animate())
+var lastLoop = new Date();
+
+
+// // Criação da QuadTree
+// // Criando o primeiro retângulo (com centro no centro do canvas, e os valores de w e h são a distância do centro até a borda)
+// let limite = new Retangulo(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2);
+// let qtree = new QuadTree(limite, 4);
+
+// criaPontos();
+// desenhaQuadTree();
+
+
+// ---------------------------------------------------------------------------------------
+//                                  FUNÇÕES
+// ---------------------------------------------------------------------------------------
 
 function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
     for(var i = 0; i < n_carnivoros; i++){
@@ -55,7 +74,8 @@ function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
     for(var i = 0; i < n_herbivoros; i++){
         var x =(Math.random() * (canvas.width - 50) + 25);
         var y = (Math.random() * (canvas.height - 50) + 25);
-        geraHerbivoro(x,y);    }
+        geraHerbivoro(x,y);    
+    }
     for(var i = 0; i < n_alimentos; i++){
         var x =(Math.random() * (canvas.width - 50) + 25);
         var y = (Math.random() * (canvas.height - 50) + 25);
@@ -85,9 +105,9 @@ var telaDividida;
 var limitador_de_loop = 0;
 
 
-// ----------------------------------------------------------------------------------------------
-//                                         Funções
-// ----------------------------------------------------------------------------------------------
+
+
+
 function geraAlimento(x,y){
     var raio = Math.random() + 1;
     Alimento.alimentos.push(new Alimento(x, y, raio));
@@ -218,10 +238,61 @@ function desenhaDivisao(){
     c.stroke();
 }
 
+function desenhaQuadTree(){
+    qtree.desenha();
+
+    // document.addEventListener('mousemove', (event) => {
+    //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
+    // });
+
+    let alcance = new Retangulo(Math.random() * canvas.width, Math.random() * canvas.height, 170, 123);
+    c.rect(alcance.x - alcance.w, alcance.y - alcance.h, alcance.w*2, alcance.h*2);
+    c.strokeStyle = "green";
+    c.lineWidth = 3;
+    c.stroke();
+
+    let pontos = qtree.procura(alcance);
+    for(let p of pontos){
+        c.beginPath();
+        c.arc(p.x, p.y, 1, 0, 2 * Math.PI);
+        c.strokeStyle = "red";
+        c.stroke();
+    }
+}
+
+function criaPontos(){
+    let congregacao = new Ponto(Math.random() * canvas.width, Math.random() * canvas.height);
+    
+    for(var i = 0; i < 500; i++){
+        let p = new Ponto(Math.random() * canvas.width, Math.random() * canvas.height);
+        qtree.inserirPonto(p);
+    }
+    for(var i = 0; i < 300; i++){
+        let p = new Ponto(congregacao.x + (Math.random() - 0.5) * 300, congregacao.y + (Math.random() - 0.5) * 300);
+        qtree.inserirPonto(p);
+    }
+    for(var i = 0; i < 400; i++){
+        let p = new Ponto(congregacao.x + (Math.random() - 0.5) * 600, congregacao.y + (Math.random() - 0.5) * 600);
+        qtree.inserirPonto(p);
+    }
+    for(var i = 0; i < 400; i++){
+        let p = new Ponto(congregacao.x + (Math.random() - 0.5) * 800, congregacao.y + (Math.random() - 0.5) * 800);
+        qtree.inserirPonto(p);
+    }
+}
+
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
 
+    // calculaFrameRate();
+    
+    // Calcula frame rate
+    var thisFrameTime = (thisLoop=new Date) - lastLoop;
+    frameTime+= (thisFrameTime - frameTime) / filterStrength;
+    lastLoop = thisLoop;
+
+    // Divisão de tela
     if(checkbox_divisao.checked){
         telaDividida = true;
     } else{
@@ -268,9 +339,10 @@ function animate(){
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
-            if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
-                herbivoro.buscarAlimento(Alimento.alimentos);
-            }
+            herbivoro.buscarAlimento(Alimento.alimentos);
+            // if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
+            //     herbivoro.buscarAlimento(Alimento.alimentos);
+            // }
             herbivoro.detectaPredador(Carnivoro.carnivoros);
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
@@ -300,9 +372,10 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
-            if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
-                carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            }
+            carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
+            // if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
+            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
+            // }
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
             forcaMedC += carnivoro.forca_max;
@@ -319,7 +392,7 @@ function animate(){
         energMedC /= Carnivoro.carnivoros.length;
         taxaEnergMedC /= Carnivoro.carnivoros.length;
 
-    } else{ // se a tela não estiver dividida
+    } else{ // se a tela NÃO estiver dividida
 
         limitador_de_loop = 0;
 
@@ -329,6 +402,7 @@ function animate(){
 
         Organismo.organismos.forEach((organismo) => {
             organismo.criaBordas(false); // telaDividida: false
+            // organismo.timer_reproducao++;
         })
 
         // resetando
@@ -342,9 +416,10 @@ function animate(){
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
-            if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
-                herbivoro.buscarAlimento(Alimento.alimentos);
-            }
+            herbivoro.buscarAlimento(Alimento.alimentos);
+            // if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
+            //     herbivoro.buscarAlimento(Alimento.alimentos);
+            // }
             herbivoro.detectaPredador(Carnivoro.carnivoros);
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
@@ -375,9 +450,10 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
-            if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
-                carnivoro.buscarHerbivoro(Herbivoro.herbivoros, false);
-            }
+            carnivoro.buscarHerbivoro(Herbivoro.herbivoros, false);
+            // if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
+            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros, false);
+            // }
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
             forcaMedC += carnivoro.forca_max;
@@ -427,3 +503,43 @@ function timer() {
 function returnData(input) {
     return input > 10 ? input : `0${input}`
 }
+
+// ----------------------------------------------------------------------------------------------
+//                                         Frame rate
+// ----------------------------------------------------------------------------------------------
+
+// The higher this value, the less the fps will reflect temporary variations
+// A value of 1 will only keep the last value
+var filterStrength = 20;
+var frameTime = 0, lastLoop = new Date, thisLoop;
+
+function gameLoop(){
+  // ...
+  var thisFrameTime = (thisLoop=new Date) - lastLoop;
+  frameTime+= (thisFrameTime - frameTime) / filterStrength;
+  lastLoop = thisLoop;
+}
+
+// Report the fps only every second, to only lightly affect measurements
+var fpsOut = document.getElementById('framerate');
+setInterval(function(){
+  fpsOut.innerHTML = parseFloat((1000/frameTime).toFixed(1)) + " fps";
+},500);
+
+// function calculaFrameRate(){
+//     var fps;
+//     var thisLoop = new Date();
+//     fps = 1000/(thisLoop - lastLoop);
+//     lastLoop = thisLoop;
+
+//     return fps;
+//     document.getElementById("framerate").innerHTML = fps;
+// }
+
+setInterval(() => {
+    var thisLoop = new Date();
+    var fps = 1000/(thisLoop - lastLoop);
+    lastLoop = thisLoop;
+
+    document.getElementById("framerate").innerHTML = fps;
+}, 1000);

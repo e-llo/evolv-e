@@ -9,6 +9,9 @@
 
     <!-- A ordem de importar o script deve ser do que não depende de nada até os que dependem... (pra n bugar)-->
     <script type="text/javascript" src="./public/Classes/Vetor.js"></script>
+    <script type="text/javascript" src="./public/Classes/Ponto.js"></script>
+    <script type="text/javascript" src="./public/Classes/Retangulo.js"></script>
+    <script type="text/javascript" src="./public/Classes/QuadTree.js"></script>
     <script type="text/javascript" src="./public/Classes/Alimento.js"></script>
     <script type="text/javascript" src="./public/Classes/Organismo.js"></script>
     <script type="text/javascript" src="./public/Classes/Herbivoro.js"></script>
@@ -36,6 +39,10 @@
     
     <div class="cronometro">
         <span id="hora">00</span>:<span id="minuto">00</span>:<span id="segundo">00</span>:<span id="milisegundo">00</span>
+    </div>
+
+    <div class="framerate">
+        <p>Frame rate: <span id="framerate"></span></p>
     </div>
     
     <div id="painel">
@@ -74,6 +81,7 @@
                             <label class ="form-check-label" for = "divisao">Dividir populações</label>
                             <input class ="form-check-input" type="checkbox" id="divisao" name="divisao">
                         </div>
+                        
                         
                     </div>
                 </div>
@@ -154,6 +162,7 @@
             $('.toast').toast('show');
         });
 
+
         function iniciarSimulacao(){ // não ta funcionando se coloco só no click do botão
             destroiObjetos();
             criaCronometro();
@@ -195,9 +204,10 @@
                 document.addEventListener('click', geradorC, true); 
             }
         }
+
         function geradorC(e){
             cursorX = e.pageX;
-            cursorY= e.pageY;
+            cursorY = e.pageY;
             if(cursorX<=canvas.width && cursorY<=canvas.height){
                 geraCarnivoro(cursorX,cursorY);
             }
@@ -223,8 +233,6 @@
             cursorX =null;
             cursorY = null;
         }
-
-
 
         function addAlimento(){
             var btnAli = document.getElementById("btnAli");
