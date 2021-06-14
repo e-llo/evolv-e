@@ -34,7 +34,7 @@
     </script>
 </head>
 
-<body>
+<body style="background: #222">
     <canvas></canvas>
     
     <div class="cronometro">
@@ -47,7 +47,7 @@
     
     <div id="painel">
         <div id="info">
-            <div class="container" class="slidecontainer">
+            <div class="container slidecontainer">
                 <div id="painelInicial">
                     <div id="inputsIniciais" class="p-0 m-0">
                         <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
@@ -62,14 +62,14 @@
                         onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                     <div id="botoesIniciais" class ="row mt-3">
                         <div class="col-sm-3 d-grid gap-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="restaurarPadroes()">Default</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" style="color: #ddd" onclick="restaurarPadroes()">Default</button>
                         </div>
                         <div class="col-sm-9 d-grid gap-2">
                             <button type="button" class="btn btn-sm btn-success" onclick="iniciarSimulacao()">Play</button>
                         </div>
                     </div>
                     <div id="botoesSecundarios" class="mt-3 text-center d-none">
-                        <button id="restartBtn" type="button" class="btn btn-block btn-outline-secondary" onclick="mostrarPainelInicial()">Restart</button>
+                        <button id="restartBtn" type="button" class="btn btn-block btn-outline-secondary" style="color: #ddd" onclick="mostrarPainelInicial()">Restart</button>
                     </div>
                 </div>
                 <div id="painelSecundario" class="d-none">
@@ -78,6 +78,8 @@
                         <button type="button" id="btnHerb" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
                         <button type="button" id="btnAli"  class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
                         <div>
+                            <br>
+                            <!-- <button type="button" id="divisao" name="divisao" class="btn btn-sm btn-outline-secondary" onclick="desenhaDivisao()">Dividir populações</button> -->
                             <label class ="form-check-label" for = "divisao">Dividir populações</label>
                             <input class ="form-check-input" type="checkbox" id="divisao" name="divisao">
                         </div>
@@ -112,8 +114,6 @@
     </div>
     
   <script type="text/javascript">
-
-
         const inputTalim = document.getElementById("inputTaxaAlimentos");
         const labelTaxa = document.getElementById("numTaxaAli");
         var n_carnivoros;

@@ -261,7 +261,13 @@ var layout = {
           traceorder: 'reversed',
     x: 0.05,
     y: -.3
+  },
+  plot_bgcolor:"#222",
+  paper_bgcolor:"#222",
+  font: {
+    color: '#ddd'
   }
+
 
 };
 
