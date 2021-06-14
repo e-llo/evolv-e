@@ -1,8 +1,14 @@
 var cnt = 0;
 var segundoRepetido = -1;
+const chartElement = document.getElementById("chart")
+
+function resetChart() {
+  let limpar = []
+  Plotly.purge(chartElement)
+  buildNewChart();
+}
 
 function getDataPop(dados) { 
-  
   var popCarnivoros =[dados[dados.length-1][1]];
   var popHerbivoros = [dados[dados.length-1][2]];
   var valores = [popCarnivoros, popHerbivoros];
@@ -215,62 +221,62 @@ function getDataTaxEner(dados) {
   
 }  
 
+function buildNewChart() {
+  var carnivoros = {
+    x: [segundos],
+    y: [Carnivoro.carnivoros.length],
+    type: 'scatter',
+    mode: 'lines',
+    name: 'Carnívoros',
+    line: {
+      color: 'red',
+      shape: 'spline'
+    }
+  };
 
-var carnivoros = {
-  x: [segundos],
-  y: [Carnivoro.carnivoros.length],
-  type: 'scatter',
-  mode: 'lines',
-  name: 'Carnívoros',
-  line: {
-    color: 'red',
-    shape: 'spline'
-  }
-};
+  var herbivoros = {
+    x: [segundos],
+    y: [Herbivoro.herbivoros.length],
+    type: 'scatter',
+    mode: 'lines',
+    name: 'Herbívoros',
+    line: {
+      color: 'green',
+      shape: 'spline'
+    }
+  };
 
-var herbivoros = {
-  x: [segundos],
-  y: [Herbivoro.herbivoros.length],
-  type: 'scatter',
-  mode: 'lines',
-  name: 'Herbívoros',
-  line: {
-    color: 'green',
-    shape: 'spline'
-  }
-};
+  var data = [carnivoros, herbivoros];
 
-var data = [carnivoros, herbivoros];
+  var layout = {
+    title: "População",
 
-var layout = {
-  title: "População",
-
-  xaxis: {
-    showline: true,
-    domain: [0],
-    title: "Segundos",
-    showgrid: true
-  },
-  yaxis: { 
-    showline: true, 
-    title: "N° Indivíduos", 
-    rangemode: "tozero" 
-  },
-  legend: {
-    orientation: 'h',
-          traceorder: 'reversed',
-    x: 0.05,
-    y: -.3
-  },
-  plot_bgcolor:"#222",
-  paper_bgcolor:"#222",
-  font: {
-    color: '#ddd'
-  }
+    xaxis: {
+      showline: true,
+      domain: [0],
+      title: "Segundos",
+      showgrid: true
+    },
+    yaxis: { 
+      showline: true, 
+      title: "N° Indivíduos", 
+      rangemode: "tozero" 
+    },
+    legend: {
+      orientation: 'h',
+            traceorder: 'reversed',
+      x: 0.05,
+      y: -.3
+    },
+    plot_bgcolor:"#222",
+    paper_bgcolor:"#222",
+    font: {
+      color: '#ddd'
+    }
 
 
-};
+  };
 
-Plotly.newPlot('chart', data, layout);
-
+  Plotly.newPlot('chart', data, layout);
+}
 

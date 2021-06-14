@@ -169,6 +169,7 @@
         function iniciarSimulacao(){ // não ta funcionando se coloco só no click do botão
             destroiObjetos();
             criaCronometro();
+            resetar();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
             mudaIntervaloAlimentos(inputTalim.value, true);
             document.getElementById("inputsIniciais").classList.add("d-none");
@@ -264,6 +265,10 @@
         }
 
         function sendData(dados){
+            if(reset == true) {
+                resetChart();
+                reset = false;
+            }
             switch(tipoGrafico){
                 case 1:
                     getDataPop(dados);

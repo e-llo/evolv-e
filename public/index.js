@@ -5,13 +5,7 @@ canvas.height = tela.height;
 
 const c = canvas.getContext('2d');
 
-
-
-// // Criando um canvas offscreen
-// const offscreenCanvas = new OffscreenCanvas(canvas.width, canvas.height);
-// const oc = offscreenCanvas.getContext('2d');
-
-var iniciar;
+var reset = false;
 var x;
 var y;
 var raio;
@@ -94,6 +88,8 @@ function destroiObjetos(){
         clearInterval(cronometro);
     } catch(e){}
 }
+
+function resetar() { reset = true; }
 
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
