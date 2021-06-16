@@ -7,7 +7,7 @@ class Carnivoro extends Organismo{
         // variável para contar quando um carnívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
         
-        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 1000;
+        // this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 1000;
 
         Carnivoro.carnivoros.push(this);
         // console.log("C - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
@@ -42,7 +42,7 @@ class Carnivoro extends Organismo{
         // Loop que analisa cada herbivoro na lista de herbivoros
         for(var i = lista_herbivoros.length - 1; i >= 0; i--){
             // Distância d entre este organismo e o atual herbivoro sendo analisado na lista (lista_herbivoros[i])
-            var d = this.posicao.dist(lista_herbivoros[i].posicao);
+            // var d = this.posicao.dist(lista_herbivoros[i].posicao);
 
             var d2 = Math.pow(this.posicao.x - lista_herbivoros[i].posicao.x, 2) + Math.pow(this.posicao.y - lista_herbivoros[i].posicao.y, 2);
             
@@ -61,14 +61,16 @@ class Carnivoro extends Organismo{
             if(recorde <= 5){
                 this.comeHerbivoro(lista_herbivoros, i_mais_perto);
 
-                // this.contagem_pra_reproducao++;
+                ///////////////////////////////////////////////////////////////////////////////
+                this.contagem_pra_reproducao++;
 
-                // if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros e já tiver vivido o suficiente
-                //     if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
-                //         this.reproduzir();
-                //     }
-                //     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
-                // }
+                if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros e já tiver vivido o suficiente
+                    if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
+                        this.reproduzir();
+                    }
+                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                }
+                ///////////////////////////////////////////////////////////////////////////////
                 
             } else if(lista_herbivoros.length != 0){
                 this.persegue(lista_herbivoros[i_mais_perto]);
@@ -78,10 +80,10 @@ class Carnivoro extends Organismo{
     
     comeHerbivoro(herbivoro, i){
         // Absorção de energia ao comer o herbívoro
-        // Se a energia que ele adquirá do herbívoro (10% da energia do herbívoro quando foi comido)
+        // Se a energia que ele adquirá do herbívoro (10% da energia total do herbívoro)
         // for menor que o quanto falta para encher a barra de energia, ela será somada integralmente (os 10%)
-        if(this.energia_max - this.energia >= herbivoro.energia * 0.1){
-            this.energia += herbivoro.energia * 0.1; // O carnívoro, ao comer o herbívoro, ganha um quarto da energia deste
+        if(this.energia_max - this.energia >= herbivoro.energia_max * 0.1){
+            this.energia += herbivoro.energia_max * 0.1; // O carnívoro, ao comer o herbívoro, ganha 10% da energia deste
         } else{
             this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }

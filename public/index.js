@@ -370,7 +370,7 @@ function animate(){
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
             forcaMedH += herbivoro.forca_max;
-            raioMedH += herbivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedH += herbivoro.energia_max;
             taxaEnergMedH += herbivoro.taxa_gasto_energia;
@@ -395,16 +395,17 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
+            carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
 
-             // Não come se estiver satisfeito (80% de energia)
-             if(carnivoro.energia <= carnivoro.energia_max * 0.8){
-                carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            }
+             // Não come se estiver satisfeito (85% de energia)
+            //  if(carnivoro.energia <= carnivoro.energia_max * 0.85){
+            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
+            // }
 
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
             forcaMedC += carnivoro.forca_max;
-            raioMedC += carnivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedC += carnivoro.energia_max;
             taxaEnergMedC += carnivoro.taxa_gasto_energia;
@@ -454,7 +455,7 @@ function animate(){
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
             forcaMedH += herbivoro.forca_max;
-            raioMedH += herbivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedH += herbivoro.energia_max;
             taxaEnergMedH += herbivoro.taxa_gasto_energia;
@@ -480,16 +481,17 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
+            carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
             
-            // Não come se estiver satisfeito (80% de energia)
-            if(carnivoro.energia <= carnivoro.energia_max * 0.8){
-                carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            }
+            // // Não come se estiver satisfeito (85% de energia)
+            // if(carnivoro.energia <= carnivoro.energia_max * 0.85){
+            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
+            // }
 
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
             forcaMedC += carnivoro.forca_max;
-            raioMedC += carnivoro.raio_min * 2; // o raio máximo é 2 * o mínimo
+            raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedC += carnivoro.energia_max;
             taxaEnergMedC += carnivoro.taxa_gasto_energia;

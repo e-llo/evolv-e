@@ -60,14 +60,16 @@ class Herbivoro extends Organismo{
             if(recorde <= 5){
                 this.comeAlimento(lista_alimentos[i_mais_perto], i_mais_perto);
 
-                // this.contagem_pra_reproducao++;
+                ///////////////////////////////////////////////////////////////////////////////////////
+                this.contagem_pra_reproducao++;
 
-                // if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
-                //     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
-                //         this.reproduzir();
-                //     }
-                //     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
-                // }
+                if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                    if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
+                        this.reproduzir();
+                    }
+                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                }
+                //////////////////////////////////////////////////////////////////////////////////////////
                 
             } else if(lista_alimentos.length != 0){
                 this.persegue(lista_alimentos[i_mais_perto]);
@@ -108,7 +110,7 @@ class Herbivoro extends Organismo{
         // Loop que analisa cada carnívoro na lista de predadores
         for(var i = 0; i < lista_predadores.length; i++){
             // Distância d entre este organismo e o atual carnívoro sendo analisado na lista (lista_predadores[i])
-            var d = this.posicao.dist(lista_predadores[i].posicao);
+            // var d = this.posicao.dist(lista_predadores[i].posicao);
 
             var d2 = Math.pow(this.posicao.x - lista_predadores[i].posicao.x, 2) + Math.pow(this.posicao.y - lista_predadores[i].posicao.y, 2);
 

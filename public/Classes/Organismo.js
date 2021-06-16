@@ -15,7 +15,7 @@ class Organismo{
         this.raio_deteccao = raio_deteccao_min;
         this.energia_max = energia_max;
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
-        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000;
+        this.taxa_gasto_energia;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
@@ -56,14 +56,14 @@ class Organismo{
         // raio mínimo
         var raio_min_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.raio_min, 0.1) : this.raio_min;
-        if(raio_min_filho < 3){
-            raio_min_filho = 3;
+        if(raio_min_filho < 0){
+            raio_min_filho = 0;
         }
         // velocidade máxima
         var vel_max_filho = Math.random() < probabilidade_mutacao ?
                 newMutacao(this.vel_max, 0.1) : this.vel_max;
-        if(vel_max_filho < 1){
-            vel_max_filho = 1;
+        if(vel_max_filho < 0){
+            vel_max_filho = 0;
         }
 
         // força máxima
@@ -110,38 +110,40 @@ class Organismo{
 
     // Método para atualizar o estado do organismo
     update(){
+        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000;
+
+        
+        // if(this instanceof Carnivoro){
+        //     console.log(this.energia + "/" + this.energia_max);
+        //     console.log("taxa: " + this.taxa_gasto_energia);
+        // }
+        
+
         // this.tempo_vivido++;
         // Taxa de diminuição de energia
         if(this.energia > 0){
-            if(this.comendo == true){
-                // if(this instanceof Carnivoro){
-                //     this.energia -= this.taxa_gasto_energia * 2;
-                // }
-            } else{
-                this.energia -= this.taxa_gasto_energia;
-            }
+            this.energia -= this.taxa_gasto_energia;
             
-
-            if(this.energia > this.energia_max * 0.5){ // Se estiver com mais que a metade de energia, pode se reproduzir
-                if(Math.random() < 0.0008){ // Número baixo pois testa a cada frame
-                    if(Math.random() <= this.chance_de_reproducao){
-                        this.reproduzir();
-                    }
-                } 
-            }
+            // if(this.energia > this.energia_max * 0.7){ // Se estiver com mais que 70% de energia, pode se reproduzir
+            //     if(Math.random() < 0.0014){ // Número baixo pois testa a cada frame
+            //         if(Math.random() <= this.chance_de_reproducao){
+            //             this.reproduzir();
+            //         }
+            //     } 
+            // }
         } else{
             this.morre();
-            // if(this instanceof Herbivoro){
-            //     console.log("HERBIVORO: morri de fome!");
-            //     console.log(this.energia_max);
-            //     console.log(this.taxa_gasto_energia);
-            // }
-            // if(this instanceof Carnivoro){
-            //     console.log("CARNIVORO: morri de fome!");
-            //     console.log(this.energia);
-            //     console.log(this.energia_max);
-            //     console.log(this.taxa_gasto_energia);
-            // }
+            if(this instanceof Herbivoro){
+                console.log("HERBIVORO: morri de fome!");
+                console.log(this.energia_max);
+                console.log(this.taxa_gasto_energia);
+            }
+            if(this instanceof Carnivoro){
+                console.log("CARNIVORO: morri de fome!");
+                console.log(this.energia);
+                console.log(this.energia_max);
+                console.log(this.taxa_gasto_energia);
+            }
             
         }
         
@@ -364,6 +366,9 @@ class Organismo{
     // Método que calcula a força de redirecionamento em direção a um alvo
     // REDIRECIONAMENTO = VELOCIDADE DESEJADA - VELOCIDADE
     persegue(alvo){
+        // if(this instanceof Carnivoro){
+        //     this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 1200; // Aumenta o gasto de energia ao perseguir
+        // }
         // O vetor da velocidade desejada é o vetor de posição do alvo menos o da própria posição
         var vel_desejada = alvo.posicao.subNew(this.posicao); // Um vetor apontando da localização dele para o alvo
         // Amplia a velocidade desejada para a velocidade máxima
