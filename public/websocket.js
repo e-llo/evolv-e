@@ -1,6 +1,5 @@
 var ws = new WebSocket("ws://localhost:8181");
 
-var texto = document.getElementById("text");
 var intervalo = 1000; // período de tempo em que os dados serão enviados para o back (em milisegundos)
 
 ws.onopen = function(e) {
@@ -15,6 +14,10 @@ ws.onopen = function(e) {
     // A página já inicia e manda os valores atuais
     enviaValoresAtuais();
 
+  }
+
+  var wsResetaDados = function() {
+    ws.send({reset: true});
   }
 
   var enviaValoresAtuais = function() {
@@ -56,11 +59,6 @@ ws.onopen = function(e) {
 
   // CHAMADO A PARTIR DO MÉTODO WS.ONMESSAGE()
   var atualizaGrafico = function(dados){
-    // console.log(dados);
-    
-    //TODO: atualizar o valor dos gráficos
-    //texto.value = dados.length;
-
     sendData(dados);   
   }
 

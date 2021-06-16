@@ -84,20 +84,20 @@
                             <input class ="form-check-input" type="checkbox" id="divisao" name="divisao">
                         </div>
                         
-                        
+                        <div class="d-flex justify-content-center flex-wrap" style="width: 100%;">
+                            <button type="button" class="btn btn-primary mx-1" onclick="btnMudarGrafico(1)">População</button>
+                            <button type="button" class="btn btn-primary mx-1" onclick="btnMudarGrafico(2)">Velocidade</button>
+                            <button type="button" class="btn btn-primary mx-1" onclick="btnMudarGrafico(3)">Força</button>
+                            <button type="button" class="btn btn-primary mx-1" onclick="btnMudarGrafico(4)">Raio</button>
+                            <button type="button" class="btn btn-primary mx-1" onclick="btnMudarGrafico(5)">Detecção</button>
+                            <button type="button" class="btn btn-primary mx-1" onclick="btnMudarGrafico(6)">Energia</button>
+                            <button type="button" class="btn btn-primary mx-1" onclick="btnMudarGrafico(7)">Gasto</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div id="chart"></div>
-        <!-- <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <div id="chart"></div>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a>
-          </div> -->
         
     </div>
 
@@ -161,7 +161,7 @@
 
         $(document).ready(function(){
             $('.toast').toast('show');
-            $('.toast').style("data-autohide: false");
+            $('.toast').css("data-autohide", "false");
             
         });
 
@@ -264,44 +264,49 @@
             }
         }
 
+        function resetar() {
+            wsResetaDados();
+            resetChart();
+        }
+
         function sendData(dados){
-            if(reset == true) {
-                resetChart();
-                reset = false;
-            }
             switch(tipoGrafico){
                 case 1:
+                    if(mudarGrafico) changeChart(1, dados);
                     getDataPop(dados);
                     break;
                 case 2:
+                    if(mudarGrafico) changeChart(2, dados);
                     getDataVel(dados);
                     break;
                 case 3:
+                    if(mudarGrafico) changeChart(3, dados);
                     getDataForca(dados);
                     break;
                 case 4:
+                    if(mudarGrafico) changeChart(4, dados);
                     getDataRaio(dados);
                     break;
                 case 5:
+                    if(mudarGrafico) changeChart(5, dados);
                     getDataRaioDet(dados);
                     break;
                 case 6:
+                    if(mudarGrafico) changeChart(6, dados);
                     getDataEner(dados);
                     break;
                 case 7:
+                    if(mudarGrafico) changeChart(7, dados);
                     getDataTaxEner(dados);
                     break;
                 }
         }
 
-        /* Set the width of the side navigation to 250px */
-        function openNav() {
-        document.getElementById("mySidenav").style.width = "250px";
-        }
-
-        /* Set the width of the side navigation to 0 */
-        function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
+        function btnMudarGrafico(tipo) {            
+            if(tipo != tipoGrafico) {
+                tipoGrafico = tipo;
+                mudarGrafico = true;
+            }
         }
 
     </script>

@@ -5,7 +5,7 @@ canvas.height = tela.height;
 
 const c = canvas.getContext('2d');
 
-var reset = false;
+var mudarGrafico = false;
 var x;
 var y;
 var raio;
@@ -88,8 +88,6 @@ function destroiObjetos(){
         clearInterval(cronometro);
     } catch(e){}
 }
-
-function resetar() { reset = true; }
 
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
