@@ -373,7 +373,7 @@ function animate(){
             raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedH += herbivoro.energia_max;
-            taxaEnergMedH += herbivoro.taxa_gasto_energia;
+            taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
         })
         // Divide o valor (a soma total) pelo número de herbívoros para obter a média
         velMedH /= Herbivoro.herbivoros.length;
@@ -408,7 +408,7 @@ function animate(){
             raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedC += carnivoro.energia_max;
-            taxaEnergMedC += carnivoro.taxa_gasto_energia;
+            taxaEnergMedC += carnivoro.taxa_gasto_energia_max;
         })
          
         // Divide o valor (a soma total) pelo número de carnívoros para obter a média
@@ -458,7 +458,7 @@ function animate(){
             raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedH += herbivoro.energia_max;
-            taxaEnergMedH += herbivoro.taxa_gasto_energia;
+            taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
         })
 
         // Divide o valor (a soma total) pelo número de herbívoros para obter a média
@@ -494,7 +494,7 @@ function animate(){
             raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
             raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedC += carnivoro.energia_max;
-            taxaEnergMedC += carnivoro.taxa_gasto_energia;
+            taxaEnergMedC += carnivoro.taxa_gasto_energia_max;
         })
 
         // Divide o valor (a soma total) pelo número de carnívoros para obter a média

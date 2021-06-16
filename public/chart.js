@@ -192,8 +192,8 @@ function getDataEner(dados) {
 
 function getDataTaxEner(dados) { 
   
-  var taxaEnerCarnivoros =[dados[dados.length-1][11]];
-  var taxaEnerHerbivoros = [dados[dados.length-1][12]];
+  var taxaEnerCarnivoros =[dados[dados.length-1][13]];
+  var taxaEnerHerbivoros = [dados[dados.length-1][14]];
   var valores = [taxaEnerCarnivoros, taxaEnerHerbivoros];
   let seconds = dados[dados.length-1][0];
   var valsegundos = [];

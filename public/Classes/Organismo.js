@@ -16,6 +16,7 @@ class Organismo{
         this.energia_max = energia_max;
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia;
+        this.taxa_gasto_energia_max = (Math.pow(this.raio_min, 2) * Math.pow(this.vel_max, 2)) / 2000;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
