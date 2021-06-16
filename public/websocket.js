@@ -13,7 +13,6 @@ ws.onopen = function(e) {
     */
     // A página já inicia e manda os valores atuais
     enviaValoresAtuais();
-
   }
 
   var wsResetaDados = function() {
@@ -54,7 +53,7 @@ ws.onopen = function(e) {
     let dadosGrafico = JSON.parse(graficoEmJson);
     // envia os dados capturados para a função que atualizará os gráficos na tela
     atualizaGrafico(dadosGrafico);
-
+    mostrarBtnGraficos();
   }
 
   // CHAMADO A PARTIR DO MÉTODO WS.ONMESSAGE()
