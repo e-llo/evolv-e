@@ -3,9 +3,8 @@ var segundoRepetido = -1;
 const chartElement = document.getElementById("chart")
 
 function resetChart() {
-  let limpar = []
   Plotly.purge(chartElement)
-  buildNewChart();
+  mudarGrafico = true;
 }
 
 function getDataPop(dados) { 
@@ -221,62 +220,158 @@ function getDataTaxEner(dados) {
   
 }  
 
-function buildNewChart() {
-  var carnivoros = {
-    x: [segundos],
-    y: [Carnivoro.carnivoros.length],
+/*var carnivoros = {
+  x: [],
+  y: [],
+  type: 'scatter',
+  mode: 'lines',
+  name: 'Carnívoros',
+  line: {
+    color: 'red',
+    shape: 'spline'
+  }
+};
+
+var herbivoros = {
+  x: [],
+  y: [],
+  type: 'scatter',
+  mode: 'lines',
+  name: 'Herbívoros',
+  line: {
+    color: 'green',
+    shape: 'spline'
+  }
+};
+
+var data = [carnivoros, herbivoros];
+
+var layout = {
+  title: "População",
+
+  xaxis: {
+    showline: true,
+    domain: [0],
+    title: "Segundos",
+    showgrid: true
+  },
+  yaxis: { 
+    showline: true, 
+    title: "N° Indivíduos", 
+    rangemode: "tozero" 
+  },
+  legend: {
+    orientation: 'h',
+          traceorder: 'reversed',
+    x: 0.05,
+    y: -.3
+  },
+  plot_bgcolor:"#222",
+  paper_bgcolor:"#222",
+  font: {
+    color: '#ddd'
+  }
+
+
+};
+
+Plotly.newPlot('chart', data, layout); */
+
+function changeChart(novoTipo, dados) {
+  resetChart();
+
+  // ÍNDICE DE QUAL DADO PEGARÁ DO ARRAY DE DADOS (em relação ao carnívoro)
+  let indice = 1;               // Valores do gráfico 1 para servir de inicializador
+  let titulo = "População";
+  let yTitulo = "N° Indivíduos"; //Título do eixo y
+  switch (novoTipo) {
+    case 1: // População
+      break;
+    case 2: // Velocidade
+      indice = 3;
+      titulo = "Velocidade";
+      yTitulo = "Velocidade média";
+      break;
+    case 3: // Força
+      indice = 5;
+      titulo = "Força";
+      yTitulo = "Força Média";
+      break;
+    case 4: // Raio
+      indice = 7;
+      titulo = "Raio";
+      yTitulo = "Raio médio";
+      break;
+    case 5: // Raio deteccao
+      indice = 9;
+      titulo = "Alcance de detecção";
+      yTitulo = "Raio de detecção médio";
+      break;
+    case 6: // Energia
+      indice = 11;
+      titulo = "Energia";
+      yTitulo = "Nível de energia médio";
+      break;
+    case 7: // Taxa de energia
+      indice = 13;
+      titulo = "Gasto de energia";
+      yTitulo = "Taxa de energia média";
+  }
+
+  // CAPTURA TODO O HISTÓRICO DE DADOS E JOGA EM UM ARRAY
+  let tempo = dados.map(elemento => elemento[0]) // faz um array novo com todos os valores de segundos
+  let yCarn = dados.map(elemento => elemento[indice]);
+  let yHerb = dados.map(elemento => elemento[indice + 1]);
+
+  // INSERE TODO O HISTÓRICO DE DADOS NO GRÁFICO
+  let carnivoros = {
+    x: tempo,
+    y: yCarn,
     type: 'scatter',
     mode: 'lines',
     name: 'Carnívoros',
-    line: {
-      color: 'red',
-      shape: 'spline'
-    }
+    line: { color: 'red', shape: 'spline'}
   };
 
-  var herbivoros = {
-    x: [segundos],
-    y: [Herbivoro.herbivoros.length],
+  let herbivoros = {
+    x: tempo,
+    y: yHerb,
     type: 'scatter',
     mode: 'lines',
     name: 'Herbívoros',
-    line: {
-      color: 'green',
-      shape: 'spline'
-    }
+    line: {color: 'green', shape: 'spline'}
   };
 
-  var data = [carnivoros, herbivoros];
+  let data = [carnivoros, herbivoros];
 
   var layout = {
-    title: "População",
+  title: titulo,
 
-    xaxis: {
+  xaxis: {
       showline: true,
       domain: [0],
       title: "Segundos",
       showgrid: true
-    },
-    yaxis: { 
+  },
+  yaxis: { 
       showline: true, 
-      title: "N° Indivíduos", 
+      title: yTitulo, 
       rangemode: "tozero" 
-    },
-    legend: {
+  },
+  legend: {
       orientation: 'h',
-            traceorder: 'reversed',
+          traceorder: 'reversed',
       x: 0.05,
       y: -.3
-    },
-    plot_bgcolor:"#222",
-    paper_bgcolor:"#222",
-    font: {
+  },
+  plot_bgcolor:"#222",
+  paper_bgcolor:"#222",
+  font: {
       color: '#ddd'
-    }
-
-
-  };
+  }
+}
 
   Plotly.newPlot('chart', data, layout);
+  mudarGrafico = false;
 }
 
