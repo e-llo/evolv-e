@@ -45,59 +45,60 @@
         <p>Frame rate: <span id="framerate"></span></p>
     </div>
     
-    <div id="painel">
-        <div id="info">
-            <div class="container slidecontainer">
-                <div id="painelInicial">
-                    <div id="inputsIniciais" class="p-0 m-0">
-                        <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
-                        <input type="range" min="0" max="200" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
-                        <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
-                        <input type="range" min="0" max="200" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
-                        <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
-                        <input type="range" min="0" max="200" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
+    <div id="painel" style="height: 100vh;">
+        <div style="overflow-y: auto; max-height: 100%;"> <!-- scroll para telas pequenas -->
+            <div id="info">
+                <div class="container slidecontainer">
+                    <div id="painelInicial">
+                        <div id="inputsIniciais" class="p-0 m-0">
+                            <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
+                            <input type="range" min="0" max="200" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
+                            <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
+                            <input type="range" min="0" max="200" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
+                            <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
+                            <input type="range" min="0" max="200" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
+                        </div>
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
+                        <input type="range" min="1" max="1001" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
+                            onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
+                        <div id="botoesIniciais" class ="row mt-3">
+                            <div class="col-sm-3 d-grid gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" style="color: #ddd" onclick="restaurarPadroes()">Default</button>
+                            </div>
+                            <div class="col-sm-9 d-grid gap-2">
+                                <button type="button" class="btn btn-sm btn-success" onclick="iniciarSimulacao()">Play</button>
+                            </div>
+                        </div>
+                        <div id="botoesSecundarios" class="mt-3 text-center d-none">
+                            <button id="restartBtn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd" onclick="mostrarPainelInicial()">Restart</button>
+                        </div>
                     </div>
-                    <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
-                    <input type="range" min="1" max="1001" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
-                        onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
-                    <div id="botoesIniciais" class ="row mt-3">
-                        <div class="col-sm-3 d-grid gap-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" style="color: #ddd" onclick="restaurarPadroes()">Default</button>
-                        </div>
-                        <div class="col-sm-9 d-grid gap-2">
-                            <button type="button" class="btn btn-sm btn-success" onclick="iniciarSimulacao()">Play</button>
+                    <div id="painelSecundario" class="d-none">
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="button" id="btnCarn" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
+                            <button type="button" id="btnHerb" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
+                            <button type="button" id="btnAli"  class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
+                            <div>
+                                <!-- <button type="button" id="divisao" name="divisao" class="btn btn-sm btn-outline-secondary" onclick="desenhaDivisao()">Dividir populações</button> -->
+                                <label class ="form-check-label" for = "divisao">Dividir populações</label>
+                                <input class ="form-check-input" type="checkbox" id="divisao" name="divisao">
+                            </div>
+                            
                         </div>
                     </div>
-                    <div id="botoesSecundarios" class="mt-3 text-center d-none">
-                        <button id="restartBtn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd" onclick="mostrarPainelInicial()">Restart</button>
-                    </div>
-                </div>
-                <div id="painelSecundario" class="d-none">
-                    <div class="d-grid gap-2 mt-4">
-                        <button type="button" id="btnCarn" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
-                        <button type="button" id="btnHerb" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
-                        <button type="button" id="btnAli"  class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
-                        <div>
-                            <!-- <button type="button" id="divisao" name="divisao" class="btn btn-sm btn-outline-secondary" onclick="desenhaDivisao()">Dividir populações</button> -->
-                            <label class ="form-check-label" for = "divisao">Dividir populações</label>
-                            <input class ="form-check-input" type="checkbox" id="divisao" name="divisao">
-                        </div>
-                        
-                        <div class="d-flex justify-content-center flex-wrap" style="width: 100%;">
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 flex-fill" onclick="btnMudarGrafico(1)">População</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 flex-fill" onclick="btnMudarGrafico(2)">Velocidade</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 flex-fill" onclick="btnMudarGrafico(3)">Força</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 mt-2 flex-fill" onclick="btnMudarGrafico(4)">Raio</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 mt-2 flex-fill" onclick="btnMudarGrafico(5)">Detecção</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 mt-2 flex-fill" onclick="btnMudarGrafico(6)">Energia</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 mt-2 flex-fill" onclick="btnMudarGrafico(7)">Gasto</button>
-                        </div>
+                    <div id="btnsChart" class="d-flex justify-content-center flex-wrap d-none" style="width: 100%;">
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(1)">População</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(2)">Velocidade</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(3)">Força</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(4)">Raio</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(5)">Detecção</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(6)">Energia</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(7)">Gasto</button>
                     </div>
                 </div>
             </div>
+            <div id="chart"></div>
         </div>
-        <div id="chart"></div>
-        
     </div>
 
     <!-- TOAST -->
@@ -306,6 +307,10 @@
                 tipoGrafico = tipo;
                 mudarGrafico = true;
             }
+        }
+
+        function mostrarBtnGraficos() {
+            $("#btnsChart").removeClass("d-none");
         }
 
     </script>
