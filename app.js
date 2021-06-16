@@ -13,8 +13,12 @@ wss.on('connection', function(ws) {
     console.log('client [%s] connected', client_uuid);
 
     ws.on('message', function(dadosEmJson) {
-      var novoDado = JSON.parse(dadosEmJson);
-      atualizaGrafico(ws, novoDado);
+        if(dadosEmJson == {reset: true}) {
+            grafico.length = 0;
+            return;
+        }
+        var novoDado = JSON.parse(dadosEmJson);
+        atualizaGrafico(ws, novoDado);
     });
 
     var atualizaGrafico = function(ws, novoDado) {
