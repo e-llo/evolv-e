@@ -14,7 +14,7 @@ class Organismo{
         this.raio_deteccao_min = raio_deteccao_min;
         this.raio_deteccao = raio_deteccao_min;
         this.energia_max = energia_max;
-        this.energia = this.energia_max; // Começa com energia máxima
+        this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
@@ -113,10 +113,36 @@ class Organismo{
         // this.tempo_vivido++;
         // Taxa de diminuição de energia
         if(this.energia > 0){
-            this.energia -= this.taxa_gasto_energia;
+            if(this.comendo == true){
+                // if(this instanceof Carnivoro){
+                //     this.energia -= this.taxa_gasto_energia * 2;
+                // }
+            } else{
+                this.energia -= this.taxa_gasto_energia;
+            }
+            
+
+            if(this.energia > this.energia_max * 0.5){ // Se estiver com mais que a metade de energia, pode se reproduzir
+                if(Math.random() < 0.0008){ // Número baixo pois testa a cada frame
+                    if(Math.random() <= this.chance_de_reproducao){
+                        this.reproduzir();
+                    }
+                } 
+            }
         } else{
             this.morre();
-            // console.log("morri de fome!");
+            // if(this instanceof Herbivoro){
+            //     console.log("HERBIVORO: morri de fome!");
+            //     console.log(this.energia_max);
+            //     console.log(this.taxa_gasto_energia);
+            // }
+            // if(this instanceof Carnivoro){
+            //     console.log("CARNIVORO: morri de fome!");
+            //     console.log(this.energia);
+            //     console.log(this.energia_max);
+            //     console.log(this.taxa_gasto_energia);
+            // }
+            
         }
         
 

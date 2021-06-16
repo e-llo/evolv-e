@@ -115,15 +115,14 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
     cor = geraCor();
     raio_deteccao_min = Math.random() * 50 + 40;
     energia_max = Math.random() * 100 + 80
-    taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
     tempo_vida_min = 80000;
     tempo_vida_max = 140000;
 
     new Carnivoro(
-        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, taxa_gasto_energia,
-        cansaco_max, tempo_vida_min, tempo_vida_max
+        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max,
+        cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
     );
 }
 
@@ -135,7 +134,6 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     cor = geraCor();
     raio_deteccao_min = Math.random() * 50 + 50;
     energia_max = Math.random() * 100 + 80;
-    taxa_gasto_energia = Math.random() / 20 + 0.005;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
     tempo_vida_min = 80000;
@@ -164,6 +162,7 @@ function corMutacao(estilo) {
         .map(function(cor) { //pegar cada elemento do array e fazer os cálculos a seguir
             cor = parseInt(cor);
             let operacao = "";
+            let p = Math.random();
 
             if(cor <= 10) { //para não gerar números negativos
                 operacao = "adicao"
@@ -179,9 +178,26 @@ function corMutacao(estilo) {
             }
 
             if(operacao == "adicao") {
-                return cor + Math.ceil(Math.random() * 10)
+                if(p < 0.005){ // Há 0.5% de chance de a mutação ser grande
+                    return cor + Math.ceil(Math.random() * 100)
+                } else if(p < 0.015){ // Há 1% de chance (1.5% - o 0.5% do if anterior) de a mutação ser razoavelmente grande
+                    return cor + Math.ceil(Math.random() * 50)
+                } else if(p < 0.05){ // Há 3.5% de chance (5% - o 1.5% do if anterior) de a mutação ser razoável
+                    return cor + Math.ceil(Math.random() * 30)
+                } else{
+                    return cor + Math.ceil(Math.random() * 10)
+                }
+                
             } else { //subtração
-                return cor - Math.ceil(Math.random() * 10)
+                if(p < 0.005){ // Há 0.5% de chance de a mutação ser grande
+                    return cor - Math.ceil(Math.random() * 100)
+                } else if(p < 0.015){ // Há 1% de chance (1.5% - o 0.5% do if anterior) de a mutação ser razoavelmente grande
+                    return cor - Math.ceil(Math.random() * 50)
+                } else if(p < 0.05){ // Há 3.5% de chance (5% - o 1.5% do if anterior) de a mutação ser razoável
+                    return cor - Math.ceil(Math.random() * 30)
+                } else{
+                    return cor - Math.ceil(Math.random() * 10)
+                }
             }
         });
 
@@ -189,7 +205,16 @@ function corMutacao(estilo) {
 }
 
 function newMutacao(valor, porcent) {// exemplo: valor = 20;  porcent = 0.1 || 10%
+    let p = Math.random();
     let variacao = valor * porcent; //  variacao = 20 * 0.1 = 2, ou seja, poderá variar de +2 a -2 no resultado
+    if(p < 0.005){ // Há 0.5% de chance de a mutação ser grande
+        variacao *= 6;
+    } else if(p < 0.015){ // Há 1% de chance (1.5% - o 0.5% do if anterior) de a mutação ser razoavelmente grande
+        variacao *= 3;
+    } else if(p < 0.05){ // Há 3.5% de chance (5% - o 1.5% do if anterior) de a mutação ser razoável
+        variacao *= 1.8;
+    }
+    
     let minimo = valor - variacao;  //  minimo = 20 - 2 = 18. Para que não precise sub-dividir o return em adição ou subtração
     variacao *= 2                   //  puxo o ponto de referência para o menor valor possível. Logo, o resultado variará de
                                     //  0 a +4, afinal a distância de 2 até -2 é 4.
@@ -333,10 +358,14 @@ function animate(){
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
-            herbivoro.buscarAlimento(Alimento.alimentos);
-            // if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
+            
+            // // Não come se estiver satisfeito (85% de energia)
+            // if(herbivoro.energia <= herbivoro.energia_max * 0.85){
             //     herbivoro.buscarAlimento(Alimento.alimentos);
             // }
+
+            herbivoro.buscarAlimento(Alimento.alimentos);
+
             herbivoro.detectaPredador(Carnivoro.carnivoros);
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
@@ -366,10 +395,12 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
-            carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            // if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
-            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            // }
+
+             // Não come se estiver satisfeito (80% de energia)
+             if(carnivoro.energia <= carnivoro.energia_max * 0.8){
+                carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
+            }
+
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
             forcaMedC += carnivoro.forca_max;
@@ -378,6 +409,7 @@ function animate(){
             energMedC += carnivoro.energia_max;
             taxaEnergMedC += carnivoro.taxa_gasto_energia;
         })
+         
         // Divide o valor (a soma total) pelo número de carnívoros para obter a média
         velMedC /= Carnivoro.carnivoros.length;
         forcaMedC /= Herbivoro.herbivoros.length;
@@ -410,10 +442,14 @@ function animate(){
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
-            herbivoro.buscarAlimento(Alimento.alimentos);
-            // if(herbivoro.energia <= fome_h * herbivoro.energia_max){ // Não come se estiver bem alimentado  
+
+            // // Não come se estiver satisfeito (85% de energia)
+            // if(herbivoro.energia <= herbivoro.energia_max * 0.85){
             //     herbivoro.buscarAlimento(Alimento.alimentos);
             // }
+            herbivoro.buscarAlimento(Alimento.alimentos);
+
+            
             herbivoro.detectaPredador(Carnivoro.carnivoros);
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
@@ -444,10 +480,12 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
-            carnivoro.buscarHerbivoro(Herbivoro.herbivoros, false);
-            // if(carnivoro.energia <= fome_c * carnivoro.energia_max){ // Não come se estiver bem alimentado  
-            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros, false);
-            // }
+            
+            // Não come se estiver satisfeito (80% de energia)
+            if(carnivoro.energia <= carnivoro.energia_max * 0.8){
+                carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
+            }
+
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
             forcaMedC += carnivoro.forca_max;

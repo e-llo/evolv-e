@@ -1,5 +1,6 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
+    
     constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
         super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
        
@@ -41,31 +42,32 @@ class Herbivoro extends Organismo{
         for(var i = lista_alimentos.length - 1; i >= 0 ; i--){
             // Distância d entre este organismo e o atual alimento sendo analisado na lista (lista_alimentos[i])
             var d = this.posicao.dist(lista_alimentos[i].posicao);
+
+            var d2 = Math.pow(this.posicao.x - lista_alimentos[i].posicao.x, 2) + Math.pow(this.posicao.y - lista_alimentos[i].posicao.y, 2);
             // Somente atualizará as variáveis se houver um alimento dentro do raio de detecção
-            if(d < this.raio_deteccao){
-                if (d <= recorde){ // Caso a distância seja menor que a distância recorde,
-                    recorde = d; // recorde passa a ter o valor de d
+            if(d2 < Math.pow(this.raio_deteccao, 2)){
+                if (d2 <= recorde){ // Caso a distância seja menor que a distância recorde,
+                    recorde = d2; // recorde passa a ter o valor de d
                     i_mais_perto = i; // e o atual alimento passa a ser o i_mais_perto 
                 }
             }
         }
         // Momento em que ele vai comer!
-        if(recorde <= this.raio_deteccao){
+        if(recorde <= Math.pow(this.raio_deteccao, 2)){
             // console.log("tempo de vida"+this.tempo_vida_min);
             // console.log(this.cronometro_vida.getTempo());
             this.comendo = true;
             if(recorde <= 5){
                 this.comeAlimento(lista_alimentos[i_mais_perto], i_mais_perto);
 
-                this.contagem_pra_reproducao++; 
-                //console.log("contagem para reproducao: " + this.contagem_pra_reproducao);
+                // this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
-                    if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
-                        this.reproduzir();
-                    }
-                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
-                }
+                // if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                //     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
+                //         this.reproduzir();
+                //     }
+                //     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                // }
                 
             } else if(lista_alimentos.length != 0){
                 this.persegue(lista_alimentos[i_mais_perto]);
@@ -107,16 +109,19 @@ class Herbivoro extends Organismo{
         for(var i = 0; i < lista_predadores.length; i++){
             // Distância d entre este organismo e o atual carnívoro sendo analisado na lista (lista_predadores[i])
             var d = this.posicao.dist(lista_predadores[i].posicao);
+
+            var d2 = Math.pow(this.posicao.x - lista_predadores[i].posicao.x, 2) + Math.pow(this.posicao.y - lista_predadores[i].posicao.y, 2);
+
             // Somente atualizará as variáveis se houver um carnívoro dentro do raio de detecção
-            if(d < this.raio_deteccao){
-                if (d <= recorde){ // Caso a distância seja menor que a distância recorde,
-                    recorde = d; // recorde passa a ter o valor de d
+            if(d2 < Math.pow(this.raio_deteccao, 2)){
+                if (d2 <= recorde){ // Caso a distância seja menor que a distância recorde,
+                    recorde = d2; // recorde passa a ter o valor de d
                     i_mais_perto = i; // e o atual carnívoro passa a ser o i_mais_perto 
                 }
             }
         }
         // Momento em que ele vai fugir!
-        if(recorde <= this.raio_deteccao){
+        if(recorde <= Math.pow(this.raio_deteccao, 2)){
             this.fugindo = true;
             if(lista_predadores.length != 0){
                 // Chamada do método foge(), que muda a velocidade do herbívoro para a direção oposta ao do predador
