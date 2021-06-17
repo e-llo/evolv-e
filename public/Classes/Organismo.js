@@ -133,19 +133,7 @@ class Organismo{
             //     } 
             // }
         } else{
-            this.morre();
-            if(this instanceof Herbivoro){
-                console.log("HERBIVORO: morri de fome!");
-                console.log(this.energia_max);
-                console.log(this.taxa_gasto_energia);
-            }
-            if(this instanceof Carnivoro){
-                console.log("CARNIVORO: morri de fome!");
-                console.log(this.energia);
-                console.log(this.energia_max);
-                console.log(this.taxa_gasto_energia);
-            }
-            
+            this.morre();            
         }
         
 

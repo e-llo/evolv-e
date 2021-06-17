@@ -47,8 +47,8 @@ class Carnivoro extends Organismo{
             var d2 = Math.pow(this.posicao.x - lista_herbivoros[i].posicao.x, 2) + Math.pow(this.posicao.y - lista_herbivoros[i].posicao.y, 2);
             
             // Somente atualizará as variáveis se houver um herbivoro dentro do raio de detecção e o
-            // tamanho do herbívoro(raio) for menor que o carnívoro + 30% do seu tamanho.
-            if(d2 < Math.pow(this.raio_deteccao, 2) && lista_herbivoros[i].raio < this.raio * 1.3){
+            // tamanho do herbívoro(raio) for menor que o carnívoro + 75% do seu tamanho.
+            if(d2 < Math.pow(this.raio_deteccao, 2) && lista_herbivoros[i].raio < this.raio * 1.75){
                 if (d2 <= recorde){ // Caso a distância seja menor que a distância recorde,
                     recorde = d2; // recorde passa a ter o valor de d
                     i_mais_perto = i; // e o atual alimento passa a ser o i_mais_perto 
@@ -64,7 +64,7 @@ class Carnivoro extends Organismo{
                 ///////////////////////////////////////////////////////////////////////////////
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 4){ // se o carnívoro comer 4 herbívoros e já tiver vivido o suficiente
+                if(this.contagem_pra_reproducao == 3){ // se o carnívoro comer 4 herbívoros e já tiver vivido o suficiente
                     if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
                         this.reproduzir();
                     }
