@@ -121,9 +121,6 @@
         var n_herbivoros;
         var n_alimentos;
 
-        n_carnivoros = parseInt(document.getElementById("numCarn").textContent);
-        n_herbivoros = parseInt(document.getElementById("numHerb").textContent);
-        n_alimentos = parseInt(document.getElementById("numAli").textContent);
 
         var rodando = false;        
 
@@ -167,6 +164,10 @@
 
 
         function iniciarSimulacao(){ // não ta funcionando se coloco só no click do botão
+            n_carnivoros = parseInt(document.getElementById("numCarn").textContent);
+            n_herbivoros = parseInt(document.getElementById("numHerb").textContent);
+            n_alimentos = parseInt(document.getElementById("numAli").textContent);
+
             destroiObjetos();
             criaCronometro();
             resetar();
@@ -189,6 +190,9 @@
 
             document.getElementById("numAli").textContent = 150;
             document.getElementById("inputAlimentos").value = 150;
+
+            labelTaxa.textContent = 80;
+            inputTalim.value = 80;
         }
 
         function mostrarPainelInicial() {
