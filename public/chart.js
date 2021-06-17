@@ -294,8 +294,8 @@ function changeChart(novoTipo, dados) {
       break;
     case 3: // Força
       indice = 5;
-      titulo = "Força";
-      yTitulo = "Força Média";
+      titulo = "Agilidade";
+      yTitulo = "Agilidade Média";
       break;
     case 4: // Raio
       indice = 7;
