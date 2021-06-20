@@ -48,40 +48,11 @@ var lastLoop = new Date();
 // QuadTree
 let retanguloCanvas = new Retangulo(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2);
 
-// // Criação da QuadTree
-// // Criando o primeiro retângulo (com centro no centro do canvas, e os valores de w e h são a distância do centro até a borda)
-// let limite = new Retangulo(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2);
-// let qtree = new QuadTree(limite, 4);
-
-// criaPontos();
-// desenhaQuadTree();
-
-
-// let ret = new Retangulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 250 + 10, Math.random() * 250 + 10);
-// let cir = new Circulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 200 + 10);
-
-// // desenhando o retangulo
-// c.beginPath();
-// c.lineTo(ret.x - ret.w, ret.y - ret.h);
-// c.lineTo(ret.x + ret.w, ret.y - ret.h);
-// c.lineTo(ret.x + ret.w, ret.y + ret.h);
-// c.lineTo(ret.x - ret.w, ret.y + ret.h);
-// c.lineTo(ret.x - ret.w, ret.y - ret.h);
-// c.strokeStyle = "red";
-// c.stroke();
-
-// // desenhando o circulo
-// c.beginPath();
-// c.arc(cir.x, cir.y, cir.r, 0, Math.PI * 2);
-// c.strokeStyle = "yellow";
-// c.stroke();
-
-// testando o método interceptaC()
-// console.log(ret.interseptaC(cir));
 
 // ---------------------------------------------------------------------------------------
 //                                  FUNÇÕES
 // ---------------------------------------------------------------------------------------
+
 
 function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
     for(var i = 0; i < n_carnivoros; i++){
@@ -335,7 +306,6 @@ function animate(){
 
     // Criando a Quadtree
     let qtree = new QuadTree(retanguloCanvas, 5);
-    // console.log(qtree);
 
     // Divisão de tela
     if(checkbox_divisao.checked){
@@ -490,8 +460,11 @@ function animate(){
             
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoH = new Circulo(herbivoro.posicao.x, herbivoro.posicao.y, herbivoro.raio_deteccao);
+
+            if(herbivoro.energia <= herbivoro.energia_max * 0.9){
+                herbivoro.buscarAlimento(qtree, visaoH);
+            }
             
-            herbivoro.buscarAlimento(qtree, visaoH);
             herbivoro.detectaPredador(qtree, visaoH);
 
             // Soma o valor das variáveis pra todos os herbívoros
@@ -527,7 +500,10 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
 
-            carnivoro.buscarHerbivoro(qtree, visaoC, false);
+            if(carnivoro.energia <= carnivoro.energia_max * 0.8){
+                carnivoro.buscarHerbivoro(qtree, visaoC, false);
+            }
+            
 
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;

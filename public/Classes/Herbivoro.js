@@ -28,7 +28,6 @@ class Herbivoro extends Organismo{
         if(typeof this.cronometro_morte !== 'undefined') {
             clearTimeout(this.cronometro_morte); // desativar o temporizador
         }
-
         Herbivoro.herbivoros = super.remove(Herbivoro.herbivoros, this);
     }
     
@@ -76,9 +75,10 @@ class Herbivoro extends Organismo{
                 this.comeAlimento(alimentos_proximos[i_mais_perto], indice_lista_estatica);
 
                 this.contagem_pra_reproducao++; 
+                console.log(this.contagem_pra_reproducao);
 
                 ///////////////////////////////////////////////////////////////////////////////
-                if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                if(this.contagem_pra_reproducao == 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }

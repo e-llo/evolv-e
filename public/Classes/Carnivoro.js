@@ -102,7 +102,6 @@ class Carnivoro extends Organismo{
         } else{
             this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }
-
         Herbivoro.herbivoros.splice(i, 1); // O herbívoro comido morre (é retirado da lista de herbívoros)
         this.aumentaTamanho();
         
