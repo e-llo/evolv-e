@@ -38,7 +38,7 @@ On the terminal:
 ```bash
 npm start
 ```
-Open the index.html file on your browser. You can also run the server (npm start) and [click here](https://evolv-e.github.io/evolv-e/)
+Then open the index.html file on your browser or [click here](https://evolv-e.github.io/evolv-e/)
 
 
 
