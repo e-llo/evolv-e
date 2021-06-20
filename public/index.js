@@ -57,24 +57,24 @@ let retanguloCanvas = new Retangulo(canvas.width/2, canvas.height/2, canvas.widt
 // desenhaQuadTree();
 
 
-let ret = new Retangulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 250 + 10, Math.random() * 250 + 10);
-let cir = new Circulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 200 + 10);
+// let ret = new Retangulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 250 + 10, Math.random() * 250 + 10);
+// let cir = new Circulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 200 + 10);
 
-// desenhando o retangulo
-c.beginPath();
-c.lineTo(ret.x - ret.w, ret.y - ret.h);
-c.lineTo(ret.x + ret.w, ret.y - ret.h);
-c.lineTo(ret.x + ret.w, ret.y + ret.h);
-c.lineTo(ret.x - ret.w, ret.y + ret.h);
-c.lineTo(ret.x - ret.w, ret.y - ret.h);
-c.strokeStyle = "red";
-c.stroke();
+// // desenhando o retangulo
+// c.beginPath();
+// c.lineTo(ret.x - ret.w, ret.y - ret.h);
+// c.lineTo(ret.x + ret.w, ret.y - ret.h);
+// c.lineTo(ret.x + ret.w, ret.y + ret.h);
+// c.lineTo(ret.x - ret.w, ret.y + ret.h);
+// c.lineTo(ret.x - ret.w, ret.y - ret.h);
+// c.strokeStyle = "red";
+// c.stroke();
 
-// desenhando o circulo
-c.beginPath();
-c.arc(cir.x, cir.y, cir.r, 0, Math.PI * 2);
-c.strokeStyle = "yellow";
-c.stroke();
+// // desenhando o circulo
+// c.beginPath();
+// c.arc(cir.x, cir.y, cir.r, 0, Math.PI * 2);
+// c.strokeStyle = "yellow";
+// c.stroke();
 
 // testando o método interceptaC()
 // console.log(ret.interseptaC(cir));
