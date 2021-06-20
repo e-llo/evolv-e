@@ -1,5 +1,6 @@
 class Organismo{
     static organismos = [];
+    static id = 0;
 
     constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
         this.posicao = new Vetor(x, y);
@@ -46,6 +47,12 @@ class Organismo{
         // variável para separar os organismos que nasceram antes da divisão da tela dos que nasceram depois
         this.antes_da_divisao = false;
         this.posicao_fixa_momentanea = new Vetor(x, y);
+
+        // ID 
+        this.id = Organismo.id++;
+
+        // // QuadTree
+        // this.qtree = new QuadTree(retanguloCanvas, 5);
 
         Organismo.organismos.push(this);
     }
@@ -404,6 +411,10 @@ class Organismo{
             }
         }
         return lista;
+    }
+
+    checaId(id){
+        return (id == this.id);
     }
     
 }

@@ -1,6 +1,5 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
-    
     constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
         super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
        
@@ -8,8 +7,9 @@ class Herbivoro extends Organismo{
         this.contagem_pra_reproducao = 0;
 
         Herbivoro.herbivoros.push(this);
-        // console.log("H - vel máx: "+parseFloat(this.vel_max.toFixed(4))+" | raio_min: "+parseFloat(this.raio_min.toFixed(4))+" | força máx: "+parseFloat(this.forca_max.toFixed(4))+" | raio detecção: "+parseFloat(this.raio_deteccao.toFixed(4))
-        // + " | vida: " + this.cronometro_vida.getTempo());
+        
+        // Variável para guardar a posição do herbivoro na lista de herbivoros
+        this.posicao_lista = Herbivoro.herbivoros.length - 1;
     }
 
 
@@ -32,37 +32,52 @@ class Herbivoro extends Organismo{
         Herbivoro.herbivoros = super.remove(Herbivoro.herbivoros, this);
     }
     
-    buscarAlimento(lista_alimentos){
+    buscarAlimento(qtree, visaoH){
         this.comendo = false;
         // Var recorde: qual a menor distância (a recorde) de um alimento até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
         var i_mais_perto = -1; // Qual o índice do alimento mais perto até agora
+        
+        // Insere em alimentos_proximos uma lista de alimentos que estão na sua QuadTree 
+        let alimentos_proximos = qtree.procuraAlimentos(visaoH); // procuraAlimentos() retorna uma lista de alimentos
 
-        // Loop que analisa cada alimento na lista de alimentos
-        for(var i = lista_alimentos.length - 1; i >= 0 ; i--){
-            // Distância d entre este organismo e o atual alimento sendo analisado na lista (lista_alimentos[i])
-            var d = this.posicao.dist(lista_alimentos[i].posicao);
+        // console.log("alimentos proximos: ", alimentos_proximos);
 
-            var d2 = Math.pow(this.posicao.x - lista_alimentos[i].posicao.x, 2) + Math.pow(this.posicao.y - lista_alimentos[i].posicao.y, 2);
-            // Somente atualizará as variáveis se houver um alimento dentro do raio de detecção
-            if(d2 < Math.pow(this.raio_deteccao, 2)){
-                if (d2 <= recorde){ // Caso a distância seja menor que a distância recorde,
-                    recorde = d2; // recorde passa a ter o valor de d
-                    i_mais_perto = i; // e o atual alimento passa a ser o i_mais_perto 
-                }
+        for(var i = alimentos_proximos.length - 1; i >= 0 ; i--){
+            // Distância d entre este organismo e o atual alimento sendo analisado na lista
+            // var d = this.posicao.dist(alimentos_proximos[i].posicao);
+
+            var d2 = Math.pow(this.posicao.x - alimentos_proximos[i].posicao.x, 2) + Math.pow(this.posicao.y - alimentos_proximos[i].posicao.y, 2);
+
+
+            if (d2 <= recorde){ // Caso a distância seja menor que a distância recorde,
+                recorde = d2; // recorde passa a ter o valor de d
+                i_mais_perto = i; // e o atual alimento passa a ser o i_mais_perto 
             }
         }
+        
         // Momento em que ele vai comer!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
-            // console.log("tempo de vida"+this.tempo_vida_min);
-            // console.log(this.cronometro_vida.getTempo());
             this.comendo = true;
-            if(recorde <= 5){
-                this.comeAlimento(lista_alimentos[i_mais_perto], i_mais_perto);
+            if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
+                
+                let indice_lista_estatica = 0;
 
-                ///////////////////////////////////////////////////////////////////////////////////////
-                this.contagem_pra_reproducao++;
+                // Loop para achar o alimento que contenha o id do alimento mais próximo a fim de deletá-lo da lista estática com base em seu id 
+                Alimento.alimentos.every(a => {
+                    if(a.checaId(alimentos_proximos[i_mais_perto].id)){
+                        return false;
+                    }
+                    indice_lista_estatica++;
 
+                    return true;
+                });
+
+                this.comeAlimento(alimentos_proximos[i_mais_perto], indice_lista_estatica);
+
+                this.contagem_pra_reproducao++; 
+
+                ///////////////////////////////////////////////////////////////////////////////
                 if(this.contagem_pra_reproducao == 6){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
@@ -71,8 +86,8 @@ class Herbivoro extends Organismo{
                 }
                 //////////////////////////////////////////////////////////////////////////////////////////
                 
-            } else if(lista_alimentos.length != 0){
-                this.persegue(lista_alimentos[i_mais_perto]);
+            } else if(alimentos_proximos.length != 0){
+                this.persegue(alimentos_proximos[i_mais_perto]);
             }
         }
     }
@@ -101,33 +116,37 @@ class Herbivoro extends Organismo{
     // Método para detectar um predador (basicamente idêntico ao buscarAlimento())
     // O método faz o herbívoro achar o carnívoro mais próximo e, se ele estiver dentro de seu raio de detecção,
     // ele aciona o método fugir()
-    detectaPredador(lista_predadores){
+    detectaPredador(qtree, visaoH){
         this.fugindo = false;
         // Var recorde: qual a menor distância (a recorde) de um carnívoro até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
         var i_mais_perto = -1; // Qual o índice do carnívoro mais perto até agora
 
-        // Loop que analisa cada carnívoro na lista de predadores
-        for(var i = 0; i < lista_predadores.length; i++){
+        // Insere em carnivoros_proximos uma lista de carnívoros que estão na sua QuadTree 
+        let carnivoros_proximos = qtree.procuraCarnivoros(visaoH); // procuraCarnivoros() retorna uma lista de carnívoros
+
+        // console.log("carnívoros próximos: ", qtree.procuraCarnivoros(visaoH));
+        
+        // Loop que analisa cada carnívoro na lista de carnívoros próximos
+        for(var i = carnivoros_proximos.length - 1; i >= 0; i--){
             // Distância d entre este organismo e o atual carnívoro sendo analisado na lista (lista_predadores[i])
-            // var d = this.posicao.dist(lista_predadores[i].posicao);
+            // var d = this.posicao.dist(carnivoros_proximos[i].posicao);
 
-            var d2 = Math.pow(this.posicao.x - lista_predadores[i].posicao.x, 2) + Math.pow(this.posicao.y - lista_predadores[i].posicao.y, 2);
+            var d2 = Math.pow(this.posicao.x - carnivoros_proximos[i].posicao.x, 2) + Math.pow(this.posicao.y - carnivoros_proximos[i].posicao.y, 2);
 
-            // Somente atualizará as variáveis se houver um carnívoro dentro do raio de detecção
-            if(d2 < Math.pow(this.raio_deteccao, 2)){
-                if (d2 <= recorde){ // Caso a distância seja menor que a distância recorde,
-                    recorde = d2; // recorde passa a ter o valor de d
-                    i_mais_perto = i; // e o atual carnívoro passa a ser o i_mais_perto 
-                }
+            if (d2 <= recorde){ // Caso a distância seja menor que a distância recorde,
+                recorde = d2; // recorde passa a ter o valor de d
+                i_mais_perto = i; // e o atual carnívoro passa a ser o i_mais_perto 
             }
+            
         }
+
         // Momento em que ele vai fugir!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
             this.fugindo = true;
-            if(lista_predadores.length != 0){
+            if(carnivoros_proximos.length != 0){
                 // Chamada do método foge(), que muda a velocidade do herbívoro para a direção oposta ao do predador
-                this.foge(lista_predadores[i_mais_perto]); 
+                this.foge(carnivoros_proximos[i_mais_perto]); 
             }
         }
         
@@ -165,10 +184,11 @@ class Herbivoro extends Organismo{
         c.fillStyle = this.cor;
         c.strokeStyle = this.cor;
         c.fill();
+
         // desenhando o raio de detecção
-        // c.beginPath();
-        // c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
-        // c.strokeStyle = "grey";
-        // c.stroke();
+    //     c.beginPath();
+    //     c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+    //     c.strokeStyle = "grey";
+    //     c.stroke();
     }
 }

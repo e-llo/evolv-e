@@ -1,6 +1,6 @@
 class Ponto {
-    constructor(x,y){
-        this.x = x;
-        this.y = y;
+    constructor(x, y, userData){
+        this.posicao = new Vetor(x, y);
+        this.userData = userData;
     }
 }

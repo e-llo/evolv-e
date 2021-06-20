@@ -45,6 +45,8 @@ var taxaEnergMedC = 0;
 // Variável para calcular frame rate (usada no animate())
 var lastLoop = new Date();
 
+// QuadTree
+let retanguloCanvas = new Retangulo(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2);
 
 // // Criação da QuadTree
 // // Criando o primeiro retângulo (com centro no centro do canvas, e os valores de w e h são a distância do centro até a borda)
@@ -54,6 +56,28 @@ var lastLoop = new Date();
 // criaPontos();
 // desenhaQuadTree();
 
+
+let ret = new Retangulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 250 + 10, Math.random() * 250 + 10);
+let cir = new Circulo(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 200 + 10);
+
+// desenhando o retangulo
+c.beginPath();
+c.lineTo(ret.x - ret.w, ret.y - ret.h);
+c.lineTo(ret.x + ret.w, ret.y - ret.h);
+c.lineTo(ret.x + ret.w, ret.y + ret.h);
+c.lineTo(ret.x - ret.w, ret.y + ret.h);
+c.lineTo(ret.x - ret.w, ret.y - ret.h);
+c.strokeStyle = "red";
+c.stroke();
+
+// desenhando o circulo
+c.beginPath();
+c.arc(cir.x, cir.y, cir.r, 0, Math.PI * 2);
+c.strokeStyle = "yellow";
+c.stroke();
+
+// testando o método interceptaC()
+// console.log(ret.interseptaC(cir));
 
 // ---------------------------------------------------------------------------------------
 //                                  FUNÇÕES
@@ -104,7 +128,7 @@ var limitador_de_loop = 0;
 
 function geraAlimento(x,y){
     var raio = Math.random() + 1;
-    Alimento.alimentos.push(new Alimento(x, y, raio));
+    new Alimento(x, y, raio);
 }
 
 
@@ -236,7 +260,7 @@ function criaAlimentosGradativo(){
         var raio = Math.random() * 1.5 + 1;
 
         if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
-            Alimento.alimentos.push(new Alimento(x, y, raio));
+            new Alimento(x, y, raio);
         }
     }
 }
@@ -257,7 +281,7 @@ function desenhaDivisao(){
     c.stroke();
 }
 
-function desenhaQuadTree(){
+function desenhaQuadTree(qtree){
     qtree.desenha();
 
     // document.addEventListener('mousemove', (event) => {
@@ -303,13 +327,15 @@ function criaPontos(){
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
-
-    // calculaFrameRate();
     
     // Calcula frame rate
     var thisFrameTime = (thisLoop=new Date) - lastLoop;
     frameTime+= (thisFrameTime - frameTime) / filterStrength;
     lastLoop = thisLoop;
+
+    // Criando a Quadtree
+    let qtree = new QuadTree(retanguloCanvas, 5);
+    // console.log(qtree);
 
     // Divisão de tela
     if(checkbox_divisao.checked){
@@ -327,6 +353,9 @@ function animate(){
             if(alimento.posicao.x - canvas.width / 2 < 30 && alimento.posicao.x - canvas.width / 2 > -30){ 
                 Alimento.alimentos.splice(i, 1);
             }
+
+            qtree.inserirAlimento(alimento); // Insere o alimento na QuadTree
+
         })
 
         if(limitador_de_loop < 10){
@@ -347,6 +376,14 @@ function animate(){
             }
         })
 
+        // Inserindo os organismos na QuadTree antes de chamar os métodos de cada um
+        Herbivoro.herbivoros.forEach(herbivoro => {
+            qtree.inserirHerbivoro(herbivoro); // Insere o herbivoro na QuadTree
+        });
+        Carnivoro.carnivoros.forEach(carnivoro => {
+            qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
+        });
+
         // resetando
         velMedH = 0;
         forcaMedH = 0;
@@ -358,15 +395,13 @@ function animate(){
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
-            
-            // // Não come se estiver satisfeito (85% de energia)
-            // if(herbivoro.energia <= herbivoro.energia_max * 0.85){
-            //     herbivoro.buscarAlimento(Alimento.alimentos);
-            // }
 
-            herbivoro.buscarAlimento(Alimento.alimentos);
+            // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
+            let visaoH = new Circulo(herbivoro.posicao.x, herbivoro.posicao.y, herbivoro.raio_deteccao);
+                        
+            herbivoro.buscarAlimento(qtree, visaoH);
+            herbivoro.detectaPredador(qtree, visaoH);
 
-            herbivoro.detectaPredador(Carnivoro.carnivoros);
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
             forcaMedH += herbivoro.forca_max;
@@ -375,6 +410,7 @@ function animate(){
             energMedH += herbivoro.energia_max;
             taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
         })
+
         // Divide o valor (a soma total) pelo número de herbívoros para obter a média
         velMedH /= Herbivoro.herbivoros.length;
         forcaMedH /= Herbivoro.herbivoros.length;
@@ -395,12 +431,11 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
-            carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
 
-             // Não come se estiver satisfeito (85% de energia)
-            //  if(carnivoro.energia <= carnivoro.energia_max * 0.85){
-            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            // }
+            // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
+            let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
+
+            carnivoro.buscarHerbivoro(qtree, visaoC, false);
 
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
@@ -420,17 +455,26 @@ function animate(){
         taxaEnergMedC /= Carnivoro.carnivoros.length;
 
     } else{ // se a tela NÃO estiver dividida
-
         limitador_de_loop = 0;
 
         Alimento.alimentos.forEach(alimento => {
             alimento.display();
+            qtree.inserirAlimento(alimento); // Insere o alimento na QuadTree
+
         })
 
         Organismo.organismos.forEach((organismo) => {
             organismo.criaBordas(false); // telaDividida: false
             // organismo.timer_reproducao++;
         })
+
+        // Inserindo os organismos na QuadTree antes de chamar os métodos de cada um
+        Herbivoro.herbivoros.forEach(herbivoro => {
+            qtree.inserirHerbivoro(herbivoro); // Insere o herbivoro na QuadTree
+        });
+        Carnivoro.carnivoros.forEach(carnivoro => {
+            qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
+        });
 
         // resetando
         velMedH = 0;
@@ -439,19 +483,17 @@ function animate(){
         raioDetMedH = 0;
         energMedH = 0;
         taxaEnergMedH = 0;
-
+        
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
-
-            // // Não come se estiver satisfeito (85% de energia)
-            // if(herbivoro.energia <= herbivoro.energia_max * 0.85){
-            //     herbivoro.buscarAlimento(Alimento.alimentos);
-            // }
-            herbivoro.buscarAlimento(Alimento.alimentos);
-
             
-            herbivoro.detectaPredador(Carnivoro.carnivoros);
+            // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
+            let visaoH = new Circulo(herbivoro.posicao.x, herbivoro.posicao.y, herbivoro.raio_deteccao);
+            
+            herbivoro.buscarAlimento(qtree, visaoH);
+            herbivoro.detectaPredador(qtree, visaoH);
+
             // Soma o valor das variáveis pra todos os herbívoros
             velMedH += herbivoro.vel_max;
             forcaMedH += herbivoro.forca_max;
@@ -481,12 +523,11 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
             carnivoro.vagueia();
-            carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            
-            // // Não come se estiver satisfeito (85% de energia)
-            // if(carnivoro.energia <= carnivoro.energia_max * 0.85){
-            //     carnivoro.buscarHerbivoro(Herbivoro.herbivoros);
-            // }
+
+            // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
+            let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
+
+            carnivoro.buscarHerbivoro(qtree, visaoC, false);
 
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
@@ -577,3 +618,72 @@ setInterval(() => {
 
     document.getElementById("framerate").innerHTML = fps;
 }, 1000);
+
+
+
+
+
+
+
+
+var isEqual = function (value, other) {
+
+	// Get the value type
+	var type = Object.prototype.toString.call(value);
+
+	// If the two objects are not the same type, return false
+	if (type !== Object.prototype.toString.call(other)) return false;
+
+	// If items are not an object or array, return false
+	if (['[object Array]', '[object Object]'].indexOf(type) < 0) return false;
+
+	// Compare the length of the length of the two items
+	var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
+	var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+	if (valueLen !== otherLen) return false;
+
+	// Compare two items
+	var compare = function (item1, item2) {
+
+		// Get the object type
+		var itemType = Object.prototype.toString.call(item1);
+
+		// If an object or array, compare recursively
+		if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
+			if (!isEqual(item1, item2)) return false;
+		}
+
+		// Otherwise, do a simple comparison
+		else {
+
+			// If the two items are not the same type, return false
+			if (itemType !== Object.prototype.toString.call(item2)) return false;
+
+			// Else if it's a function, convert to a string and compare
+			// Otherwise, just compare
+			if (itemType === '[object Function]') {
+				if (item1.toString() !== item2.toString()) return false;
+			} else {
+				if (item1 !== item2) return false;
+			}
+
+		}
+	};
+
+	// Compare properties
+	if (type === '[object Array]') {
+		for (var i = 0; i < valueLen; i++) {
+			if (compare(value[i], other[i]) === false) return false;
+		}
+	} else {
+		for (var key in value) {
+			if (value.hasOwnProperty(key)) {
+				if (compare(value[key], other[key]) === false) return false;
+			}
+		}
+	}
+
+	// If nothing failed, return true
+	return true;
+
+};
