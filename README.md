@@ -1,5 +1,5 @@
 
-# evolv-e
+# evolv·e
 ## Genetic Algorithm in Javascript
 
 * Web application that aims at **simulating evolution** by natural selection using genetic algorithms in Javascript. 
