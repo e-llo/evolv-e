@@ -51,9 +51,6 @@ class Organismo{
         // ID 
         this.id = Organismo.id++;
 
-        // // QuadTree
-        // this.qtree = new QuadTree(retanguloCanvas, 5);
-
         Organismo.organismos.push(this);
     }
   

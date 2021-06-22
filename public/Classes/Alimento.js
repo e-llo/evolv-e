@@ -10,15 +10,8 @@ class Alimento{
 
         Alimento.alimentos.push(this);
 
-        // Variável para guardar a posição do organismo na lista de organismos
-        this.posicao_lista = Alimento.alimentos.length - 1;
-
         // ID
         this.id = Alimento.id++;
-    }
-
-    update(){
-        this.posicao_lista = Alimento.alimentos.find(alimento => isEqual(this, alimento));
     }
 
     display(){

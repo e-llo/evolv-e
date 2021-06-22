@@ -7,9 +7,6 @@ class Herbivoro extends Organismo{
         this.contagem_pra_reproducao = 0;
 
         Herbivoro.herbivoros.push(this);
-        
-        // Variável para guardar a posição do herbivoro na lista de herbivoros
-        this.posicao_lista = Herbivoro.herbivoros.length - 1;
     }
 
 

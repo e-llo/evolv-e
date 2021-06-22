@@ -10,9 +10,6 @@ class Carnivoro extends Organismo{
         // this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 1000;
 
         Carnivoro.carnivoros.push(this);
-
-        // Variável para guardar a posição do carnivoro na lista de carnivoros
-        this.posicao_lista = Carnivoro.carnivoros.length - 1;
     }
     // Método de reprodução (com mutações)
     reproduzir(){
