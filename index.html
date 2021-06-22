@@ -37,6 +37,17 @@
 </head>
 
 <body style="background: #222">
+    <div class="splash" style="background: #222;">
+        <div class="d-flex flex-column justify-content-center" style="height: inherit;">
+            <div class="align-self-center">
+                <!-- <img src="" alt=""/> -->
+                <p>
+                    Evolv<span>&#9679</span>e
+                </p>
+            </div>
+        </div>
+    </div>
+
     <canvas></canvas>
     
     <div class="cronometro">
@@ -161,7 +172,9 @@
         $(document).ready(function(){
             $('.toast').toast('show');
             $('.toast').css("data-autohide", "false");
-            
+            setTimeout(function(){
+                $(".splash").fadeOut(800)
+            }, 1500)
         });
 
 
