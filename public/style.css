@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body{
@@ -7,6 +8,7 @@ body{
     height: 100%;
     max-height: 100%;
     background: #222;
+
 }
 
 canvas {
@@ -43,6 +45,17 @@ canvas {
   top: 0;
   left: 0;
 }
+
+.splash {
+  position: absolute;
+  top:0; right:0;
+  height: 100%;
+  width: 100%;
+  z-index: 3000;
+  color: #fff;
+  font-size: 70px;
+}
+
 .slidecontainer {
     width: 100%; /* Width of the outside container */
     color: #ddd;
