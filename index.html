@@ -37,13 +37,13 @@
 </head>
 
 <body style="background: #222">
-    <div class="splash" style="background: #222;">
+    <div class="splash" style="background: #333;">
         <div class="d-flex flex-column justify-content-center" style="height: inherit;">
             <div class="align-self-center">
-                <!-- <img src="" alt=""/> -->
-                <p>
+                <img id="img-splash" src="images/capa-fundo-escuro.png" alt=""/>
+                <!-- <p>
                     Evolv<span>&#9679</span>e
-                </p>
+                </p> -->
             </div>
         </div>
     </div>
@@ -65,11 +65,11 @@
                     <div id="painelInicial">
                         <div id="inputsIniciais" class="p-0 m-0">
                             <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
-                            <input type="range" min="0" max="200" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
+                            <input type="range" min="0" max="500" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
                             <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
-                            <input type="range" min="0" max="200" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
+                            <input type="range" min="0" max="500" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
                             <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
-                            <input type="range" min="0" max="200" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
+                            <input type="range" min="0" max="500" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
                         </div>
                         <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
                         <input type="range" min="1" max="1001" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"

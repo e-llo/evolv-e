@@ -14,6 +14,14 @@ body{
 canvas {
     background-color: #333;
 }
+
+#img-splash{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 #painel{
     width: 485px;
     height: 850px;

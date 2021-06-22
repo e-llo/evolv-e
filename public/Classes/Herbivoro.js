@@ -74,8 +74,7 @@ class Herbivoro extends Organismo{
 
                 this.comeAlimento(alimentos_proximos[i_mais_perto], indice_lista_estatica);
 
-                this.contagem_pra_reproducao++; 
-                console.log(this.contagem_pra_reproducao);
+                this.contagem_pra_reproducao++;
 
                 ///////////////////////////////////////////////////////////////////////////////
                 if(this.contagem_pra_reproducao == 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos

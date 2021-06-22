@@ -173,22 +173,22 @@ function corMutacao(estilo) {
             }
 
             if(operacao == "adicao") {
-                if(p < 0.005){ // Há 0.5% de chance de a mutação ser grande
+                if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
                     return cor + Math.ceil(Math.random() * 100)
-                } else if(p < 0.015){ // Há 1% de chance (1.5% - o 0.5% do if anterior) de a mutação ser razoavelmente grande
+                } else if(p < 0.008){ // Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
                     return cor + Math.ceil(Math.random() * 50)
-                } else if(p < 0.05){ // Há 3.5% de chance (5% - o 1.5% do if anterior) de a mutação ser razoável
+                } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
                     return cor + Math.ceil(Math.random() * 30)
                 } else{
                     return cor + Math.ceil(Math.random() * 10)
                 }
                 
             } else { //subtração
-                if(p < 0.005){ // Há 0.5% de chance de a mutação ser grande
+                if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
                     return cor - Math.ceil(Math.random() * 100)
-                } else if(p < 0.015){ // Há 1% de chance (1.5% - o 0.5% do if anterior) de a mutação ser razoavelmente grande
+                } else if(p < 0.008){ // Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
                     return cor - Math.ceil(Math.random() * 50)
-                } else if(p < 0.05){ // Há 3.5% de chance (5% - o 1.5% do if anterior) de a mutação ser razoável
+                } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
                     return cor - Math.ceil(Math.random() * 30)
                 } else{
                     return cor - Math.ceil(Math.random() * 10)
@@ -202,11 +202,11 @@ function corMutacao(estilo) {
 function newMutacao(valor, porcent) {// exemplo: valor = 20;  porcent = 0.1 || 10%
     let p = Math.random();
     let variacao = valor * porcent; //  variacao = 20 * 0.1 = 2, ou seja, poderá variar de +2 a -2 no resultado
-    if(p < 0.005){ // Há 0.5% de chance de a mutação ser grande
+    if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
         variacao *= 6;
-    } else if(p < 0.015){ // Há 1% de chance (1.5% - o 0.5% do if anterior) de a mutação ser razoavelmente grande
+    } else if(p < 0.008){ /// Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
         variacao *= 3;
-    } else if(p < 0.05){ // Há 3.5% de chance (5% - o 1.5% do if anterior) de a mutação ser razoável
+    } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
         variacao *= 1.8;
     }
     
@@ -305,7 +305,7 @@ function animate(){
     lastLoop = thisLoop;
 
     // Criando a Quadtree
-    let qtree = new QuadTree(retanguloCanvas, 5);
+    let qtree = new QuadTree(retanguloCanvas, 10);
 
     // Divisão de tela
     if(checkbox_divisao.checked){
@@ -405,7 +405,11 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
 
-            carnivoro.buscarHerbivoro(qtree, visaoC, false);
+            if(carnivoro.energia <= carnivoro.energia_max * 0.8){
+                carnivoro.buscarHerbivoro(qtree, visaoC, false);
+            }
+
+            // carnivoro.buscarHerbivoro(qtree, visaoC, false);
 
             // Soma o valor das variáveis pra todos os carnívoros
             velMedC += carnivoro.vel_max;
@@ -501,11 +505,11 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
 
-            // if(carnivoro.energia <= carnivoro.energia_max * 0.8){
-            //     carnivoro.buscarHerbivoro(qtree, visaoC, false);
-            // }
+            if(carnivoro.energia <= carnivoro.energia_max * 0.8){
+                carnivoro.buscarHerbivoro(qtree, visaoC, false);
+            }
 
-            carnivoro.buscarHerbivoro(qtree, visaoC);
+            // carnivoro.buscarHerbivoro(qtree, visaoC);
 
             
             // Soma o valor das variáveis pra todos os carnívoros

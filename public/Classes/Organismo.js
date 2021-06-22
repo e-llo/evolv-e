@@ -59,24 +59,25 @@ class Organismo{
   
     // Criando um método de reprodução comum a todos os organismos
     _reproduzir(){ 
-        var probabilidade_mutacao = 0.2 // chances de cada gene (atributo) sofrer mutação
+        var probabilidade_mutacao = 0.1; // chances de cada gene (atributo) sofrer mutação
+        var magnitude_mutacao = 0.05; // magnitude da mutação (o quanto vai variar)
 
         // raio mínimo
         var raio_min_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio_min, 0.1) : this.raio_min;
+                newMutacao(this.raio_min, magnitude_mutacao) : this.raio_min;
         if(raio_min_filho < 0){
             raio_min_filho = 0;
         }
         // velocidade máxima
         var vel_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.vel_max, 0.1) : this.vel_max;
+                newMutacao(this.vel_max, magnitude_mutacao) : this.vel_max;
         if(vel_max_filho < 0){
             vel_max_filho = 0;
         }
 
         // força máxima
         var forca_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.forca_max, 0.1) : this.forca_max;
+                newMutacao(this.forca_max, magnitude_mutacao) : this.forca_max;
 
         // cor
         var cor_filho = Math.random() < probabilidade_mutacao ?
@@ -84,30 +85,30 @@ class Organismo{
 
         // raio de detecção
         var raio_deteccao_min_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio_deteccao_min, 0.1) : this.raio_deteccao_min;
+                newMutacao(this.raio_deteccao_min, magnitude_mutacao) : this.raio_deteccao_min;
         if(raio_deteccao_min_filho < 5){
             raio_deteccao_min_filho = 5;
         }
 
         // energia máxima
         var energia_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.energia_max, 0.1) : this.energia_max;
+                newMutacao(this.energia_max, magnitude_mutacao) : this.energia_max;
 
         // cansaço máximo
         var cansaco_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.cansaco_max, 0.1) : this.cansaco_max;
+                newMutacao(this.cansaco_max, magnitude_mutacao) : this.cansaco_max;
 
         // taxa de aumento do cansaço
         var taxa_aum_cansaco_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.taxa_aum_cansaco, 0.1) : this.taxa_aum_cansaco;
+                newMutacao(this.taxa_aum_cansaco, magnitude_mutacao) : this.taxa_aum_cansaco;
         
         // tempo de vida mínimo
         var tempo_vida_min_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.tempo_vida.min, 0.1) : this.tempo_vida.min;
+                newMutacao(this.tempo_vida.min, magnitude_mutacao) : this.tempo_vida.min;
     
         //tempo de vida máximo
         var tempo_vida_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.tempo_vida.max, 0.1) : this.tempo_vida.max;
+                newMutacao(this.tempo_vida.max, magnitude_mutacao) : this.tempo_vida.max;
 
         var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
         raio_deteccao_min: raio_deteccao_min_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,
@@ -119,13 +120,6 @@ class Organismo{
     // Método para atualizar o estado do organismo
     update(){
         this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000;
-
-        
-        // if(this instanceof Carnivoro){
-        //     console.log(this.energia + "/" + this.energia_max);
-        //     console.log("taxa: " + this.taxa_gasto_energia);
-        // }
-        
 
         // this.tempo_vivido++;
         // Taxa de diminuição de energia
