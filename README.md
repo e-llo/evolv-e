@@ -1,5 +1,5 @@
+![logo](https://github.com/evolv-e/evolv-e/blob/main/Images/capaFundoClaro.png)
 
-# evolv·e
 ## Genetic Algorithm in Javascript
 
 * Web application that aims at **simulating evolution** by natural selection using genetic algorithms in Javascript. 
