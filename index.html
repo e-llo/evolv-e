@@ -75,6 +75,21 @@
                         <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
                         <input type="range" min="1" max="1001" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
                             onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
+                        
+
+
+                        <label id="probMutacao" name="probMutacao" for="inputProbMutacao">Probabilidade de mutação: <label id="numProbMutacao">8</label>%</label>
+                        <input type="range" min="0" max="100" value="8" class="slider" id="inputProbMutacao" oninput="mudouInputProb()"
+                            onchange="mudaProbMutacao(inputProbMutacao.value)">
+
+
+                    
+                        <label id="magMutacao" name="magMutacao" for="inputMagMutacao">Magnitude das mutações: <label id="numMagMutacao">5</label>%</label>
+                        <input type="range" min="0" max="100" value="5" class="slider" id="inputMagMutacao" oninput="mudouInputMag()"
+                            onchange="mudaMagMutacao(inputMagMutacao.value)">
+
+
+
                         <div id="botoesIniciais" class ="row mt-3">
                             <div class="col-sm-3 d-grid gap-2">
                                 <button type="button" class="btn btn-sm btn-outline-secondary" style="color: #ddd" onclick="restaurarPadroes()">Default</button>
@@ -131,6 +146,13 @@
   <script type="text/javascript">
         var inputTalim = document.getElementById("inputTaxaAlimentos");
         const labelTaxa = document.getElementById("numTaxaAli");
+
+        var inputPMut = document.getElementById("inputProbMutacao");
+        const labelProb = document.getElementById("numProbMutacao");
+
+        var inputMMut = document.getElementById("inputMagMutacao");
+        const labelMag = document.getElementById("numMagMutacao");
+
         var n_carnivoros;
         var n_herbivoros;
         var n_alimentos;
@@ -186,13 +208,17 @@
             n_alimentos = parseInt(document.getElementById("numAli").textContent);
 
             antesDoPlay = false;
-
+            resetaCronometro();
             // destroiObjetos();
             criaCronometro();
             resetar();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
             inputTalim = document.getElementById("inputTaxaAlimentos");
             mudaIntervaloAlimentos(inputTalim.value, true);
+            inputPMut = document.getElementById("inputProbMutacao");
+            mudaProbMutacao(inputPMut.value);
+            inputMMut = document.getElementById("inputMagMutacao");
+            mudaMagMutacao(inputMMut.value);
             document.getElementById("inputsIniciais").classList.add("d-none");
             document.getElementById("painelSecundario").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.add("d-none");
@@ -211,8 +237,13 @@
             document.getElementById("numAli").textContent = 150;
             document.getElementById("inputAlimentos").value = 150;
 
+            document.getElementById("numProbMutacao").textContent = 8;
+            document.getElementById("numMagMutacao").textContent = 5;
+
             labelTaxa.textContent = 80;
             inputTalim.value = 80;
+            inputPMut.value = 8;
+            inputMMut.value = 5;
         }
 
         function mostrarPainelInicial() {
@@ -220,6 +251,10 @@
             antesDoPlay = true;
             inputTalim = document.getElementById("inputTaxaAlimentos");
             mudaIntervaloAlimentos(inputTalim.value);
+            inputPMut = document.getElementById("inputProbMutacao");
+            mudaProbMutacao(inputPMut.value);
+            inputMMut = document.getElementById("inputMagMutacao");
+            mudaMagMutacao(inputMMut.value);
             document.getElementById("inputsIniciais").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.remove("d-none");
             document.getElementById("botoesSecundarios").classList.add("d-none");
@@ -279,6 +314,14 @@
                 btnAli.classList.add("active");
                 document.addEventListener('click', geradorA, true); 
             }
+        }
+
+        function mudouInputProb(){
+            labelProb.textContent = inputPMut.value;
+        }
+
+        function mudouInputMag(){
+            labelMag.textContent = inputMMut.value;
         }
 
         function mudouInputTaxa() {

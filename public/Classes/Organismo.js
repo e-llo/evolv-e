@@ -55,57 +55,45 @@ class Organismo{
     }
   
     // Criando um método de reprodução comum a todos os organismos
-    _reproduzir(){ 
-        var probabilidade_mutacao = 0.1; // chances de cada gene (atributo) sofrer mutação
-        var magnitude_mutacao = 0.05; // magnitude da mutação (o quanto vai variar)
+    _reproduzir(){
 
         // raio mínimo
-        var raio_min_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio_min, magnitude_mutacao) : this.raio_min;
+        var raio_min_filho = newMutacao(this.raio_min);
         if(raio_min_filho < 0){
             raio_min_filho = 0;
         }
         // velocidade máxima
-        var vel_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.vel_max, magnitude_mutacao) : this.vel_max;
+        var vel_max_filho = newMutacao(this.vel_max);
         if(vel_max_filho < 0){
             vel_max_filho = 0;
         }
 
         // força máxima
-        var forca_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.forca_max, magnitude_mutacao) : this.forca_max;
+        var forca_max_filho = newMutacao(this.forca_max);
 
         // cor
-        var cor_filho = Math.random() < probabilidade_mutacao ?
-                corMutacao(this.cor) : this.cor;
+        var cor_filho = corMutacao(this.cor);
 
         // raio de detecção
-        var raio_deteccao_min_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.raio_deteccao_min, magnitude_mutacao) : this.raio_deteccao_min;
+        var raio_deteccao_min_filho = newMutacao(this.raio_deteccao_min);
         if(raio_deteccao_min_filho < 5){
             raio_deteccao_min_filho = 5;
         }
 
         // energia máxima
-        var energia_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.energia_max, magnitude_mutacao) : this.energia_max;
+        var energia_max_filho = newMutacao(this.energia_max);
 
         // cansaço máximo
-        var cansaco_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.cansaco_max, magnitude_mutacao) : this.cansaco_max;
+        var cansaco_max_filho = newMutacao(this.cansaco_max);
 
         // taxa de aumento do cansaço
-        var taxa_aum_cansaco_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.taxa_aum_cansaco, magnitude_mutacao) : this.taxa_aum_cansaco;
+        var taxa_aum_cansaco_filho = newMutacao(this.taxa_aum_cansaco);
         
         // tempo de vida mínimo
-        var tempo_vida_min_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.tempo_vida.min, magnitude_mutacao) : this.tempo_vida.min;
+        var tempo_vida_min_filho = newMutacao(this.tempo_vida.min);
     
         //tempo de vida máximo
-        var tempo_vida_max_filho = Math.random() < probabilidade_mutacao ?
-                newMutacao(this.tempo_vida.max, magnitude_mutacao) : this.tempo_vida.max;
+        var tempo_vida_max_filho = newMutacao(this.tempo_vida.max);
 
         var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
         raio_deteccao_min: raio_deteccao_min_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,

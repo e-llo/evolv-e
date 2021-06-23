@@ -42,6 +42,10 @@ var raioDetMedC = 0;
 var energMedC = 0;
 var taxaEnergMedC = 0;
 
+// Variáveis para alterações nas mutações
+// var probabilidade_mutacao = labelProb; // chances de cada gene (atributo) sofrer mutação
+var magnitude_mutacao = 0.1; // magnitude da mutação (o quanto vai variar)
+
 // Variável para calcular frame rate (usada no animate())
 // var lastLoop = new Date();
 
@@ -77,6 +81,9 @@ function destroiObjetos(){
     Herbivoro.herbivoros.length = 0;
     Alimento.alimentos.length = 0;
     // mudaIntervaloAlimentos(1001);
+}
+
+function resetaCronometro(){
     hora = minuto = segundo = milisegundo = segundos = 0;
 
     //limpar o cronometro se ele existe.
@@ -153,71 +160,82 @@ function geraCor(){
 }
 
 function corMutacao(estilo) {
-    let cores = estilo.substring(4, estilo.length - 1) // remover os caracteres de texto. ex: "rgb(256,20,40)"
-        .split(',') // retornar um array com os elementos separados por virgula. ex: 256,20,40
-        .map(function(cor) { //pegar cada elemento do array e fazer os cálculos a seguir
-            cor = parseInt(cor);
-            let operacao = "";
-            let p = Math.random();
+    if(Math.random() < probabilidade_mutacao){ // Quanto menor for probabilidade_mutacao, menor será a chance da mutação ocorrer
+        let cores = estilo.substring(4, estilo.length - 1) // remover os caracteres de texto. ex: "rgb(256,20,40)"
+            .split(',') // retornar um array com os elementos separados por virgula. ex: 256,20,40
+            .map(function(cor) { //pegar cada elemento do array e fazer os cálculos a seguir
+                cor = parseInt(cor);
+                let operacao = "";
+                let p = Math.random();
 
-            if(cor <= 10) { //para não gerar números negativos
-                operacao = "adicao"
-            } else if(cor >= 246) { //para não gerar valores maiores que 256
-                operacao = "subtracao"
-
-            } else { //randomiza se vai ser add ou subtraido valores caso a cor estiver entre 10 e 246
-                if(Math.random() < 0.5) {
+                if(cor <= 10) { //para não gerar números negativos
                     operacao = "adicao"
-                } else {
+                } else if(cor >= 246) { //para não gerar valores maiores que 256
                     operacao = "subtracao"
-                }
-            }
 
-            if(operacao == "adicao") {
-                if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
-                    return cor + Math.ceil(Math.random() * 100)
-                } else if(p < 0.008){ // Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
-                    return cor + Math.ceil(Math.random() * 50)
-                } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
-                    return cor + Math.ceil(Math.random() * 30)
-                } else{
-                    return cor + Math.ceil(Math.random() * 10)
+                } else { //randomiza se vai ser add ou subtraido valores caso a cor estiver entre 10 e 246
+                    if(Math.random() < 0.5) {
+                        operacao = "adicao"
+                    } else {
+                        operacao = "subtracao"
+                    }
                 }
-                
-            } else { //subtração
-                if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
-                    return cor - Math.ceil(Math.random() * 100)
-                } else if(p < 0.008){ // Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
-                    return cor - Math.ceil(Math.random() * 50)
-                } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
-                    return cor - Math.ceil(Math.random() * 30)
-                } else{
-                    return cor - Math.ceil(Math.random() * 10)
-                }
-            }
-        });
 
-    return `rgb(${cores[0]}, ${cores[1]}, ${cores[2]})`
+                if(operacao == "adicao") {
+                    if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
+                        return Math.ceil(cor + cor * (Math.random() * magnitude_mutacao * 10));
+                    } else if(p < 0.008){ // Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
+                        return Math.ceil(cor + cor * (Math.random() * magnitude_mutacao * 4));
+                    } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
+                        return Math.ceil(cor + cor * (Math.random() * magnitude_mutacao * 2));
+                    } else{
+                        // return cor + Math.ceil(Math.random() * 10)
+                        return Math.ceil(cor + cor * (Math.random() * magnitude_mutacao));
+                    }
+                    
+                } else { //subtração
+                    if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
+                        return Math.ceil(cor - cor * (Math.random() * magnitude_mutacao * 10));
+                    } else if(p < 0.008){ // Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
+                        return Math.ceil(cor - cor * (Math.random() * magnitude_mutacao * 4));
+                    } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
+                        return Math.ceil(cor - cor * (Math.random() * magnitude_mutacao * 2));
+                    } else{
+                        return Math.ceil(cor - cor * (Math.random() * magnitude_mutacao));
+                    }
+                }
+            });
+        
+        // console.log("MUTAÇÃO DE COR");
+        return `rgb(${cores[0]}, ${cores[1]}, ${cores[2]})`
+    } else{
+        return estilo;
+    }
 }
 
-function newMutacao(valor, porcent) {// exemplo: valor = 20;  porcent = 0.1 || 10%
-    let p = Math.random();
-    let variacao = valor * porcent; //  variacao = 20 * 0.1 = 2, ou seja, poderá variar de +2 a -2 no resultado
-    if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
-        variacao *= 6;
-    } else if(p < 0.008){ /// Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
-        variacao *= 3;
-    } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
-        variacao *= 1.8;
+function newMutacao(valor) {// exemplo: valor = 20;  magnitude_mutacao = 0.05 || 5%
+    if(Math.random() < probabilidade_mutacao){ // Quanto menor for probabilidade_mutacao, menor será a chance da mutação ocorrer
+        let p = Math.random();
+        let variacao = valor * magnitude_mutacao; //  variacao = 20 * 0.05 = 1, ou seja, poderá variar de +1 a -1 no resultado
+        if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
+            variacao *= 6;
+        } else if(p < 0.008){ /// Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
+            variacao *= 3.5;
+        } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
+            variacao *= 2;
+        }
+        
+        let minimo = valor - variacao;  //  minimo = 20 - 1 = 19. Para que não precise sub-dividir o return em adição ou subtração
+        variacao *= 2                   //  puxo o ponto de referência para o menor valor possível. Logo, o resultado variará de
+                                        //  0 a +2, afinal a distância de 1 até -1 é 2.
+        if(minimo <= 0) {
+            minimo = valor * 0.01; // Se a mutação diminuir o valor para menos que 0, ela será simplesmente muito pequena
+        }
+        console.log("MUTAÇÃO");
+        return minimo + Math.random() * variacao; // 19 + Math.randon() * 2. O resultado estará entre o intervalo [19, 21]
+    } else{ // Caso não ocorra mutação, retorna o valor original
+        return valor;
     }
-    
-    let minimo = valor - variacao;  //  minimo = 20 - 2 = 18. Para que não precise sub-dividir o return em adição ou subtração
-    variacao *= 2                   //  puxo o ponto de referência para o menor valor possível. Logo, o resultado variará de
-                                    //  0 a +4, afinal a distância de 2 até -2 é 4.
-    if(minimo <= 0) {
-        minimo = valor;
-    }
-    return minimo + Math.random() * variacao; // 18 + Math.randon() * 4. O resultado estará entre o intervalo [18, 22]
 }
 
 function geraNumeroPorIntervalo(min, max) {
@@ -244,6 +262,14 @@ function mudaIntervaloAlimentos(novoTempo, criar=false) {
     if(novoTempo > 1000) return;
     if(antesDoPlay) return;
     intervaloTaxaAlimentos = setInterval(criaAlimentosGradativo, novoTempo)
+}
+
+function mudaProbMutacao(novoValor){
+    probabilidade_mutacao = novoValor / 100;
+}
+
+function mudaMagMutacao(novoValor){
+    magnitude_mutacao = novoValor / 100;
 }
 
 function desenhaDivisao(){
