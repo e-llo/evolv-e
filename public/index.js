@@ -76,6 +76,7 @@ function destroiObjetos(){
     Carnivoro.carnivoros.length = 0;
     Herbivoro.herbivoros.length = 0;
     Alimento.alimentos.length = 0;
+    // mudaIntervaloAlimentos(1001);
     hora = minuto = segundo = milisegundo = segundos = 0;
 
     //limpar o cronometro se ele existe.
@@ -241,6 +242,7 @@ function mudaIntervaloAlimentos(novoTempo, criar=false) {
         clearInterval(intervaloTaxaAlimentos);
     }
     if(novoTempo > 1000) return;
+    if(antesDoPlay) return;
     intervaloTaxaAlimentos = setInterval(criaAlimentosGradativo, novoTempo)
 }
 

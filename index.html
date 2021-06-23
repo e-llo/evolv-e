@@ -129,12 +129,13 @@
     
     
   <script type="text/javascript">
-        const inputTalim = document.getElementById("inputTaxaAlimentos");
+        var inputTalim = document.getElementById("inputTaxaAlimentos");
         const labelTaxa = document.getElementById("numTaxaAli");
         var n_carnivoros;
         var n_herbivoros;
         var n_alimentos;
 
+        var antesDoPlay = false;
 
         var rodando = false;        
 
@@ -184,10 +185,13 @@
             n_herbivoros = parseInt(document.getElementById("numHerb").textContent);
             n_alimentos = parseInt(document.getElementById("numAli").textContent);
 
-            destroiObjetos();
+            antesDoPlay = false;
+
+            // destroiObjetos();
             criaCronometro();
             resetar();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
+            inputTalim = document.getElementById("inputTaxaAlimentos");
             mudaIntervaloAlimentos(inputTalim.value, true);
             document.getElementById("inputsIniciais").classList.add("d-none");
             document.getElementById("painelSecundario").classList.remove("d-none");
@@ -212,10 +216,18 @@
         }
 
         function mostrarPainelInicial() {
+            destroiObjetos();
+            antesDoPlay = true;
+            inputTalim = document.getElementById("inputTaxaAlimentos");
+            mudaIntervaloAlimentos(inputTalim.value);
             document.getElementById("inputsIniciais").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.remove("d-none");
             document.getElementById("botoesSecundarios").classList.add("d-none");
         }
+
+        // function paraAlimentos(){
+        //     mudaIntervaloAlimentos(1001);
+        // }
 
         function addCarnivoro(){
             // na posição que o mouse clicar    
