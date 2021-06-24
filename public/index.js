@@ -101,10 +101,6 @@ var checkbox_divisao = document.getElementById('divisao');
 var telaDividida;
 var limitador_de_loop = 0;
 
-
-
-
-
 function geraAlimento(x,y){
     var raio = Math.random() + 1;
     new Alimento(x, y, raio);
@@ -231,7 +227,7 @@ function newMutacao(valor) {// exemplo: valor = 20;  magnitude_mutacao = 0.05 ||
         if(minimo <= 0) {
             minimo = valor * 0.01; // Se a mutação diminuir o valor para menos que 0, ela será simplesmente muito pequena
         }
-        console.log("MUTAÇÃO");
+        // console.log("MUTAÇÃO");
         return minimo + Math.random() * variacao; // 19 + Math.randon() * 2. O resultado estará entre o intervalo [19, 21]
     } else{ // Caso não ocorra mutação, retorna o valor original
         return valor;
@@ -323,6 +319,61 @@ function criaPontos(){
     }
 }
 
+function calculaDadosGrafico(){
+    // Resetando as variáveis para os herbívoros
+    velMedH = 0;
+    forcaMedH = 0;
+    raioMedH = 0;
+    raioDetMedH = 0;
+    energMedH = 0;
+    taxaEnergMedH = 0;
+
+    Herbivoro.herbivoros.forEach(herbivoro => {
+         // Soma o valor das variáveis pra todos os herbívoros
+         velMedH += herbivoro.vel_max;
+         forcaMedH += herbivoro.forca_max;
+         raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
+         raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+         energMedH += herbivoro.energia_max;
+         taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
+    });
+
+    // Divide o valor (a soma total) pelo número de herbívoros para obter a média
+    velMedH /= Herbivoro.herbivoros.length;
+    forcaMedH /= Herbivoro.herbivoros.length;
+    raioMedH /= Herbivoro.herbivoros.length;
+    raioDetMedH /= Herbivoro.herbivoros.length;
+    energMedH /= Herbivoro.herbivoros.length;
+    taxaEnergMedH /= Herbivoro.herbivoros.length;
+
+
+    // Resetando as variáveis para os carnívoros
+    velMedC = 0;
+    forcaMedC = 0;
+    raioMedC = 0;
+    raioDetMedC = 0;
+    energMedC = 0;
+    taxaEnergMedC = 0;
+
+    Carnivoro.carnivoros.forEach(carnivoro => {
+        // Soma o valor das variáveis pra todos os carnívoros
+        velMedC += carnivoro.vel_max;
+        forcaMedC += carnivoro.forca_max;
+        raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
+        raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+        energMedC += carnivoro.energia_max;
+        taxaEnergMedC += carnivoro.taxa_gasto_energia_max;
+    });
+
+    // Divide o valor (a soma total) pelo número de carnívoros para obter a média
+    velMedC /= Carnivoro.carnivoros.length;
+    forcaMedC /= Carnivoro.carnivoros.length;
+    raioMedC /= Carnivoro.carnivoros.length;
+    raioDetMedC /= Carnivoro.carnivoros.length;
+    energMedC /= Carnivoro.carnivoros.length;
+    taxaEnergMedC /= Carnivoro.carnivoros.length;
+}
+
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, canvas.width, canvas.height);
@@ -382,14 +433,6 @@ function animate(){
             qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
         });
 
-        // resetando
-        velMedH = 0;
-        forcaMedH = 0;
-        raioMedH = 0;
-        raioDetMedH = 0;
-        energMedH = 0;
-        taxaEnergMedH = 0;
-
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
@@ -399,32 +442,7 @@ function animate(){
                         
             herbivoro.buscarAlimento(qtree, visaoH);
             herbivoro.detectaPredador(qtree, visaoH);
-
-            // Soma o valor das variáveis pra todos os herbívoros
-            velMedH += herbivoro.vel_max;
-            forcaMedH += herbivoro.forca_max;
-            raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
-            raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
-            energMedH += herbivoro.energia_max;
-            taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
         })
-
-        // Divide o valor (a soma total) pelo número de herbívoros para obter a média
-        velMedH /= Herbivoro.herbivoros.length;
-        forcaMedH /= Herbivoro.herbivoros.length;
-        raioMedH /= Herbivoro.herbivoros.length;
-        raioDetMedH /= Herbivoro.herbivoros.length;
-        energMedH /= Herbivoro.herbivoros.length;
-        taxaEnergMedH /= Herbivoro.herbivoros.length;
-
-
-        // resetando
-        velMedC = 0;
-        forcaMedC = 0;
-        raioMedC = 0;
-        raioDetMedC = 0;
-        energMedC = 0;
-        taxaEnergMedC = 0;
 
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
@@ -438,24 +456,7 @@ function animate(){
             }
 
             // carnivoro.buscarHerbivoro(qtree, visaoC, false);
-
-            // Soma o valor das variáveis pra todos os carnívoros
-            velMedC += carnivoro.vel_max;
-            forcaMedC += carnivoro.forca_max;
-            raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
-            raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
-            energMedC += carnivoro.energia_max;
-            taxaEnergMedC += carnivoro.taxa_gasto_energia_max;
         })
-         
-        // Divide o valor (a soma total) pelo número de carnívoros para obter a média
-        velMedC /= Carnivoro.carnivoros.length;
-        forcaMedC /= Herbivoro.herbivoros.length;
-        raioMedC /= Carnivoro.carnivoros.length;
-        raioDetMedC /= Carnivoro.carnivoros.length;
-        energMedC /= Carnivoro.carnivoros.length;
-        taxaEnergMedC /= Carnivoro.carnivoros.length;
-
     } else{ // se a tela NÃO estiver dividida
         limitador_de_loop = 0;
 
@@ -467,7 +468,6 @@ function animate(){
 
         Organismo.organismos.forEach((organismo) => {
             organismo.criaBordas(false); // telaDividida: false
-            // organismo.timer_reproducao++;
         })
 
         // Inserindo os organismos na QuadTree antes de chamar os métodos de cada um
@@ -477,14 +477,7 @@ function animate(){
         Carnivoro.carnivoros.forEach(carnivoro => {
             qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
         });
-
-        // resetando
-        velMedH = 0;
-        forcaMedH = 0;
-        raioMedH = 0;
-        raioDetMedH = 0;
-        energMedH = 0;
-        taxaEnergMedH = 0;
+        
         
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
@@ -499,32 +492,7 @@ function animate(){
 
             herbivoro.buscarAlimento(qtree, visaoH);
             herbivoro.detectaPredador(qtree, visaoH);
-
-            // Soma o valor das variáveis pra todos os herbívoros
-            velMedH += herbivoro.vel_max;
-            forcaMedH += herbivoro.forca_max;
-            raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
-            raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
-            energMedH += herbivoro.energia_max;
-            taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
         })
-
-        // Divide o valor (a soma total) pelo número de herbívoros para obter a média
-        velMedH /= Herbivoro.herbivoros.length;
-        forcaMedH /= Herbivoro.herbivoros.length;
-        raioMedH /= Herbivoro.herbivoros.length;
-        raioDetMedH /= Herbivoro.herbivoros.length;
-        energMedH /= Herbivoro.herbivoros.length;
-        taxaEnergMedH /= Herbivoro.herbivoros.length;
-
-
-        // resetando
-        velMedC = 0;
-        forcaMedC = 0;
-        raioMedC = 0;
-        raioDetMedC = 0;
-        energMedC = 0;
-        taxaEnergMedC = 0;
 
         Carnivoro.carnivoros.forEach(carnivoro => {
             carnivoro.update();
@@ -538,24 +506,7 @@ function animate(){
             }
 
             // carnivoro.buscarHerbivoro(qtree, visaoC);
-
-            
-            // Soma o valor das variáveis pra todos os carnívoros
-            velMedC += carnivoro.vel_max;
-            forcaMedC += carnivoro.forca_max;
-            raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
-            raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
-            energMedC += carnivoro.energia_max;
-            taxaEnergMedC += carnivoro.taxa_gasto_energia_max;
         })
-
-        // Divide o valor (a soma total) pelo número de carnívoros para obter a média
-        velMedC /= Carnivoro.carnivoros.length;
-        forcaMedC /= Carnivoro.carnivoros.length;
-        raioMedC /= Carnivoro.carnivoros.length;
-        raioDetMedC /= Carnivoro.carnivoros.length;
-        energMedC /= Carnivoro.carnivoros.length;
-        taxaEnergMedC /= Carnivoro.carnivoros.length;
     }
 }
 
