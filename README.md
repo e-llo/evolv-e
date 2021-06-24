@@ -28,13 +28,13 @@ https://github.com/evolv-e/evolv-e.git
 ```
 
 ### 🌿Step 2: Install Dependencies
-On the terminal:
+On the command line:
 ```bash
 npm install
 ```
 
 ### 🏃‍♀️Step 3: Run 
-On the terminal:
+On the command line:
 ```bash
 npm start
 ```
