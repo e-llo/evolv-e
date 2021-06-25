@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="Images/logoEscuroSemFundo.png">
     <link rel="stylesheet" href="./public/style.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <title>Evolv-e</title>
     
     <!-- A ordem de importar o script deve ser do que não depende de nada até os que dependem... (pra n bugar)-->
@@ -100,7 +101,15 @@
                         </div>
                         <div id="botoesSecundarios" class="mt-3 text-center d-none">
                             <button id="restartBtn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd" onclick="mostrarPainelInicial()">Restart</button>
+                            <div id="btnPausa" class="" onclick="pausa()" style="cursor: pointer; display: inline; margin-left: 10px;">
+                                <i class="fas fa-pause"></i>
+                            </div>
+                            <div id="btnDespausa" class="d-none" onclick="despausa()" style="cursor: pointer; display: inline; margin-left: 10px;">
+                                <i class="fas fa-play"></i>
+                            </div>
                         </div>
+                        
+                        
                     </div>
                     <div id="painelSecundario" class="d-none">
                         <div class="d-grid gap-2 mt-4">
@@ -161,6 +170,9 @@
 
         var rodando = false;        
 
+        // Variável para pausar e despausar o jogo
+        var pausado = false;
+
         // Variáveis para auxiliar a atualizar os valores dos sliders
         var sliderCarn = document.getElementById("inputCarnivoros");
         var outputCarn = document.getElementById("numCarn");
@@ -174,6 +186,9 @@
         var outputAli = document.getElementById("numAli");
         outputAli.innerHTML = sliderAli.value;
 
+        // Variáveis para pausar e despausar a simulação
+        var btnPausa = document.getElementById("btnPausa");
+        var btnDespausa = document.getElementById("btnDespausa");
 
         // Variável para escolher o gráfico que será mostrado
         var tipoGrafico = 1;
@@ -225,7 +240,7 @@
             document.getElementById("painelSecundario").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.add("d-none");
             document.getElementById("botoesSecundarios").classList.remove("d-none");
-            if(!rodando) { animate(); };
+            if(!rodando && !pausado) { animate(); };
             rodando = true;
         }
        

@@ -53,6 +53,8 @@ var magnitude_mutacao = 0.1; // magnitude da mutação (o quanto vai variar)
 let retanguloCanvas = new Retangulo(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2);
 
 
+
+
 // ---------------------------------------------------------------------------------------
 //                                  FUNÇÕES
 // ---------------------------------------------------------------------------------------
@@ -240,13 +242,15 @@ function geraNumeroPorIntervalo(min, max) {
 }
 
 function criaAlimentosGradativo(){
-    for(var i = 0; i < 2; i++){
-        var x = Math.random() * (canvas.width - 62) + 31;
-        var y = Math.random() * (canvas.height - 62) + 31;
-        var raio = Math.random() * 1.5 + 1;
+    if(!pausado){ // Para de criar alimentos enquanto a simulação estiver pausada
+        for(var i = 0; i < 2; i++){
+            var x = Math.random() * (canvas.width - 62) + 31;
+            var y = Math.random() * (canvas.height - 62) + 31;
+            var raio = Math.random() * 1.5 + 1;
 
-        if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
-            new Alimento(x, y, raio);
+            if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
+                new Alimento(x, y, raio);
+            }
         }
     }
 }
@@ -328,6 +332,15 @@ function calculaDadosGrafico(){
     energMedH = 0;
     taxaEnergMedH = 0;
 
+    // Resetando as variáveis para os carnívoros
+    velMedC = 0;
+    forcaMedC = 0;
+    raioMedC = 0;
+    raioDetMedC = 0;
+    energMedC = 0;
+    taxaEnergMedC = 0;
+
+
     Herbivoro.herbivoros.forEach(herbivoro => {
          // Soma o valor das variáveis pra todos os herbívoros
          velMedH += herbivoro.vel_max;
@@ -337,23 +350,6 @@ function calculaDadosGrafico(){
          energMedH += herbivoro.energia_max;
          taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
     });
-
-    // Divide o valor (a soma total) pelo número de herbívoros para obter a média
-    velMedH /= Herbivoro.herbivoros.length;
-    forcaMedH /= Herbivoro.herbivoros.length;
-    raioMedH /= Herbivoro.herbivoros.length;
-    raioDetMedH /= Herbivoro.herbivoros.length;
-    energMedH /= Herbivoro.herbivoros.length;
-    taxaEnergMedH /= Herbivoro.herbivoros.length;
-
-
-    // Resetando as variáveis para os carnívoros
-    velMedC = 0;
-    forcaMedC = 0;
-    raioMedC = 0;
-    raioDetMedC = 0;
-    energMedC = 0;
-    taxaEnergMedC = 0;
 
     Carnivoro.carnivoros.forEach(carnivoro => {
         // Soma o valor das variáveis pra todos os carnívoros
@@ -365,6 +361,15 @@ function calculaDadosGrafico(){
         taxaEnergMedC += carnivoro.taxa_gasto_energia_max;
     });
 
+
+    // Divide o valor (a soma total) pelo número de herbívoros para obter a média
+    velMedH /= Herbivoro.herbivoros.length;
+    forcaMedH /= Herbivoro.herbivoros.length;
+    raioMedH /= Herbivoro.herbivoros.length;
+    raioDetMedH /= Herbivoro.herbivoros.length;
+    energMedH /= Herbivoro.herbivoros.length;
+    taxaEnergMedH /= Herbivoro.herbivoros.length;
+
     // Divide o valor (a soma total) pelo número de carnívoros para obter a média
     velMedC /= Carnivoro.carnivoros.length;
     forcaMedC /= Carnivoro.carnivoros.length;
@@ -374,8 +379,44 @@ function calculaDadosGrafico(){
     taxaEnergMedC /= Carnivoro.carnivoros.length;
 }
 
+var idAnimate;
+
+function pausa(){
+    pausado = true;
+
+    btnPausa.classList.add("d-none");
+    btnDespausa.classList.remove("d-none");
+
+}
+
+function despausa(){
+    pausado = false;
+
+    btnDespausa.classList.add("d-none");
+    btnPausa.classList.remove("d-none");
+
+    animate();
+}
+
+// function acelera(){
+//     animate();
+// }
+
+// function desacelera(){
+//     pausa();
+//     console.log("pausado: ", pausado);
+//     despausa();
+//     console.log("pausado: ", pausado);
+
+// }
+
 function animate(){
-    requestAnimationFrame(animate);
+
+    if(pausado == false){
+        idAnimate = requestAnimationFrame(animate);
+    }
+    
+    
     c.clearRect(0, 0, canvas.width, canvas.height);
     
     // // Calcula frame rate
@@ -518,23 +559,25 @@ function criaCronometro(){
 }
 
 function timer() {
-    if ((milisegundo += 10) == 1000) {
-      milisegundo = 0;
-      segundo++;
-      segundos++;
+    if(!pausado){ // Só atualiza se a simulação não estiver pausada
+        if ((milisegundo += 10) == 1000) {
+        milisegundo = 0;
+        segundo++;
+        segundos++;
+        }
+        if (segundo == 60) {
+        segundo = 0;
+        minuto++;
+        }
+        if (minuto == 60) {
+        minuto = 0;
+        hora++;
+        }
+        document.getElementById('hora').innerText = returnData(hora);
+        document.getElementById('minuto').innerText = returnData(minuto);
+        document.getElementById('segundo').innerText = returnData(segundo);
+        document.getElementById('milisegundo').innerText = returnData(milisegundo);
     }
-    if (segundo == 60) {
-      segundo = 0;
-      minuto++;
-    }
-    if (minuto == 60) {
-      minuto = 0;
-      hora++;
-    }
-    document.getElementById('hora').innerText = returnData(hora);
-    document.getElementById('minuto').innerText = returnData(minuto);
-    document.getElementById('segundo').innerText = returnData(segundo);
-    document.getElementById('milisegundo').innerText = returnData(milisegundo);
 }
   
 function returnData(input) {
