@@ -135,7 +135,15 @@
                     </div>
                 </div>
             </div>
-            <div id="chart"></div>
+            <div id="chart-group" class="d-none">
+                <div id="chartPopulacao"></div>
+                <div id="chartVelocidade" class="d-none"></div>
+                <div id="chartAgilidade" class="d-none"></div>
+                <div id="chartRaio" class="d-none"></div>
+                <div id="chartDeteccao" class="d-none"></div>
+                <div id="chartEnergia" class="d-none"></div>
+                <div id="chartGasto" class="d-none"></div>
+            </div>
         </div>
     </div>
 
@@ -151,7 +159,8 @@
         </div>    
     </div>
     
-    
+  <script type="text/javascript" src="./public/chart.js"></script>
+
   <script type="text/javascript">
         var inputTalim = document.getElementById("inputTaxaAlimentos");
         const labelTaxa = document.getElementById("numTaxaAli");
@@ -226,20 +235,25 @@
             resetaCronometro();
             // destroiObjetos();
             criaCronometro();
-            resetar();
+            resetCharts();
+            mostrarBtnGraficos();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
             calculaDadosGrafico(); // Chama só 1x para não ficar valor 0 antes do primeiro segundo
-            setInterval(calculaDadosGrafico, 1000);
+            setInterval(function() {
+                insertNextDataCharts();
+                calculaDadosGrafico();
+            }, 1000);
             inputTalim = document.getElementById("inputTaxaAlimentos");
             mudaIntervaloAlimentos(inputTalim.value, true);
             inputPMut = document.getElementById("inputProbMutacao");
             mudaProbMutacao(inputPMut.value);
             inputMMut = document.getElementById("inputMagMutacao");
             mudaMagMutacao(inputMMut.value);
-            document.getElementById("inputsIniciais").classList.add("d-none");
-            document.getElementById("painelSecundario").classList.remove("d-none");
-            document.getElementById("botoesIniciais").classList.add("d-none");
-            document.getElementById("botoesSecundarios").classList.remove("d-none");
+            $("#inputsIniciais").addClass("d-none");
+            $("#painelSecundario").removeClass("d-none");
+            $("#botoesIniciais").addClass("d-none");
+            $("#botoesSecundarios").removeClass("d-none");
+            $("#chart-group").removeClass("d-none");
             if(!rodando && !pausado) { animate(); };
             rodando = true;
         }
@@ -356,49 +370,45 @@
             }
         }
 
-        function resetar() {
-            wsResetaDados();
-            resetChart();
-        }
-
-        function sendData(dados){
-            switch(tipoGrafico){
-                case 1:
-                    if(mudarGrafico) changeChart(1, dados);
-                    getDataPop(dados);
-                    break;
-                case 2:
-                    if(mudarGrafico) changeChart(2, dados);
-                    getDataVel(dados);
-                    break;
-                case 3:
-                    if(mudarGrafico) changeChart(3, dados);
-                    getDataForca(dados);
-                    break;
-                case 4:
-                    if(mudarGrafico) changeChart(4, dados);
-                    getDataRaio(dados);
-                    break;
-                case 5:
-                    if(mudarGrafico) changeChart(5, dados);
-                    getDataRaioDet(dados);
-                    break;
-                case 6:
-                    if(mudarGrafico) changeChart(6, dados);
-                    getDataEner(dados);
-                    break;
-                case 7:
-                    if(mudarGrafico) changeChart(7, dados);
-                    getDataTaxEner(dados);
-                    break;
-                }
-        }
+        // function resetar() {
+        //     wsResetaDados();
+        //     resetChart();
+        // }
 
         function btnMudarGrafico(tipo) {            
-            if(tipo != tipoGrafico) {
+            if(tipo != tipoGrafico && tipo >= 1 && tipo <= 7) {
                 tipoGrafico = tipo;
-                mudarGrafico = true;
+                let nomeGrafico;
+                // Esconder todos os gráficos.
+                $("#chart-group > *").addClass("d-none");
+
+                // Identificar o gráfico escolhido
+                switch(tipo) {
+                    case 1: nomeGrafico = "Populacao";
+                        break;
+                    case 2: nomeGrafico = "Velocidade";
+                        break;
+                    case 3: nomeGrafico = "Agilidade";
+                        break;
+                    case 4: nomeGrafico = "Raio";
+                        break;
+                    case 5: nomeGrafico = "Deteccao";
+                        break;
+                    case 6: nomeGrafico = "Energia";
+                        break;
+                    case 7: nomeGrafico = "Gasto";
+                        break;
+                    
+                }
+
+                // Mostrar gráfico escolhido
+                $(`#chart${nomeGrafico}`).removeClass("d-none");
             }
+        }
+
+        var data;
+        function sendData(dados) {
+            data = dados;
         }
 
         function mostrarBtnGraficos() {
@@ -408,7 +418,6 @@
     </script>
     <script type="text/javascript" src="./public/index.js"></script>
     <script type="text/javascript" src="./public/websocket.js"></script>
-    <script type="text/javascript" src="./public/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
