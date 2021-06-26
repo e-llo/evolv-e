@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="Images/logoEscuroSemFundo.png">
+    <link rel="stylesheet" href="./public/style.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <title>Evolv-e</title>
+    
+    <!-- A ordem de importar o script deve ser do que não depende de nada até os que dependem... (pra n bugar)-->
+    <script type="text/javascript" src="./public/Classes/Vetor.js"></script>
+    <script type="text/javascript" src="./public/Classes/Circulo.js"></script>
+    <script type="text/javascript" src="./public/Classes/Ponto.js"></script>
+    <script type="text/javascript" src="./public/Classes/Retangulo.js"></script>
+    <script type="text/javascript" src="./public/Classes/QuadTree.js"></script>
+    <script type="text/javascript" src="./public/Classes/Alimento.js"></script>
+    <script type="text/javascript" src="./public/Classes/Organismo.js"></script>
+    <script type="text/javascript" src="./public/Classes/Herbivoro.js"></script>
+    <script type="text/javascript" src="./public/Classes/Carnivoro.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+   <style>
+        body{
+            margin: 0
+        }
+    </style>
+    <script type="text/javascript">
+        var hora = minuto = segundo = milisegundo = 0;
+        var segundos = 0;
+    </script>
+</head>
+
+<body style="background: #222">
+    <div class="splash" style="background: #333;">
+        <div class="d-flex flex-column justify-content-center" style="height: inherit;">
+            <div class="align-self-center">
+                <img id="img-splash" src="Images/capaFundoEscuro.png" alt=""/>
+                <!-- <p>
+                    Evolv<span>&#9679</span>e
+                </p> -->
+            </div>
+        </div>
+    </div>
+
+    <canvas></canvas>
+    
+    <div class="cronometro">
+        <span id="hora">00</span>:<span id="minuto">00</span>:<span id="segundo">00</span>:<span id="milisegundo">00</span>
+    </div>
+
+    <!-- <div class="framerate">
+        <p>Frame rate: <span id="framerate"></span></p>
+    </div> -->
+    
+    <div id="painel" style="height: 100vh;">
+        <div style="overflow-y: auto; max-height: 100%;"> <!-- scroll para telas pequenas -->
+            <div id="info">
+                <div class="container slidecontainer">
+                    <div id="painelInicial">
+                        <div id="inputsIniciais" class="p-0 m-0">
+                            <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
+                            <input type="range" min="0" max="500" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
+                            <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
+                            <input type="range" min="0" max="500" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
+                            <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
+                            <input type="range" min="0" max="500" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
+                        </div>
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
+                        <input type="range" min="1" max="1001" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
+                            onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
+                        
+
+
+                        <label id="probMutacao" name="probMutacao" for="inputProbMutacao">Probabilidade de mutação: <label id="numProbMutacao">8</label>%</label>
+                        <input type="range" min="0" max="100" value="8" class="slider-blue" id="inputProbMutacao" oninput="mudouInputProb()"
+                            onchange="mudaProbMutacao(inputProbMutacao.value)">
+
+
+                    
+                        <label id="magMutacao" name="magMutacao" for="inputMagMutacao">Magnitude das mutações: <label id="numMagMutacao">5</label>%</label>
+                        <input type="range" min="0" max="100" value="5" class="slider-blue" id="inputMagMutacao" oninput="mudouInputMag()"
+                            onchange="mudaMagMutacao(inputMagMutacao.value)">
+
+
+
+                        <div id="botoesIniciais" class ="row mt-3">
+                            <div class="col-sm-3 d-grid gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" style="color: #ddd" onclick="restaurarPadroes()">Default</button>
+                            </div>
+                            <div class="col-sm-9 d-grid gap-2">
+                                <button type="button" class="btn btn-sm btn-success" onclick="iniciarSimulacao()">Play</button>
+                            </div>
+                        </div>
+                        <div id="botoesSecundarios" class="mt-3 text-center d-none">
+                            <button id="restartBtn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd" onclick="mostrarPainelInicial()">Restart</button>
+                            <div id="btnPausa" class="" onclick="pausa()" style="cursor: pointer; display: inline; margin-left: 10px;">
+                                <i class="fas fa-pause"></i>
+                            </div>
+                            <div id="btnDespausa" class="d-none" onclick="despausa()" style="cursor: pointer; display: inline; margin-left: 10px;">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <div id="painelSecundario" class="d-none">
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="button" id="btnCarn" class="btn btn-sm btn-outline-danger" onclick="addCarnivoro()">Adicionar Carnívoro</button>
+                            <button type="button" id="btnHerb" class="btn btn-sm btn-outline-success" onclick="addHerbivoro()">Adicionar Herbívoro</button>
+                            <button type="button" id="btnAli"  class="btn btn-sm btn-outline-warning" onclick="addAlimento()">Adicionar Alimento</button>
+                            <div>
+                                <!-- <button type="button" id="divisao" name="divisao" class="btn btn-sm btn-outline-secondary" onclick="desenhaDivisao()">Dividir populações</button> -->
+                                <label class ="form-check-label" for = "divisao">Dividir populações</label>
+                                <input class ="form-check-input" type="checkbox" id="divisao" name="divisao">
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div id="btnsChart" class="d-flex justify-content-center flex-wrap d-none" style="width: 100%;">
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(1)">População</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(2)">Velocidade</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(3)">Agilidade</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(4)">Raio</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(5)">Detecção</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(6)">Energia</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="btnMudarGrafico(7)">Gasto</button>
+                    </div>
+                </div>
+            </div>
+            <div id="chart"></div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="position-absolute" style="top: 100px; right: 450px;" >
+        <div role="alert" aria-live="assertive" aria-atomic="true" class="toast align-items-center text-white bg-secondary border-0" data-autohide="false" >
+            <div class="d-flex">
+                <div class="toast-body">
+                    Informe os parâmetros de entrada e clique em Play para iniciar a simulação. Clique em Default para restaurar as configurações padrão.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>    
+    </div>
+    
+    
+  <script type="text/javascript">
+        var inputTalim = document.getElementById("inputTaxaAlimentos");
+        const labelTaxa = document.getElementById("numTaxaAli");
+
+        var inputPMut = document.getElementById("inputProbMutacao");
+        const labelProb = document.getElementById("numProbMutacao");
+
+        var inputMMut = document.getElementById("inputMagMutacao");
+        const labelMag = document.getElementById("numMagMutacao");
+
+        var n_carnivoros;
+        var n_herbivoros;
+        var n_alimentos;
+
+        var antesDoPlay = true;
+
+        var rodando = false;        
+
+        // Variável para pausar e despausar o jogo
+        var pausado = false;
+
+        // Variáveis para auxiliar a atualizar os valores dos sliders
+        var sliderCarn = document.getElementById("inputCarnivoros");
+        var outputCarn = document.getElementById("numCarn");
+        outputCarn.innerHTML = sliderCarn.value;
+
+        var sliderHerb = document.getElementById("inputHerbivoros");
+        var outputHerb = document.getElementById("numHerb");
+        outputHerb.innerHTML = sliderHerb.value;
+
+        var sliderAli = document.getElementById("inputAlimentos");
+        var outputAli = document.getElementById("numAli");
+        outputAli.innerHTML = sliderAli.value;
+
+        // Variáveis para pausar e despausar a simulação
+        var btnPausa = document.getElementById("btnPausa");
+        var btnDespausa = document.getElementById("btnDespausa");
+
+        // Variável para escolher o gráfico que será mostrado
+        var tipoGrafico = 1;
+
+
+        // Update do valor do slider a cada vez que ele é modificado
+        sliderCarn.oninput = function(){
+            outputCarn.innerHTML = this.value;
+            n_carnivoros = outputCarn.innerHTML;
+        }
+        sliderHerb.oninput = function(){
+            outputHerb.innerHTML = this.value;
+            n_herbivoros = outputHerb.innerHTML;
+        }
+        sliderAli.oninput = function(){
+            outputAli.innerHTML = this.value;
+            n_alimentos = outputAli.innerHTML;
+        }
+
+        $(document).ready(function(){
+            $('.toast').toast('show');
+            $('.toast').css("data-autohide", "false");
+            setTimeout(function(){
+                $(".splash").fadeOut(800)
+            }, 1500)
+        });
+
+
+        function iniciarSimulacao(){ // não ta funcionando se coloco só no click do botão
+            n_carnivoros = parseInt(document.getElementById("numCarn").textContent);
+            n_herbivoros = parseInt(document.getElementById("numHerb").textContent);
+            n_alimentos = parseInt(document.getElementById("numAli").textContent);
+
+            antesDoPlay = false;
+            resetaCronometro();
+            // destroiObjetos();
+            criaCronometro();
+            resetar();
+            criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
+            calculaDadosGrafico(); // Chama só 1x para não ficar valor 0 antes do primeiro segundo
+            setInterval(calculaDadosGrafico, 1000);
+            inputTalim = document.getElementById("inputTaxaAlimentos");
+            mudaIntervaloAlimentos(inputTalim.value, true);
+            inputPMut = document.getElementById("inputProbMutacao");
+            mudaProbMutacao(inputPMut.value);
+            inputMMut = document.getElementById("inputMagMutacao");
+            mudaMagMutacao(inputMMut.value);
+            document.getElementById("inputsIniciais").classList.add("d-none");
+            document.getElementById("painelSecundario").classList.remove("d-none");
+            document.getElementById("botoesIniciais").classList.add("d-none");
+            document.getElementById("botoesSecundarios").classList.remove("d-none");
+            if(!rodando && !pausado) { animate(); };
+            rodando = true;
+        }
+       
+        function restaurarPadroes(){// volta os parâmetros para o padrão inicial
+            document.getElementById("numCarn").textContent = 14;
+            document.getElementById("inputCarnivoros").value = 14;
+
+            document.getElementById("numHerb").textContent = 100;
+            document.getElementById("inputHerbivoros").value = 100;
+
+            document.getElementById("numAli").textContent = 150;
+            document.getElementById("inputAlimentos").value = 150;
+
+            document.getElementById("numProbMutacao").textContent = 8;
+            document.getElementById("numMagMutacao").textContent = 5;
+
+            labelTaxa.textContent = 80;
+            inputTalim.value = 80;
+            inputPMut.value = 8;
+            inputMMut.value = 5;
+        }
+
+        function mostrarPainelInicial() {
+            destroiObjetos();
+            antesDoPlay = true;
+            inputTalim = document.getElementById("inputTaxaAlimentos");
+            mudaIntervaloAlimentos(inputTalim.value);
+            inputPMut = document.getElementById("inputProbMutacao");
+            mudaProbMutacao(inputPMut.value);
+            inputMMut = document.getElementById("inputMagMutacao");
+            mudaMagMutacao(inputMMut.value);
+            document.getElementById("inputsIniciais").classList.remove("d-none");
+            document.getElementById("botoesIniciais").classList.remove("d-none");
+            document.getElementById("botoesSecundarios").classList.add("d-none");
+        }
+
+        // function paraAlimentos(){
+        //     mudaIntervaloAlimentos(1001);
+        // }
+
+        function addCarnivoro(){
+            // na posição que o mouse clicar    
+            var btnCarn = document.getElementById("btnCarn");
+            if(btnCarn.classList.contains("active")){
+                btnCarn.classList.remove("active");
+                document.removeEventListener('click', geradorC, true);
+            }else{
+                btnCarn.classList.add("active");
+                document.addEventListener('click', geradorC, true); 
+            }
+        }
+
+        function geradorC(e){
+            cursorX = e.pageX;
+            cursorY = e.pageY;
+            if(cursorX<=canvas.width && cursorY<=canvas.height){
+                geraCarnivoro(cursorX,cursorY);
+            }
+        }
+
+        function addHerbivoro(){
+            var btnHerb = document.getElementById("btnHerb");
+            if(btnHerb.classList.contains("active")){
+                btnHerb.classList.remove("active");
+                document.removeEventListener('click', geradorH, true);
+            }else{
+                btnHerb.classList.add("active");
+                document.addEventListener('click', geradorH, true); 
+            }
+        }
+
+        function geradorH(e){
+            cursorX = e.pageX;
+            cursorY= e.pageY;
+            if(cursorX<=canvas.width && cursorY<=canvas.height){
+                geraHerbivoro(cursorX,cursorY);
+            }
+            cursorX =null;
+            cursorY = null;
+        }
+
+        function addAlimento(){
+            var btnAli = document.getElementById("btnAli");
+            if(btnAli.classList.contains("active")){
+                btnAli.classList.remove("active");
+                document.removeEventListener('click', geradorA, true);
+            }else{
+                btnAli.classList.add("active");
+                document.addEventListener('click', geradorA, true); 
+            }
+        }
+
+        function mudouInputProb(){
+            labelProb.textContent = inputPMut.value;
+        }
+
+        function mudouInputMag(){
+            labelMag.textContent = inputMMut.value;
+        }
+
+        function mudouInputTaxa() {
+            if(inputTalim.value < 1001) {
+                labelTaxa.textContent = inputTalim.value;
+            } else {
+                labelTaxa.textContent = "nenhum";
+            }
+        }
+        function geradorA(e){
+            cursorX = e.pageX;
+            cursorY= e.pageY;
+            if(cursorX<=canvas.width && cursorY<=canvas.height){
+                geraAlimento(cursorX,cursorY);
+            }
+        }
+
+        function resetar() {
+            wsResetaDados();
+            resetChart();
+        }
+
+        function sendData(dados){
+            switch(tipoGrafico){
+                case 1:
+                    if(mudarGrafico) changeChart(1, dados);
+                    getDataPop(dados);
+                    break;
+                case 2:
+                    if(mudarGrafico) changeChart(2, dados);
+                    getDataVel(dados);
+                    break;
+                case 3:
+                    if(mudarGrafico) changeChart(3, dados);
+                    getDataForca(dados);
+                    break;
+                case 4:
+                    if(mudarGrafico) changeChart(4, dados);
+                    getDataRaio(dados);
+                    break;
+                case 5:
+                    if(mudarGrafico) changeChart(5, dados);
+                    getDataRaioDet(dados);
+                    break;
+                case 6:
+                    if(mudarGrafico) changeChart(6, dados);
+                    getDataEner(dados);
+                    break;
+                case 7:
+                    if(mudarGrafico) changeChart(7, dados);
+                    getDataTaxEner(dados);
+                    break;
+                }
+        }
+
+        function btnMudarGrafico(tipo) {            
+            if(tipo != tipoGrafico) {
+                tipoGrafico = tipo;
+                mudarGrafico = true;
+            }
+        }
+
+        function mostrarBtnGraficos() {
+            $("#btnsChart").removeClass("d-none");
+        }
+
+    </script>
+    <script type="text/javascript" src="./public/index.js"></script>
+    <script type="text/javascript" src="./public/websocket.js"></script>
+    <script type="text/javascript" src="./public/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
+</body>
+</html>
