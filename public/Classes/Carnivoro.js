@@ -24,9 +24,9 @@ class Carnivoro extends Organismo{
     }
 
     morre(){
-        if(typeof this.cronometro_morte !== 'undefined') {
-            clearTimeout(this.cronometro_morte); // desativar o temporizador
-        }
+        // if(typeof this.cronometro_morte !== 'undefined') {
+        //     clearTimeout(this.cronometro_morte); // desativar o temporizador
+        // }
         
         Carnivoro.carnivoros = super.remove(Carnivoro.carnivoros, this);
     }

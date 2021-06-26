@@ -25,11 +25,12 @@ class Organismo{
         // setInterval(this.updateTempoVivido, 1000);
 
         // Tempo de vida
+        this.segundo_nascimento = segundo; // "segundo" é a variável global
         this.tempo_vida = {};
-        this.tempo_vida.min = tempo_vida_min; //em milissegundos
+        this.tempo_vida.min = tempo_vida_min; // em ssegundos
         this.tempo_vida.max = tempo_vida_max;
-        this.tempo_vida.real = geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max); //tempo de vida do organismo
-        let cronometro_morte = setTimeout(() => {this.morre()}, this.tempo_vida.real); // variável que guarda a função de matar o indivíduo depois do tempo de vida real
+        this.tempo_vida.real = geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max); // tempo de vida do organismo
+        // let cronometro_morte = setTimeout(() => {this.morre()}, this.tempo_vida.real); // variável que guarda a função de matar o indivíduo depois do tempo de vida real
 
         // Variáveis booleanas usadas no método vagueia()
         this.comendo = false;
@@ -119,9 +120,13 @@ class Organismo{
             //     } 
             // }
         } else{
-            this.morre();            
+            this.morre();         
         }
         
+        if(segundo - this.segundo_nascimento >= this.tempo_vida.real){ // se se passar mais tempo desde o nascimento que o tempo de vida do organismo
+            this.morre();
+            console.log("MORRI DE VELHICE");
+        }
 
         if(telaDividida){
             this.criaBordas(this.posicao.x, true);
