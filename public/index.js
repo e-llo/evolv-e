@@ -118,8 +118,8 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
     energia_max = Math.random() * 100 + 80
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida_min = 80; // em segundos
-    tempo_vida_max = 140; // em segundos
+    tempo_vida_min = 60; // em segundos
+    tempo_vida_max = 160; // em segundos
 
     new Carnivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max,
@@ -137,8 +137,8 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     energia_max = Math.random() * 100 + 80;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida_min = 80; // em segundos
-    tempo_vida_max = 140; // em segundos
+    tempo_vida_min = 60; // em segundos
+    tempo_vida_max = 160; // em segundos
 
     new Herbivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max,

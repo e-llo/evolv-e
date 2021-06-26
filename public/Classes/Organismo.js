@@ -90,15 +90,15 @@ class Organismo{
         // taxa de aumento do cansaço
         var taxa_aum_cansaco_filho = newMutacao(this.taxa_aum_cansaco);
         
-        // tempo de vida mínimo
-        var tempo_vida_min_filho = newMutacao(this.tempo_vida.min);
+        // // tempo de vida mínimo
+        // var tempo_vida_min_filho = newMutacao(this.tempo_vida.min);
     
-        //tempo de vida máximo
-        var tempo_vida_max_filho = newMutacao(this.tempo_vida.max);
+        // //tempo de vida máximo
+        // var tempo_vida_max_filho = newMutacao(this.tempo_vida.max);
 
         var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
         raio_deteccao_min: raio_deteccao_min_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,
-        taxa_aum_cansaco: taxa_aum_cansaco_filho, tempo_vida_min: tempo_vida_min_filho, tempo_vida_max:tempo_vida_max_filho};
+        taxa_aum_cansaco: taxa_aum_cansaco_filho, tempo_vida_min: this.tempo_vida.min, tempo_vida_max: this.tempo_vida.max};
 
         return dados_filho;
     }
@@ -125,7 +125,6 @@ class Organismo{
         
         if(segundo - this.segundo_nascimento >= this.tempo_vida.real){ // se se passar mais tempo desde o nascimento que o tempo de vida do organismo
             this.morre();
-            console.log("MORRI DE VELHICE");
         }
 
         if(telaDividida){
