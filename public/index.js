@@ -46,6 +46,9 @@ var taxaEnergMedC = 0;
 // var probabilidade_mutacao = labelProb; // chances de cada gene (atributo) sofrer mutação
 var magnitude_mutacao = 0.1; // magnitude da mutação (o quanto vai variar)
 
+var lado_direito_vazio = true;
+var lado_esquerdo_vazio = true;
+
 // Variável para calcular frame rate (usada no animate())
 // var lastLoop = new Date();
 
@@ -243,7 +246,35 @@ function geraNumeroPorIntervalo(min, max) {
 
 function criaAlimentosGradativo(){
     if(!pausado){ // Para de criar alimentos enquanto a simulação estiver pausada
-        for(var i = 0; i < 2; i++){
+        if(telaDividida){
+            if(lado_esquerdo_vazio){ // Se não houver população no lado esquerdo, não gerará alimentos lá
+                var x = geraNumeroPorIntervalo(canvas.width/2 + 31, canvas.width - 31);
+                var y = Math.random() * (canvas.height - 62) + 31;
+                var raio = Math.random() * 1.5 + 1;
+    
+                if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
+                    new Alimento(x, y, raio);
+                }
+            }
+            if(lado_direito_vazio){ // Se não houver população no lado direito, não gerará alimentos lá
+                var x = geraNumeroPorIntervalo(31, canvas.width/2 - 31);
+                var y = Math.random() * (canvas.height - 62) + 31;
+                var raio = Math.random() * 1.5 + 1;
+    
+                if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
+                    new Alimento(x, y, raio);
+                }
+            }
+            if(!lado_direito_vazio && !lado_esquerdo_vazio){
+                var x = Math.random() * (canvas.width - 62) + 31;
+                var y = Math.random() * (canvas.height - 62) + 31;
+                var raio = Math.random() * 1.5 + 1;
+
+                if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
+                    new Alimento(x, y, raio);
+                }
+            }
+        } else{
             var x = Math.random() * (canvas.width - 62) + 31;
             var y = Math.random() * (canvas.height - 62) + 31;
             var raio = Math.random() * 1.5 + 1;
@@ -379,6 +410,32 @@ function calculaDadosGrafico(){
     taxaEnergMedC /= Carnivoro.carnivoros.length;
 }
 
+function checaPopulacoesDivididas(){
+    if(telaDividida){
+        lado_direito_vazio = true;
+        lado_esquerdo_vazio = true;
+            
+        Herbivoro.herbivoros.forEach(herbivoro => {
+            // Checa lado esquerdo
+            if(herbivoro.posicao.x < canvas.width / 2 - 31){
+                lado_esquerdo_vazio = false;
+            }
+
+            // Checa lado direito
+            if(herbivoro.posicao.x > canvas.width / 2 + 31){
+                lado_direito_vazio = false;
+            }
+        })
+    }
+}
+
+function checaPopulacoesDivididasAux(){
+    if(posicaoX < canvas.width / 2){
+
+    }
+    return posicaoX
+}
+
 var idAnimate;
 
 function pausa(){
@@ -474,7 +531,20 @@ function animate(){
             qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
         });
 
+        // lado_direito_vazio = true;
+        // lado_esquerdo_vazio = true;
         Herbivoro.herbivoros.forEach(herbivoro => {
+            // // Checa lado esquerdo
+            // if(herbivoro.posicao.x < canvas.width / 2){
+            //     lado_esquerdo_vazio = false;
+            // }
+
+            // // Checa lado direito
+            // if(herbivoro.posicao.x > canvas.width / 2){
+            //     lado_direito_vazio = false;
+            // }
+
+
             herbivoro.update();
             herbivoro.vagueia();
 

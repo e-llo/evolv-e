@@ -230,6 +230,7 @@
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
             calculaDadosGrafico(); // Chama só 1x para não ficar valor 0 antes do primeiro segundo
             setInterval(calculaDadosGrafico, 1000);
+            setInterval(checaPopulacoesDivididas, 1000);
             inputTalim = document.getElementById("inputTaxaAlimentos");
             mudaIntervaloAlimentos(inputTalim.value, true);
             inputPMut = document.getElementById("inputProbMutacao");
