@@ -451,17 +451,16 @@ function despausa(){
     animate();
 }
 
-// function acelera(){
-//     animate();
-// }
+function acelera(){
+    animate();
 
-// function desacelera(){
-//     pausa();
-//     console.log("pausado: ", pausado);
-//     despausa();
-//     console.log("pausado: ", pausado);
+    // btnDesacelera.classList.remove("d-none");
+}
 
-// }
+function desacelera(){
+    pausa();
+    setTimeout(despausa, 10);
+}
 
 function animate(){
 

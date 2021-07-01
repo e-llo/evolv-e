@@ -73,8 +73,8 @@
                             <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
                             <input type="range" min="0" max="500" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
                         </div>
-                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">80</label> milissegundos</label>
-                        <input type="range" min="1" max="1001" value="80" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">40</label> milissegundos</label>
+                        <input type="range" min="1" max="1001" value="40" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
                             onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                         
 
@@ -101,11 +101,17 @@
                         </div>
                         <div id="botoesSecundarios" class="mt-3 text-center d-none">
                             <button id="restartBtn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd" onclick="mostrarPainelInicial()">Restart</button>
+                            <div id="btnDesacelera" class="" onclick="desacelera()" style="cursor: pointer; display: inline; margin-left: 10px;">
+                                <i class="fas fa-arrow-alt-to-left"></i>
+                            </div>
                             <div id="btnPausa" class="" onclick="pausa()" style="cursor: pointer; display: inline; margin-left: 10px;">
                                 <i class="fas fa-pause"></i>
                             </div>
                             <div id="btnDespausa" class="d-none" onclick="despausa()" style="cursor: pointer; display: inline; margin-left: 10px;">
                                 <i class="fas fa-play"></i>
+                            </div>
+                            <div id="btnAcelera" class="" onclick="acelera()" style="cursor: pointer; display: inline; margin-left: 10px;">
+                                <i class="fas fa-angle-double-right"></i>
                             </div>
                         </div>
                         
