@@ -2,9 +2,8 @@ class Organismo{
     static organismos = [];
     static id = 0;
 
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
         this.posicao = new Vetor(x, y);
-        this.posicaoInicialX = this.posicao.x;
         this.raio_min = raio_min;
         this.raio = this.raio_min;
         this.vel = new Vetor(1, 1);
@@ -14,15 +13,17 @@ class Organismo{
         this.cor = cor;
         this.raio_deteccao_min = raio_deteccao_min;
         this.raio_deteccao = raio_deteccao_min;
+        this.eficiencia_energetica = eficiencia_energetica;
         this.energia_max = energia_max;
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia;
-        this.taxa_gasto_energia_max = (Math.pow(this.raio_min, 2) * Math.pow(this.vel_max, 2)) / 2000;
+        this.taxa_gasto_energia_max = ((Math.pow(this.raio_min, 2) * Math.pow(this.vel_max, 2)) / 2000) * eficiencia_energetica; // Usado como valor para o cálculo da média da população
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
         this.tempo_vivido = 0;
         // setInterval(this.updateTempoVivido, 1000);
+        // setInterval(console.log("teste"), 1000);
 
         // Tempo de vida
         this.segundo_nascimento = segundo; // "segundo" é a variável global
@@ -81,6 +82,9 @@ class Organismo{
             raio_deteccao_min_filho = 5;
         }
 
+        // eficiência energética
+        var eficiencia_energetica_filho = newMutacao(this.eficiencia_energetica);
+
         // energia máxima
         var energia_max_filho = newMutacao(this.energia_max);
 
@@ -97,7 +101,7 @@ class Organismo{
         // var tempo_vida_max_filho = newMutacao(this.tempo_vida.max);
 
         var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
-        raio_deteccao_min: raio_deteccao_min_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,
+        raio_deteccao_min: raio_deteccao_min_filho, eficiencia_energetica: eficiencia_energetica_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,
         taxa_aum_cansaco: taxa_aum_cansaco_filho, tempo_vida_min: this.tempo_vida.min, tempo_vida_max: this.tempo_vida.max};
 
         return dados_filho;
@@ -111,7 +115,6 @@ class Organismo{
         // Taxa de diminuição de energia
         if(this.energia > 0){
             this.energia -= this.taxa_gasto_energia;
-            
             // if(this.energia > this.energia_max * 0.7){ // Se estiver com mais que 70% de energia, pode se reproduzir
             //     if(Math.random() < 0.0014){ // Número baixo pois testa a cada frame
             //         if(Math.random() <= this.chance_de_reproducao){

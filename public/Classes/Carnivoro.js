@@ -1,8 +1,8 @@
 class Carnivoro extends Organismo{
     static carnivoros = [];
    
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max); // referenciando o construtor da classe mãe
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max); // referenciando o construtor da classe mãe
         
         // variável para contar quando um carnívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -17,7 +17,7 @@ class Carnivoro extends Organismo{
 
         return new Carnivoro(
             this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
-            filho.cor, filho.raio_deteccao_min, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
+            filho.cor, filho.raio_deteccao_min, filho.eficiencia_energetica, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
             filho.tempo_vida_min, filho.tempo_vida_max
         );
         
