@@ -1,4 +1,8 @@
-const tela = {width: innerWidth - 500, height: innerHeight - 8}
+if(innerWidth<=425){
+    var tela ={width: innerWidth, height: innerHeight - 8}
+}else{
+    var tela = {width: innerWidth - 500, height: innerHeight - 8}
+}
 const canvas = document.querySelector("canvas");
 canvas.width = tela.width;
 canvas.height = tela.height;
