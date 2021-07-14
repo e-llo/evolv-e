@@ -25,8 +25,8 @@ function resetCharts() {
 
 function insertNextDataCharts() {
   // Mesma variável para todos
-  let arraySeconds = [];
-  arraySeconds.push([segundos], [segundos]);
+  let arraySeconds = [[segundos], [segundos]];
+  //console.log(arraySeconds)
 
   // População
   let popCarnivoros = Carnivoro.carnivoros.length;
@@ -67,8 +67,8 @@ function insertNextDataCharts() {
   // Taxa de gasto de energia
   let taxaEnerCarnivoros = taxaEnergMedC;
   let taxaEnerHerbivoros = taxaEnergMedH;
-  let valoresGas = [taxaEnerCarnivoros, taxaEnerHerbivoros];
-  Plotly.extendTraces(chartGasto, {y: valoresHGas, x: arraySeconds}, [0,1]);
+  let valoresGas = [[taxaEnerCarnivoros], [taxaEnerHerbivoros]];
+  Plotly.extendTraces(chartGasto, {y: valoresGas, x: arraySeconds}, [0,1]);
 
   //if(seconds != segundoRepetido) {
     cnt++;
@@ -149,18 +149,18 @@ Plotly.newPlot('chart', data, layout); */
 function buildCharts() {
   // TEMPLATES PARA A CRIAÇÃO DAS LINHAS DOS GRÁFICOS
   let carnivoros = {
-    x: 0,
-    //y: yCarn,
-    type: 'scatter',
+    x: [0],
+    //y: [],
+    type: 'scattergl',
     mode: 'lines',
     name: 'Carnívoros',
     line: { color: 'red', shape: 'spline'}
   };
 
   let herbivoros = {
-    x: 0,
-    //y: yHerb,
-    type: 'scatter',
+    x: [0],
+    //y: [],
+    type: 'scattergl',
     mode: 'lines',
     name: 'Herbívoros',
     line: {color: 'green', shape: 'spline'}
@@ -169,7 +169,7 @@ function buildCharts() {
   //let data = [carnivoros, herbivoros];
 
   var layout = {
-  //title: titulo,
+  //title: title,
 
   xaxis: {
       showline: true,
@@ -178,8 +178,9 @@ function buildCharts() {
       showgrid: true
   },
   yaxis: { 
-      showline: true, 
-      //title: yTitulo, 
+      showline: true,
+      domain: [0],
+      //title: yTitle, 
       rangemode: "tozero" 
   },
   legend: {
@@ -198,51 +199,59 @@ function buildCharts() {
   // COMPLETAR OS TEMPLATES DE ACORDO COM AS VARIÁVEIS DE CADA GRÁFICO
   // E CRIAR OS GRÁFICOS
   // @@@@@@@@ População
-  carnivoros.y = Carnivoro.carnivoros.length;
-  herbivoros.y = Herbivoro.herbivoros.length;
-  layout.title = "População";
-  layout.yaxis.title = "N° Indivíduos";
-  Plotly.newPlot(chartPopulacao, [carnivoros, herbivoros], layout);
+  let popCarn = {...carnivoros}, popHerb = {...herbivoros}, popLayo = {...layout}; // Clonando o template
+  popCarn.y = [Carnivoro.carnivoros.length];
+  popHerb.y = [Herbivoro.herbivoros.length];
+  console.log(`Populaçao carnivoros inicial: ${popCarn.y} e herb: ${popHerb.y}`)
+  popLayo.title = "População";
+  popLayo.yaxis.title = "N° Indivíduos";
+  Plotly.newPlot(chartPopulacao, [popCarn, popHerb], popLayo);
 
   // @@@@@@@@ Velocidade
-  carnivoros.y = velMedC;
-  herbivoros.y = velMedH;
-  layout.title = "Velocidade";
-  layout.yaxis.title = "Velocidade média";
-  Plotly.newPlot(chartVelocidade, [carnivoros, herbivoros], layout);
+  let velCarn = {...carnivoros}, velHerb = {...herbivoros}, velLayo = {...layout};
+  velCarn.y = [velMedC];
+  velHerb.y = [velMedH];
+  velLayo.title = "Velocidade";
+  velLayo.yaxis.title = "Velocidade média";
+  Plotly.newPlot(chartVelocidade, [velCarn, velHerb], velLayo);
   
   // @@@@@@@@ Agilidade
-  carnivoros.y = forcaMedC;
-  herbivoros.y = forcaMedH;
-  layout.title = "Agilidade";
-  layout.yaxis.title = "Agilidade média";
-  Plotly.newPlot(chartAgilidade, [carnivoros, herbivoros], layout);
+  let forcaCarn = {...carnivoros}, forcaHerb = {...herbivoros}, forcaLayo = {...layout};
+  forcaCarn.y = [forcaMedC];
+  forcaHerb.y = [forcaMedH];
+  forcaLayo.title = "Agilidade";
+  forcaLayo.yaxis.title = "Agilidade média";
+  Plotly.newPlot(chartAgilidade, [forcaCarn, forcaHerb], forcaLayo);
   
   // @@@@@@@@ Raio
-  carnivoros.y = raioMedC;
-  herbivoros.y = raioMedH;
-  layout.title = "Raio";
-  layout.yaxis.title = "Raio médio";
-  Plotly.newPlot(chartRaio, [carnivoros, herbivoros], layout);
+  let raioCarn = {...carnivoros}, raioHerb = {...herbivoros}, raioLayo = {...layout};
+  raioCarn.y = [raioMedC];
+  raioHerb.y = [raioMedH];
+  raioLayo.title = "Raio";
+  raioLayo.yaxis.title = "Raio médio";
+  Plotly.newPlot(chartRaio, [raioCarn, raioHerb], raioLayo);
 
   // @@@@@@@@ Raio de detecção
-  carnivoros.y = raioDetMedC;
-  herbivoros.y = raioDetMedH;
-  layout.title = "Alcance de detecção";
-  layout.yaxis.title = "Raio de detecção médio";
-  Plotly.newPlot(chartDeteccao, [carnivoros, herbivoros], layout);
+  let detCarn = {...carnivoros}, detHerb = {...herbivoros}, detLayo = {...layout};
+  detCarn.y = [raioDetMedC];
+  detHerb.y = [raioDetMedH];
+  detLayo.title = "Alcance de detecção";
+  detLayo.yaxis.title = "Raio de detecção médio";
+  Plotly.newPlot(chartDeteccao, [detCarn, detHerb], detLayo);
   
   // @@@@@@@@ Energia
-  carnivoros.y = energMedC;
-  herbivoros.y = energMedH;
-  layout.title = "Energia";
-  layout.yaxis.title = "Nível de energia médio";
-  Plotly.newPlot(chartEnergia, [carnivoros, herbivoros], layout);
+  let eneCarn = {...carnivoros}, eneHerb = {...herbivoros}, eneLayo = {...layout};
+  eneCarn.y = [energMedC];
+  eneHerb.y = [energMedH];
+  eneLayo.title = "Energia";
+  eneLayo.yaxis.title = "Nível de energia médio";
+  Plotly.newPlot(chartEnergia, [eneCarn, eneHerb], eneLayo);
   
   // @@@@@@@@ Gasto de energia
-  carnivoros.y = taxaEnergMedC;
-  herbivoros.y = taxaEnergMedH;
-  layout.title = "Gasto de energia";
-  layout.yaxis.title = "Taxa de energia média";
-  Plotly.newPlot(chartGasto, [carnivoros, herbivoros], layout);
+  let gasCarn = {...carnivoros}, gasHerb = {...herbivoros}, gasLayo = {...layout};
+  gasCarn.y = [taxaEnergMedC];
+  gasHerb.y = [taxaEnergMedH];
+  gasLayo.title = "Gasto de energia";
+  gasLayo.yaxis.title = "Taxa de energia média";
+  Plotly.newPlot(chartGasto, [gasCarn, gasHerb], gasLayo);
 }
