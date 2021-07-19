@@ -1,25 +1,96 @@
-var cnt = 0;
-var segundoRepetido = -1;
-const chartElement = document.getElementById("chart")
-
-function resetChart() {
-  Plotly.purge(chartElement)
-  mudarGrafico = true;
+// Função para retornar o ultimo elemento de um array sem retira-lo de la
+Array.prototype.last = function() {
+  return this[this.length - 1];
 }
 
-function getDataPop(dados) { 
-  var popCarnivoros =[dados[dados.length-1][1]];
-  var popHerbivoros = [dados[dados.length-1][2]];
-  var valores = [popCarnivoros, popHerbivoros];
-  let seconds = dados[dados.length-1][0];
-  var valsegundos = [];
+var cnt = 0;
+var segundoRepetido = -1;
+const chart = document.getElementById("chart")
 
-  if(seconds != segundoRepetido) {
-    // console.log("não entrou: "+seconds);
-    valsegundos.push([seconds], [seconds]);
+let historico = {
+  herbivoros: {
+    populacao:[],
+    velocidade: [],
+    agilidade: [],
+    raio: [],
+    deteccao: [],
+    energia: [],
+    gasto: []
+  },
+  carnivoros:{
+    populacao:[],
+    velocidade: [],
+    agilidade: [],
+    raio: [],
+    deteccao: [],
+    energia: [],
+    gasto: []
+  },
+  segundos: []
+}
 
-    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
-    cnt++;
+function resetChart() {
+  Plotly.purge(chart);
+}
+
+function insertNextDataChart() {
+  // Não deixa inserir dados para segundos repetidos
+  if(segundos == segundoRepetido) {
+    return;
+  }
+  segundoRepetido = segundos;
+  // Salva os valores atuais no historico
+    //  Carnivoros
+    historico.carnivoros.populacao.push(Carnivoro.carnivoros.length)
+    historico.carnivoros.velocidade.push(velMedC)
+    historico.carnivoros.agilidade.push(forcaMedC)
+    historico.carnivoros.raio.push(raioMedC)
+    historico.carnivoros.deteccao.push(raioDetMedC)
+    historico.carnivoros.energia.push(energMedC)
+    historico.carnivoros.gasto.push(taxaEnergMedC)
+
+    //  Herbivoros
+    historico.herbivoros.populacao.push(Herbivoro.herbivoros.length)
+    historico.herbivoros.velocidade.push(velMedH)
+    historico.herbivoros.agilidade.push(forcaMedH)
+    historico.herbivoros.raio.push(raioMedH)
+    historico.herbivoros.deteccao.push(raioDetMedH)
+    historico.herbivoros.energia.push(energMedH)
+    historico.herbivoros.gasto.push(taxaEnergMedH)
+
+    //  Segundos
+    historico.segundos.push(segundos)
+
+  // Mesma variável para todos
+  let arraySeconds = [[segundos], [segundos]];
+
+  // Identificar qual o gráfico atual
+  let valores;
+
+  switch(chartType) {
+    case 1:
+      valores = [[historico.carnivoros.populacao.last()], [historico.herbivoros.populacao.last()]];
+      break;
+    case 2:
+      valores = [[historico.carnivoros.velocidade.last()], [historico.herbivoros.velocidade.last()]];
+      break;
+    case 3:
+      valores = [[historico.carnivoros.agilidade.last()], [historico.herbivoros.agilidade.last()]];
+      break;
+    case 4:
+      valores = [[historico.carnivoros.raio.last()], [historico.herbivoros.raio.last()]];
+    case 5:
+      valores = [[historico.carnivoros.deteccao.last()], [historico.herbivoros.deteccao.last()]];
+      break;
+    case 6:
+      valores = [[historico.carnivoros.energia.last()], [historico.herbivoros.energia.last()]];
+      break;
+    case 7:
+      valores = [[historico.carnivoros.gasto.last()], [historico.herbivoros.gasto.last()]];
+  }
+
+  Plotly.extendTraces(chart,{y: valores, x: arraySeconds}, [0,1]);
+  cnt++;
     if(cnt >500) {
         Plotly.relayout('chart',{
             xaxis: {
@@ -28,197 +99,7 @@ function getDataPop(dados) {
         });
     }
 
-  } else {
-    // console.log("entrou : "+seconds+"s");
-    // Se for pra repetir segundo e dados nem envia!
-  }
-  segundoRepetido = seconds;
-} 
- 
-function getDataVel(dados) { 
-  
-  var velCarnivoros =[dados[dados.length-1][3]];
-  var velHerbivoros = [dados[dados.length-1][4]];
-  var valores = [velCarnivoros, velHerbivoros];
-  let seconds = dados[dados.length-1][0];
-  var valsegundos = [];
-
-  if(seconds != segundoRepetido) {
-    // console.log("não entrou: "+seconds);
-    valsegundos.push([seconds], [seconds]);
-
-    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
-    cnt++;
-    if(cnt >500) {
-        Plotly.relayout('chart',{
-            xaxis: {
-                range: [cnt-500,cnt]
-            }
-        });
-    }
-
-  } else {
-    // console.log("entrou : "+seconds+"s");
-    // Se for pra repetir segundo e dados nem envia!
-  }
-  segundoRepetido = seconds;
-  
-}  
-
-
-function getDataForca(dados) { 
-  
-  var forcaCarnivoros =[dados[dados.length-1][5]];
-  var forcaHerbivoros = [dados[dados.length-1][6]];
-  var valores = [forcaCarnivoros, forcaHerbivoros];
-  let seconds = dados[dados.length-1][0];
-  var valsegundos = [];
-
-  if(seconds != segundoRepetido) {
-    // console.log("não entrou: "+seconds);
-    valsegundos.push([seconds], [seconds]);
-
-    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
-    cnt++;
-    if(cnt >500) {
-        Plotly.relayout('chart',{
-            xaxis: {
-                range: [cnt-500,cnt]
-            }
-        });
-    }
-
-  } else {
-    // console.log("entrou : "+seconds+"s");
-    // Se for pra repetir segundo e dados nem envia!
-  }
-  segundoRepetido = seconds;
-  
-}  
-
-
-function getDataRaio(dados) { 
-  
-  var raioCarnivoros =[dados[dados.length-1][7]];
-  var raioHerbivoros = [dados[dados.length-1][8]];
-  var valores = [raioCarnivoros, raioHerbivoros];
-  let seconds = dados[dados.length-1][0];
-  var valsegundos = [];
-
-  if(seconds != segundoRepetido) {
-    // console.log("não entrou: "+seconds);
-    valsegundos.push([seconds], [seconds]);
-
-    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
-    cnt++;
-    if(cnt >500) {
-        Plotly.relayout('chart',{
-            xaxis: {
-                range: [cnt-500,cnt]
-            }
-        });
-    }
-
-  } else {
-    // console.log("entrou : "+seconds+"s");
-    // Se for pra repetir segundo e dados nem envia!
-  }
-  segundoRepetido = seconds;
-  
-}  
-
-
-function getDataRaioDet(dados) { 
-  
-  var raioDetCarnivoros =[dados[dados.length-1][9]];
-  var raioDetHerbivoros = [dados[dados.length-1][10]];
-  var valores = [raioDetCarnivoros, raioDetHerbivoros];
-  let seconds = dados[dados.length-1][0];
-  var valsegundos = [];
-
-  if(seconds != segundoRepetido) {
-    // console.log("não entrou: "+seconds);
-    valsegundos.push([seconds], [seconds]);
-
-    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
-    cnt++;
-    if(cnt >500) {
-        Plotly.relayout('chart',{
-            xaxis: {
-                range: [cnt-500,cnt]
-            }
-        });
-    }
-
-  } else {
-    // console.log("entrou : "+seconds+"s");
-    // Se for pra repetir segundo e dados nem envia!
-  }
-  segundoRepetido = seconds;
-  
-}  
-
-
-function getDataEner(dados) { 
-  
-  var energiaCarnivoros =[dados[dados.length-1][11]];
-  var energiaHerbivoros = [dados[dados.length-1][12]];
-  var valores = [energiaCarnivoros, energiaHerbivoros];
-  let seconds = dados[dados.length-1][0];
-  var valsegundos = [];
-
-  if(seconds != segundoRepetido) {
-    // console.log("não entrou: "+seconds);
-    valsegundos.push([seconds], [seconds]);
-
-    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
-    cnt++;
-    if(cnt >500) {
-        Plotly.relayout('chart',{
-            xaxis: {
-                range: [cnt-500,cnt]
-            }
-        });
-    }
-
-  } else {
-    // console.log("entrou : "+seconds+"s");
-    // Se for pra repetir segundo e dados nem envia!
-  }
-  segundoRepetido = seconds;
-  
-}  
-
-
-function getDataTaxEner(dados) { 
-  
-  var taxaEnerCarnivoros =[dados[dados.length-1][13]];
-  var taxaEnerHerbivoros = [dados[dados.length-1][14]];
-  var valores = [taxaEnerCarnivoros, taxaEnerHerbivoros];
-  let seconds = dados[dados.length-1][0];
-  var valsegundos = [];
-
-  if(seconds != segundoRepetido) {
-    // console.log("não entrou: "+seconds);
-    valsegundos.push([seconds], [seconds]);
-
-    Plotly.extendTraces('chart',{y: valores, x: valsegundos}, [0,1]);
-    cnt++;
-    if(cnt >500) {
-        Plotly.relayout('chart',{
-            xaxis: {
-                range: [cnt-500,cnt]
-            }
-        });
-    }
-
-  } else {
-    // console.log("entrou : "+seconds+"s");
-    // Se for pra repetir segundo e dados nem envia!
-  }
-  segundoRepetido = seconds;
-  
-}  
+}
 
 /*var carnivoros = {
   x: [],
@@ -277,56 +158,72 @@ var layout = {
 
 Plotly.newPlot('chart', data, layout); */
 
-function changeChart(novoTipo, dados) {
+function changeChart(type) {
+  if(type == chartType || type < 1 || type > 7) {
+    return;
+  }
   resetChart();
+  buildChart(type);
+  chartType = type;
+}
 
+function buildChart(type) {
   // ÍNDICE DE QUAL DADO PEGARÁ DO ARRAY DE DADOS (em relação ao carnívoro)
-  let indice = 1;               // Valores do gráfico 1 para servir de inicializador
-  let titulo = "População";
-  let yTitulo = "N° Indivíduos"; //Título do eixo y
-  switch (novoTipo) {
+  //let indice = 1;               // Valores do gráfico 1 para servir de inicializador
+  let title = "População";
+  let yTitle = "N° Indivíduos"; //Título do eixo y
+  let data = [];
+  switch (type) {
     case 1: // População
+      data = [historico.carnivoros.populacao, historico.herbivoros.populacao];
       break;
     case 2: // Velocidade
-      indice = 3;
-      titulo = "Velocidade";
-      yTitulo = "Velocidade média";
+      //indice = 3;
+      title = "Velocidade";
+      yTitle = "Velocidade média";
+      data = [historico.carnivoros.velocidade, historico.herbivoros.velocidade];
       break;
     case 3: // Força
-      indice = 5;
-      titulo = "Agilidade";
-      yTitulo = "Agilidade Média";
+      //indice = 5;
+      title = "Agilidade";
+      yTitle = "Agilidade Média";
+      data = [historico.carnivoros.agilidade, historico.herbivoros.agilidade];
       break;
     case 4: // Raio
-      indice = 7;
-      titulo = "Raio";
-      yTitulo = "Raio médio";
+      //indice = 7;
+      title = "Raio";
+      yTitle = "Raio médio";
+      data = [historico.carnivoros.raio, historico.herbivoros.raio];
       break;
     case 5: // Raio deteccao
-      indice = 9;
-      titulo = "Alcance de detecção";
-      yTitulo = "Raio de detecção médio";
+      //indice = 9;
+      title = "Alcance de detecção";
+      yTitle = "Raio de detecção médio";
+      data = [historico.carnivoros.deteccao, historico.herbivoros.deteccao];
       break;
     case 6: // Energia
-      indice = 11;
-      titulo = "Energia";
-      yTitulo = "Nível de energia médio";
+      //indice = 11;
+      title = "Energia";
+      yTitle = "Nível de energia médio";
+      data = [historico.carnivoros.energia, historico.herbivoros.energia];
       break;
     case 7: // Taxa de energia
-      indice = 13;
-      titulo = "Gasto de energia";
-      yTitulo = "Taxa de energia média";
+      //indice = 13;
+      title = "Gasto de energia";
+      yTitle = "Taxa de energia média";
+      data = [historico.carnivoros.gasto, historico.herbivoros.gasto];
   }
+  console.log(data)
 
   // CAPTURA TODO O HISTÓRICO DE DADOS E JOGA EM UM ARRAY
-  let tempo = dados.map(elemento => elemento[0]) // faz um array novo com todos os valores de segundos
-  let yCarn = dados.map(elemento => elemento[indice]);
-  let yHerb = dados.map(elemento => elemento[indice + 1]);
+  //let tempo = dados.map(elemento => elemento[0]) // faz um array novo com todos os valores de segundos
+  //let yCarn = dados.map(elemento => elemento[indice]);
+  //let yHerb = dados.map(elemento => elemento[indice + 1]);
 
   // INSERE TODO O HISTÓRICO DE DADOS NO GRÁFICO
   let carnivoros = {
-    x: tempo,
-    y: yCarn,
+    x: historico.segundos,
+    y: data[0],
     type: 'scatter',
     mode: 'lines',
     name: 'Carnívoros',
@@ -334,18 +231,18 @@ function changeChart(novoTipo, dados) {
   };
 
   let herbivoros = {
-    x: tempo,
-    y: yHerb,
+    x: historico.segundos,
+    y: data[1],
     type: 'scatter',
     mode: 'lines',
     name: 'Herbívoros',
     line: {color: 'green', shape: 'spline'}
   };
 
-  let data = [carnivoros, herbivoros];
+  let dataConfig = [carnivoros, herbivoros];
 
   var layout = {
-  title: titulo,
+  title: title,
 
   xaxis: {
       showline: true,
@@ -355,7 +252,7 @@ function changeChart(novoTipo, dados) {
   },
   yaxis: { 
       showline: true, 
-      title: yTitulo, 
+      title: yTitle, 
       rangemode: "tozero" 
   },
   legend: {
@@ -371,7 +268,6 @@ function changeChart(novoTipo, dados) {
   }
 }
 
-  Plotly.newPlot('chart', data, layout);
-  mudarGrafico = false;
+  Plotly.newPlot('chart', dataConfig, layout);
 }
 
