@@ -609,6 +609,42 @@ function animate(){
     }
 }
 
+// Função atrelada ao evento click para encontrar o organismo na lista e retornar suas propriedades
+function getOrganismo(x, y) {
+    let organismo = (Carnivoro.carnivoros.find(c => Math.abs(c.posicao.x - x) <= 5 && Math.abs(c.posicao.y - y) <= 5)
+        || Herbivoro.herbivoros.find(h => Math.abs(h.posicao.x - x) <= 5 && Math.abs(h.posicao.y - y) <= 5))
+    
+    if(organismo == undefined) {
+        return; //console.log("não encontrou")
+    }
+
+    let popover = `
+        <div class="popover-info" style="top:${parseInt(organismo.posicao.y - 20)}px; left:${parseInt(organismo.posicao.x + 15)}px">
+            <div class="popover-title">
+                ${(organismo instanceof Carnivoro) ? "Carnivoro":"Herbivoro"}
+            </div>
+            <div class="popover-content">
+                raio: ${organismo.raio.toFixed(2)},<br/>
+                velocidade máxima: ${organismo.vel_max.toFixed(2)},<br/>
+                energia máxima: ${organismo.energia_max.toFixed(2)},<br/>
+                cor: ${organismo.cor}
+            </div>
+            <button type="button" class="btn close" aria-label="Close"
+                onclick="$(this).parent().remove()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `
+    $popover = $(popover);
+    $("body").append($popover);
+    // setInterval(() => {
+    //     $popover.css({
+    //         top: parseInt(organismo.posicao.y - 20),
+    //         left: parseInt(organismo.posicao.x + 15)
+    //     })
+    // }, 250)
+}
+
 // ----------------------------------------------------------------------------------------------
 //                                         Cronômetro
 // ----------------------------------------------------------------------------------------------

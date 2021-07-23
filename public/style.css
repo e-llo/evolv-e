@@ -236,27 +236,88 @@ canvas {
   .sidenav a {font-size: 18px;}
 }
 @media (max-width: 450px) {
-  
-#painel{
+  #painel{
+    width: 100%;
+    height: 100vh;
+    display: inline-block;
+    vertical-align: top;
+    padding-top:20px;
+  }
+  #info{
+    width: 100%;
+    padding: 8%;
+    margin: 0 auto;
+    padding-bottom: 20px;
+  }
+  #chart{
   width: 100%;
-  height: 100vh;
-  display: inline-block;
-  vertical-align: top;
-  padding-top:20px;
-}
-#info{
-  width: 100%;
-  padding: 8%;
   margin: 0 auto;
-  padding-bottom: 20px;
-}
-#chart{
-width: 100%;
-margin: 0 auto;
+
+  }
+  body{
+    overflow: auto;
+  }
 
 }
-body{
-  overflow: auto;
+
+.popover-info{
+  position: absolute;
+  border-radius: 10px;
+  background-color: #2228;
+  color: #fff;
+  z-index: 9999;
 }
 
+/* SETA */
+.popover-info:before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: -12px;
+  border-style: solid;
+  border-width: 9px 9px 0;
+  border-color: #bbb transparent;
+  transform: rotate(90deg);
+  display: block;
+  width: 0;
+  z-index: 0;
+}
+
+.popover-info:after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: -9px;
+  border-style: solid;
+  border-width: 8px 8px 0;
+  border-color: #222 transparent;
+  transform: rotate(90deg);
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+/* ------ SETA */
+
+.popover-title {
+  background-color: #222;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+  /* border: solid #bbb 1px; */
+  border-bottom: solid #bbb 2px;
+  border-top: none;
+  padding: 10px;
+}
+
+.popover-content {
+  padding: 10px;
+}
+
+.popover-info > .close,
+  .popover-info > .close:hover {
+  position: absolute;
+  top: 0;
+  right:0;
+  color: #fff;
+  font-size: 25px;
 }

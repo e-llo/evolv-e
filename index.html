@@ -233,6 +233,7 @@
             // destroiObjetos();
             criaCronometro();
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
+            document.addEventListener("click", getOrg) // Habilita funcionalidade de pesquisar organismo
 
             calculaDadosGrafico(); // Chama só 1x para não ficar valor 0 antes do primeiro segundo
             setInterval(calculaDadosGrafico, 1000);
@@ -300,9 +301,11 @@
             if(btnCarn.classList.contains("active")){
                 btnCarn.classList.remove("active");
                 document.removeEventListener('click', geradorC, true);
+                document.addEventListener("click", getOrg);
             }else{
                 btnCarn.classList.add("active");
-                document.addEventListener('click', geradorC, true); 
+                document.removeEventListener("click", getOrg);
+                document.addEventListener('click', geradorC, true);
             }
         }
 
@@ -319,8 +322,10 @@
             if(btnHerb.classList.contains("active")){
                 btnHerb.classList.remove("active");
                 document.removeEventListener('click', geradorH, true);
+                document.addEventListener("click", getOrg);
             }else{
                 btnHerb.classList.add("active");
+                document.removeEventListener("click", getOrg);
                 document.addEventListener('click', geradorH, true); 
             }
         }
@@ -340,10 +345,20 @@
             if(btnAli.classList.contains("active")){
                 btnAli.classList.remove("active");
                 document.removeEventListener('click', geradorA, true);
+                document.addEventListener("click", getOrg);
             }else{
                 btnAli.classList.add("active");
+                document.removeEventListener("click", getOrg);
                 document.addEventListener('click', geradorA, true); 
             }
+        }
+
+        function getOrg(event) {
+            let cursorX = event.pageX
+            let cursorY = event.pageY
+
+            if(cursorX<=canvas.width && cursorY<=canvas.height)
+                getOrganismo(cursorX, cursorY)
         }
 
         function mudouInputProb(){
