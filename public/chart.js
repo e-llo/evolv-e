@@ -7,27 +7,7 @@ var cnt = 0;
 var segundoRepetido = -1;
 const chart = document.getElementById("chart")
 
-let historico = {
-  herbivoros: {
-    populacao:[],
-    velocidade: [],
-    agilidade: [],
-    raio: [],
-    deteccao: [],
-    energia: [],
-    gasto: []
-  },
-  carnivoros:{
-    populacao:[],
-    velocidade: [],
-    agilidade: [],
-    raio: [],
-    deteccao: [],
-    energia: [],
-    gasto: []
-  },
-  segundos: []
-}
+let historico = new Historico();
 
 function resetChart() {
   Plotly.purge(chart);
@@ -214,12 +194,6 @@ function buildChart(type) {
       yTitle = "Taxa de energia média";
       data = [historico.carnivoros.gasto, historico.herbivoros.gasto];
   }
-  console.log(data)
-
-  // CAPTURA TODO O HISTÓRICO DE DADOS E JOGA EM UM ARRAY
-  //let tempo = dados.map(elemento => elemento[0]) // faz um array novo com todos os valores de segundos
-  //let yCarn = dados.map(elemento => elemento[indice]);
-  //let yHerb = dados.map(elemento => elemento[indice + 1]);
 
   // INSERE TODO O HISTÓRICO DE DADOS NO GRÁFICO
   let carnivoros = {
