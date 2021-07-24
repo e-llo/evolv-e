@@ -623,10 +623,14 @@ function getOrganismo(x, y) {
                 ${(organismo instanceof Carnivoro) ? "Carnivoro":"Herbivoro"}
             </div>
             <div class="popover-content">
-                raio: ${organismo.raio.toFixed(2)},<br/>
-                velocidade máxima: ${organismo.vel_max.toFixed(2)},<br/>
-                energia máxima: ${organismo.energia_max.toFixed(2)},<br/>
-                cor: ${organismo.cor}
+                Raio: ${organismo.raio.toFixed(2)}<br/>
+                Velocidade máxima: ${organismo.vel_max.toFixed(2)}<br/>
+                Raio de detecção: ${organismo.raio_deteccao.toFixed(2)}<br/>
+                Energia máxima: ${organismo.energia_max.toFixed(2)}<br/>
+                Gasto energético: ${organismo.taxa_gasto_energia_max.toFixed(2)}<br/>
+                Cor: <svg width="20" height="20">
+                <rect width="18" height="18" style="fill:${organismo.cor}"/>
+                </svg> ${organismo.cor}
             </div>
             <button type="button" class="btn close" aria-label="Close"
                 onclick="deletePopover(${popover_id}, ${organismo.id})">
