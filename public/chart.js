@@ -79,6 +79,7 @@ function insertNextDataChart() {
       break;
     case 4:
       valores = [[historico.carnivoros.raio.last()], [historico.herbivoros.raio.last()]];
+      break;
     case 5:
       valores = [[historico.carnivoros.deteccao.last()], [historico.herbivoros.deteccao.last()]];
       break;
