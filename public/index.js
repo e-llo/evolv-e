@@ -655,14 +655,18 @@ function getOrganismo(x, y) {
         }
     })
 
+    // SALVAR O ID DO POPOVER NO ORGANISMO
+    organismo.popover_id = pop_id
+
     popover_id++
 }
 
 function deletePopover(popoverId, organismoId) {
     // Capturar organismo
-    const organismo = Organismo.organismos.find(o => o.id == organismoId);
+    const organismo = Organismo.organismos.find(o => o.id == organismoId) || 0;
     if(organismo) {
         delete organismo.proxy
+        delete organismo.popover_id
     }
     $(`#popover-${popoverId}`).remove()
 }

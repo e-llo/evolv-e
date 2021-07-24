@@ -24,10 +24,8 @@ class Carnivoro extends Organismo{
     }
 
     morre(){
-        // if(typeof this.cronometro_morte !== 'undefined') {
-        //     clearTimeout(this.cronometro_morte); // desativar o temporizador
-        // }
-        
+
+        if(this.popover_id) deletePopover(this.popover_id, this.id);
         Carnivoro.carnivoros = super.remove(Carnivoro.carnivoros, this);
     }
 
@@ -99,7 +97,7 @@ class Carnivoro extends Organismo{
         } else{
             this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }
-        Herbivoro.herbivoros.splice(i, 1); // O herbívoro comido morre (é retirado da lista de herbívoros)
+        herbivoro.morre() // O herbívoro comido morre (é retirado da lista de herbívoros)
         this.aumentaTamanho();
         
     }
