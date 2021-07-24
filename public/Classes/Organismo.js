@@ -148,8 +148,13 @@ class Organismo{
 
         // console.log("ângulo vel: ", this.vel.headingDegs());
 
-        // A velocidade altera a posição (assim como a aceleração altera a velocidade)
-        this.posicao.add(this.vel);
+        // Se existir um proxy, inserir por lá para que seja possível monitorar a mudança de posicao
+        if(this.proxy) {
+            this.proxy.add(this.vel)
+        } else {
+            // A velocidade altera a posição (assim como a aceleração altera a velocidade)
+            this.posicao.add(this.vel);
+        }
         // Reseta a aceleração para 0 a cada ciclo
         this.acel.mul(0);
 

@@ -60,7 +60,7 @@ var lado_esquerdo_vazio = true;
 // QuadTree
 let retanguloCanvas = new Retangulo(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2);
 
-
+var popover_id = 1;
 
 
 // ---------------------------------------------------------------------------------------
@@ -611,15 +611,14 @@ function animate(){
 
 // Função atrelada ao evento click para encontrar o organismo na lista e retornar suas propriedades
 function getOrganismo(x, y) {
-    let organismo = (Carnivoro.carnivoros.find(c => Math.abs(c.posicao.x - x) <= 5 && Math.abs(c.posicao.y - y) <= 5)
-        || Herbivoro.herbivoros.find(h => Math.abs(h.posicao.x - x) <= 5 && Math.abs(h.posicao.y - y) <= 5))
+    let organismo = Organismo.organismos.find(o => Math.abs(o.posicao.x - x) <= 5 && Math.abs(o.posicao.y - y) <= 5)
     
     if(organismo == undefined) {
         return; //console.log("não encontrou")
     }
 
     let popover = `
-        <div class="popover-info" style="top:${parseInt(organismo.posicao.y - 20)}px; left:${parseInt(organismo.posicao.x + 15)}px">
+        <div id="popover-${popover_id}" class="popover-info" style="top:${parseInt(organismo.posicao.y - 20)}px; left:${parseInt(organismo.posicao.x + 15)}px">
             <div class="popover-title">
                 ${(organismo instanceof Carnivoro) ? "Carnivoro":"Herbivoro"}
             </div>
@@ -630,19 +629,38 @@ function getOrganismo(x, y) {
                 cor: ${organismo.cor}
             </div>
             <button type="button" class="btn close" aria-label="Close"
-                onclick="$(this).parent().remove()">
+                onclick="deletePopover(${popover_id}, ${organismo.id})">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     `
-    $popover = $(popover);
-    $("body").append($popover);
-    // setInterval(() => {
-    //     $popover.css({
-    //         top: parseInt(organismo.posicao.y - 20),
-    //         left: parseInt(organismo.posicao.x + 15)
-    //     })
-    // }, 250)
+    $("body").append($(popover));
+
+    let pop_id = popover_id
+    // CRIAR MONITORADOR PARA A VARIÁVEL POSICAO
+    organismo.proxy = new Proxy(organismo["posicao"], {
+        set: function(target, key, value) {
+            target[key] = value;
+            //console.log("vetor mudou: "+key+" = "+value)
+
+            let cssProperty = key == "x" ? 
+                {left: parseInt(value + 15)} : {top: parseInt(value - 20)}
+            // Popover acompanhar a posicao do organismo
+            $(`#popover-${pop_id}`).css(cssProperty);
+            return true;
+        }
+    })
+
+    popover_id++
+}
+
+function deletePopover(popoverId, organismoId) {
+    // Capturar organismo
+    const organismo = Organismo.organismos.find(o => o.id == organismoId);
+    if(organismo) {
+        delete organismo.proxy
+    }
+    $(`#popover-${popoverId}`).remove()
 }
 
 // ----------------------------------------------------------------------------------------------
