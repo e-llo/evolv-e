@@ -127,8 +127,8 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
     energia_max = Math.random() * 100 + 80
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida_min = 60; // em segundos
-    tempo_vida_max = 160; // em segundos
+    tempo_vida_min = 120; // em segundos
+    tempo_vida_max = 300; // em segundos
 
     new Carnivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, 
@@ -147,8 +147,8 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     energia_max = Math.random() * 100 + 80;
     cansaco_max = Math.random() * 50 + 20;
     taxa_aum_cansaco = Math.random() + 0.05;
-    tempo_vida_min = 60; // em segundos
-    tempo_vida_max = 160; // em segundos
+    tempo_vida_min = 120; // em segundos
+    tempo_vida_max = 300; // em segundos
 
     new Herbivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, 
@@ -539,7 +539,9 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoH = new Circulo(herbivoro.posicao.x, herbivoro.posicao.y, herbivoro.raio_deteccao);
                         
-            herbivoro.buscarAlimento(qtree, visaoH);
+            if(herbivoro.energia <= herbivoro.energia_max * 0.8){ // FOME
+                herbivoro.buscarAlimento(qtree, visaoH);
+            }
             herbivoro.detectaPredador(qtree, visaoH);
         })
 
@@ -550,7 +552,7 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
 
-            if(carnivoro.energia <= carnivoro.energia_max * 0.8){
+            if(carnivoro.energia <= carnivoro.energia_max * 0.8){ // FOME
                 carnivoro.buscarHerbivoro(qtree, visaoC, false);
             }
 
@@ -585,11 +587,10 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoH = new Circulo(herbivoro.posicao.x, herbivoro.posicao.y, herbivoro.raio_deteccao);
 
-            // if(herbivoro.energia <= herbivoro.energia_max * 0.9){
-            //     herbivoro.buscarAlimento(qtree, visaoH);
-            // }
-
-            herbivoro.buscarAlimento(qtree, visaoH);
+            if(herbivoro.energia <= herbivoro.energia_max * 0.8){ // FOME
+                herbivoro.buscarAlimento(qtree, visaoH);
+            }
+            
             herbivoro.detectaPredador(qtree, visaoH);
         })
 
@@ -600,7 +601,7 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
 
-            if(carnivoro.energia <= carnivoro.energia_max * 0.8){
+            if(carnivoro.energia <= carnivoro.energia_max * 0.8){ // FOME
                 carnivoro.buscarHerbivoro(qtree, visaoC, false);
             }
 

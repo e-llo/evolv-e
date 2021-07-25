@@ -214,7 +214,7 @@ function buildChart(type) {
       yTitle = "Taxa de energia média";
       data = [historico.carnivoros.gasto, historico.herbivoros.gasto];
   }
-  console.log(data)
+  // console.log(data)
 
   // CAPTURA TODO O HISTÓRICO DE DADOS E JOGA EM UM ARRAY
   //let tempo = dados.map(elemento => elemento[0]) // faz um array novo com todos os valores de segundos
