@@ -24,9 +24,8 @@ class Herbivoro extends Organismo{
     }
 
     morre(){
-        // if(typeof this.cronometro_morte !== 'undefined') {
-        //     clearTimeout(this.cronometro_morte); // desativar o temporizador
-        // }
+        
+        if(this.popover_id) deletePopover(this.popover_id, this.id);
         Herbivoro.herbivoros = super.remove(Herbivoro.herbivoros, this);
     }
     

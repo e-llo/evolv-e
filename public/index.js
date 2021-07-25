@@ -27,8 +27,8 @@ var cansaco_max;
 var taxa_aum_cansaco;
 var tempo_vida_min;
 var tempo_vida_max;
-var fome_c = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
-var fome_h = 0.9; // porcentagem da energia máxima acima da qual eles não comerão
+var fome_c = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
+var fome_h = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
 
 
 // Variáveis para o gráfico (herbívoro)
@@ -539,7 +539,7 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoH = new Circulo(herbivoro.posicao.x, herbivoro.posicao.y, herbivoro.raio_deteccao);
                         
-            if(herbivoro.energia <= herbivoro.energia_max * 0.8){ // FOME
+            if(herbivoro.energia <= herbivoro.energia_max * fome_h){ // FOME
                 herbivoro.buscarAlimento(qtree, visaoH);
             }
             herbivoro.detectaPredador(qtree, visaoH);
@@ -552,8 +552,8 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
 
-            if(carnivoro.energia <= carnivoro.energia_max * 0.8){ // FOME
-                carnivoro.buscarHerbivoro(qtree, visaoC, false);
+            if(carnivoro.energia <= carnivoro.energia_max * fome_c){ // FOME
+                carnivoro.buscarHerbivoro(qtree, visaoC);
             }
 
             // carnivoro.buscarHerbivoro(qtree, visaoC, false);
@@ -587,7 +587,7 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoH = new Circulo(herbivoro.posicao.x, herbivoro.posicao.y, herbivoro.raio_deteccao);
 
-            if(herbivoro.energia <= herbivoro.energia_max * 0.8){ // FOME
+            if(herbivoro.energia <= herbivoro.energia_max * fome_h){ // FOME
                 herbivoro.buscarAlimento(qtree, visaoH);
             }
             
@@ -601,8 +601,8 @@ function animate(){
             // Transforma o raio de detecção em um objeto círculo para podermos manipulá-lo
             let visaoC = new Circulo(carnivoro.posicao.x, carnivoro.posicao.y, carnivoro.raio_deteccao);
 
-            if(carnivoro.energia <= carnivoro.energia_max * 0.8){ // FOME
-                carnivoro.buscarHerbivoro(qtree, visaoC, false);
+            if(carnivoro.energia <= carnivoro.energia_max * fome_c){ // FOME
+                carnivoro.buscarHerbivoro(qtree, visaoC);
             }
 
             // carnivoro.buscarHerbivoro(qtree, visaoC);
@@ -627,7 +627,7 @@ function getOrganismo(x, y) {
                 Raio: ${organismo.raio.toFixed(2)}<br/>
                 Velocidade máxima: ${organismo.vel_max.toFixed(2)}<br/>
                 Raio de detecção: ${organismo.raio_deteccao.toFixed(2)}<br/>
-                Energia máxima: ${organismo.energia_max.toFixed(2)}<br/>
+                Energia: ${organismo.energia.toFixed(2)}/${organismo.energia_max.toFixed(2)}<br/>
                 Gasto energético: ${organismo.taxa_gasto_energia_max.toFixed(2)}<br/>
                 Cor: <svg width="20" height="20">
                 <rect width="18" height="18" style="fill:${organismo.cor}"/>
@@ -656,14 +656,18 @@ function getOrganismo(x, y) {
         }
     })
 
+    // SALVAR O ID DO POPOVER NO ORGANISMO
+    organismo.popover_id = pop_id
+
     popover_id++
 }
 
 function deletePopover(popoverId, organismoId) {
     // Capturar organismo
-    const organismo = Organismo.organismos.find(o => o.id == organismoId);
+    const organismo = Organismo.organismos.find(o => o.id == organismoId) || 0;
     if(organismo) {
         delete organismo.proxy
+        delete organismo.popover_id
     }
     $(`#popover-${popoverId}`).remove()
 }

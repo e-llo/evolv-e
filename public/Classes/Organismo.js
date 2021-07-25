@@ -123,7 +123,7 @@ class Organismo{
             //     } 
             // }
         } else{
-            this.morre();         
+            this.morre(); 
         }
         
         if(segundo - this.segundo_nascimento >= this.tempo_vida.real){ // se se passar mais tempo desde o nascimento que o tempo de vida do organismo
