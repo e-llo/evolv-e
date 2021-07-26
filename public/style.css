@@ -32,7 +32,7 @@ canvas {
     color: #ddd;
 }
 #info{
-    width: 320px;
+    width: 350px;
     background: #222;
     margin: 0 auto;
     padding-bottom: 20px;
@@ -354,4 +354,12 @@ canvas {
 .edit-organism input[disabled] {
   background-color: #222;
   color: #777;
+}
+#edit-title{
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 700;
+}
+#input-cor{
+  height:100%;
 }

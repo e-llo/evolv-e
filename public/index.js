@@ -727,7 +727,8 @@ function showEditPanel(type) {
     }
 
     let panel = `
-        <div class="row">
+    
+        <div class="row mb-3">
             <div id="edit-title" class="col-8">${type == 1? "Carnívoro":"Herbívoro"}</div>
             <!-- Se o aleatorio estiver ligado, desabilitar todos os inputs -->
             <button id="edit-random" class="btn col-2 btn-gray" onclick="randomConfig(${type})"><i class="fas fa-dice"></i></button>
@@ -735,32 +736,50 @@ function showEditPanel(type) {
                 <span class="text-white" aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form id="formConfig" class="row">
-            <div class="col-4">
-                <!-- desenho do organismo com atualizacao em tempo real -->
-                <label for="input-cor">Cor</label>
-                <input id="input-cor" name="cor" type="color" value="${config? config.cor:"#ff0000"}">
+    
+
+        <form id="formConfig" class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-6 p-0">
+                    <!-- desenho do organismo com atualizacao em tempo real -->
+                    <label for="input-cor">Cor</label>
+                    <input id="input-cor" name="cor" type="color" value="${config? config.cor:"#ff0000"}">
+                </div>
             </div>
-            <div class="col-4">
-                <label for="input-raio">Raio</label>
-                <input id="input-raio" name="raio" type="number" value="${config? config.raio:(raio||6.12)}" class="form-control">
-                <label for="input-velocidade">Vel max</label>
-                <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max:vel_max}" class="form-control">
-                <label for="input-forca">Forca max</label>
-                <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max:forca_max}" class="form-control">
+            <div class="row p-0">
+                <div class="col p-0">
+                    <label for="input-raio">Raio</label>
+                    <input id="input-raio" name="raio" type="number" value="${config? config.raio:(raio||6.12)}" class="form-control p-0">
+                </div>  
+                <div class="col p-0">                 
+                    <label for="input-velocidade">Vel max</label>
+                    <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max:vel_max}" class="form-control p-0">
+                </div>
+                <div class="col p-0">
+                    <label for="input-forca">Forca max</label>
+                    <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max:forca_max}" class="form-control p-0">
+                </div>
             </div>
-            <div class="col-4">
-                <label for="input-energia">Energia max</label>
-                <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max:energia_max}" class="form-control">
-                <label for="input-vida-min">Vida min</label>
-                <input id="input-vida-min" name="tempo_vida_min" type="number" min="1" value="${config? config.tempo_vida_min:tempo_vida_min}" class="form-control">
-                <label for="input-vida-max">Vida max</label>
-                <input id="input-vida-max" name="tempo_vida_max" type="number" min="1" value="${config? config.tempo_vida_max:tempo_vida_max}" class="form-control">
+            <div class="row p-0">
+                <div class="col p-0">
+                    <label for="input-energia">Energia max</label>
+                    <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max:energia_max}" class="form-control p-0">
+                </div>  
+                <div class="col p-0">  
+                    <label for="input-vida-min">Vida min</label>
+                    <input id="input-vida-min" name="tempo_vida_min" type="number" min="1" value="${config? config.tempo_vida_min:tempo_vida_min}" class="form-control p-0">
+                </div>
+                <div class="col p-0">    
+                    <label for="input-vida-max">Vida max</label>
+                    <input id="input-vida-max" name="tempo_vida_max" type="number" min="1" value="${config? config.tempo_vida_max:tempo_vida_max}" class="form-control p-0">
+                </div>
             </div>
         </form>
         <div class="row mt-2">
             <button type="button" onclick="serializarFormConfig(${type})" class="btn btn-sm btn-outline-secondary btn-block">Salvar</button>
         </div>
+    
+    
     `
     $("#painelEditar").html(panel).removeClass("d-none")
     // Iniciar como aleatorio se não existe configuracao previa salva
