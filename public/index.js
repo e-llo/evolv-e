@@ -62,6 +62,10 @@ let retanguloCanvas = new Retangulo(canvas.width/2, canvas.height/2, canvas.widt
 
 var popover_id = 1;
 
+// Configuracoes dos organismos editados
+var conf_c;
+var conf_h;
+
 
 // ---------------------------------------------------------------------------------------
 //                                  FUNÇÕES
@@ -130,6 +134,16 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
     tempo_vida_min = 120; // em segundos
     tempo_vida_max = 300; // em segundos
 
+    if(conf_c) {
+        raio_min = parseFloat(conf_c.raio);
+        vel_max = parseFloat(conf_c.vel_max);
+        forca_max = parseFloat(conf_c.forca_max);
+        cor = conf_c.cor;
+        energia_max = parseFloat(conf_c.energia_max);
+        tempo_vida_min = parseFloat(conf_c.tempo_vida_min);
+        tempo_vida_max = parseFloat(conf_c.tempo_vida_max);
+    }
+
     new Carnivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, 
         energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
@@ -150,6 +164,16 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     tempo_vida_min = 120; // em segundos
     tempo_vida_max = 300; // em segundos
 
+    if(conf_h) {
+        raio_min = parseFloat(conf_h.raio);
+        vel_max = parseFloat(conf_h.vel_max);
+        forca_max = parseFloat(conf_h.forca_max);
+        cor = conf_h.cor;
+        energia_max = parseFloat(conf_h.energia_max);
+        tempo_vida_min = parseFloat(conf_h.tempo_vida_min);
+        tempo_vida_max = parseFloat(conf_h.tempo_vida_max);
+    }
+
     new Herbivoro(
         x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, 
         energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
@@ -165,6 +189,24 @@ function geraCor(){
     var cor = "rgb(" + r + "," + g + "," + b + ")";
 
     return cor;
+}
+
+function hexToRgb(hex) {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? 
+        "rgb("
+        + parseInt(result[1], 16) + ","
+        + parseInt(result[2], 16) + ","
+        + parseInt(result[3], 16)
+        + ")"
+    : null;
+}
+
+function rgbToHex(rgb) {
+    let result = /^rgb\(([\d]{1,3}),([\d]{1,3}),([\d]{1,3})\)$/i.exec(rgb)
+    return result ? 
+        "#" + ((parseInt(result[1]) << 16) + (parseInt(result[2]) << 8) + parseInt(result[3])).toString(16)
+    : null;
 }
 
 function corMutacao(estilo) {
@@ -609,7 +651,9 @@ function animate(){
         })
     }
 }
-
+// ----------------------------------------------------------------------------------------------
+//                                   Paineis dinamicos e Popovers
+// ----------------------------------------------------------------------------------------------
 // Função atrelada ao evento click para encontrar o organismo na lista e retornar suas propriedades
 function getOrganismo(x, y) {
     let organismo = Organismo.organismos.find(o => Math.abs(o.posicao.x - x) <= 5 && Math.abs(o.posicao.y - y) <= 5)
@@ -670,6 +714,103 @@ function deletePopover(popoverId, organismoId) {
         delete organismo.popover_id
     }
     $(`#popover-${popoverId}`).remove()
+}
+
+// GERAR PAINEL DE ESCOLHA DAS PROPRIEDADES DOS ORGANISMOS ADICIONADOS NA TELA
+function showEditPanel(type) {
+    // Restaurar configuracoes salvas
+    let config;
+    if(type == 1) {
+        config = conf_c;
+    } else {
+        config = conf_h;
+    }
+
+    let panel = `
+        <div class="row">
+            <div id="edit-title" class="col-8">${type == 1? "Carnívoro":"Herbívoro"}</div>
+            <!-- Se o aleatorio estiver ligado, desabilitar todos os inputs -->
+            <button id="edit-random" class="btn col-2 btn-gray" onclick="randomConfig(${type})"><i class="fas fa-dice"></i></button>
+            <button class="btn close col-2" onclick="$(this).closest('.edit-organism').addClass('d-none').html('')">
+                <span class="text-white" aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="formConfig" class="row">
+            <div class="col-4">
+                <!-- desenho do organismo com atualizacao em tempo real -->
+                <label for="input-cor">Cor</label>
+                <input id="input-cor" name="cor" type="color" value="${config? config.cor:"#ff0000"}">
+            </div>
+            <div class="col-4">
+                <label for="input-raio">Raio</label>
+                <input id="input-raio" name="raio" type="number" value="${config? config.raio:(raio||6.12)}" class="form-control">
+                <label for="input-velocidade">Vel max</label>
+                <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max:vel_max}" class="form-control">
+                <label for="input-forca">Forca max</label>
+                <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max:forca_max}" class="form-control">
+            </div>
+            <div class="col-4">
+                <label for="input-energia">Energia max</label>
+                <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max:energia_max}" class="form-control">
+                <label for="input-vida-min">Vida min</label>
+                <input id="input-vida-min" name="tempo_vida_min" type="number" min="1" value="${config? config.tempo_vida_min:tempo_vida_min}" class="form-control">
+                <label for="input-vida-max">Vida max</label>
+                <input id="input-vida-max" name="tempo_vida_max" type="number" min="1" value="${config? config.tempo_vida_max:tempo_vida_max}" class="form-control">
+            </div>
+        </form>
+        <div class="row mt-2">
+            <button type="button" onclick="serializarFormConfig(${type})" class="btn btn-sm btn-outline-secondary btn-block">Salvar</button>
+        </div>
+    `
+    $("#painelEditar").html(panel).removeClass("d-none")
+    // Iniciar como aleatorio se não existe configuracao previa salva
+    if(!config) {
+        randomConfig(type);
+    }
+}
+
+function serializarFormConfig(type) {
+    let obj = $("#formConfig").serializeArray().reduce(function(obj, value, i) {
+        obj[value.name] = value.value;
+        return obj;
+    }, {});
+    // Converter cor
+    obj.cor = hexToRgb(obj["cor"])
+    
+    if(type == 1) {
+        conf_c = obj;
+    } else {
+        conf_h = obj;
+    }
+}
+
+function randomConfig(type) {
+    if($("#edit-random").hasClass("active")) {
+        $("#edit-random").removeClass("active");
+
+        // Retirar disable dos inputs
+        $("#formConfig input").prop("disabled", false)
+    } else {
+        // apagar configuracao
+        if(type==1 && conf_c) {
+            // TODO: aviso para confirmar se quer aleatorizar mesmo.
+            let resultado = confirm("Ao aleatorizar os valores, você perderá as configurações salvas para os Carnívoros. Deseja continuar?")
+            if(resultado == true)
+                conf_c = undefined;
+            else
+                return;
+        } else if(type==2 && conf_h) {
+            // TODO: aviso para confirmar se quer aleatorizar mesmo.
+            let resultado = confirm("Ao aleatorizar os valores, você perderá as configurações salvas para os Herbívoros. Deseja continuar?")
+            if(resultado == true)
+                conf_h = undefined;
+            else
+                return;
+        }
+        $("#edit-random").addClass("active");
+        // dar disable nos inputs de configuracao
+        $("#formConfig input").prop("disabled", true)
+    }
 }
 
 // ----------------------------------------------------------------------------------------------

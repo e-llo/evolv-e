@@ -198,6 +198,20 @@ canvas {
   font-size: 16px;
   text-align: center;
 }
+
+.btn-gray {
+  padding: 0;
+  width: 10px;
+}
+
+.btn-gray > i {
+  color: #555;
+}
+
+.btn-gray:hover > i, .btn-gray.active > i{
+  color: #eee;
+}
+
 .sidenav {
   height: 100%;
   position: fixed;
@@ -320,4 +334,24 @@ canvas {
   right:0;
   color: #fff;
   font-size: 25px;
+}
+
+.edit-organism {
+  width: 100%;
+}
+
+.edit-organism input.form-control {
+  background-color: #333;
+  border-color: #222;
+  color: #eee;
+}
+
+.edit-organism input[type=color] {
+  background-color: #222;
+  border: none;
+}
+
+.edit-organism input[disabled] {
+  background-color: #222;
+  color: #777;
 }
