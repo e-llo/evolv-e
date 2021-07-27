@@ -204,9 +204,13 @@ function hexToRgb(hex) {
 
 function rgbToHex(rgb) {
     let result = /^rgb\(([\d]{1,3}),([\d]{1,3}),([\d]{1,3})\)$/i.exec(rgb)
-    return result ? 
-        "#" + ((parseInt(result[1]) << 16) + (parseInt(result[2]) << 8) + parseInt(result[3])).toString(16)
-    : null;
+    if(!result) return null;
+
+    let r = parseInt(result[1]).toString(16)
+    let g = parseInt(result[2]).toString(16)
+    let b = parseInt(result[3]).toString(16)
+    
+    return `#${r.length<2? "0"+r:r}${g.length<2? "0"+g:g}${b.length<2? "0"+b:b}`
 }
 
 function corMutacao(estilo) {
@@ -743,7 +747,7 @@ function showEditPanel(type) {
                 <div class="col-6 p-0">
                     <!-- desenho do organismo com atualizacao em tempo real -->
                     <label for="input-cor">Cor</label>
-                    <input id="input-cor" name="cor" type="color" value="${config? config.cor:"#ff0000"}">
+                    <input id="input-cor" name="cor" type="color" value="${config? rgbToHex(config.cor):"#ff0000"}">
                 </div>
             </div>
             <div class="row p-0">
@@ -751,11 +755,11 @@ function showEditPanel(type) {
                     <label for="input-raio">Raio</label>
                     <input id="input-raio" name="raio" type="number" value="${config? config.raio:(raio||6.12)}" class="form-control p-0">
                 </div>  
-                <div class="col p-0">                 
+                <div class="col offset-1 p-0">                 
                     <label for="input-velocidade">Vel max</label>
                     <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max:vel_max}" class="form-control p-0">
                 </div>
-                <div class="col p-0">
+                <div class="col offset-1 p-0">
                     <label for="input-forca">Forca max</label>
                     <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max:forca_max}" class="form-control p-0">
                 </div>
@@ -765,11 +769,11 @@ function showEditPanel(type) {
                     <label for="input-energia">Energia max</label>
                     <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max:energia_max}" class="form-control p-0">
                 </div>  
-                <div class="col p-0">  
+                <div class="col offset-1 p-0">  
                     <label for="input-vida-min">Vida min</label>
                     <input id="input-vida-min" name="tempo_vida_min" type="number" min="1" value="${config? config.tempo_vida_min:tempo_vida_min}" class="form-control p-0">
                 </div>
-                <div class="col p-0">    
+                <div class="col offset-1 p-0">    
                     <label for="input-vida-max">Vida max</label>
                     <input id="input-vida-max" name="tempo_vida_max" type="number" min="1" value="${config? config.tempo_vida_max:tempo_vida_max}" class="form-control p-0">
                 </div>
