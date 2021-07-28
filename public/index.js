@@ -436,7 +436,7 @@ function calculaDadosGrafico(){
     Herbivoro.herbivoros.forEach(herbivoro => {
          // Checa se estah a direita ou a esquerda
          let lado;
-         if(herbivoro.posicao.x < canvas.width / 2 - 31) {
+         if(herbivoro.posicao.x < canvas.width / 2) {
              lado = "esq"
          } else {
              lado = "dir"
@@ -454,7 +454,7 @@ function calculaDadosGrafico(){
     Carnivoro.carnivoros.forEach(carnivoro => {
         // Checa se estah a direita ou a esquerda
         let lado;
-        if(carnivoro.posicao.x < canvas.width / 2 - 31) {
+        if(carnivoro.posicao.x < canvas.width / 2) {
             lado = "esq"
         } else {
             lado = "dir"

@@ -362,3 +362,15 @@ canvas {
 #input-cor{
   height:100%;
 }
+
+.sideTitle {
+  text-align: center;
+  font-size: 20px;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sideTitle:before, .sideTitle:after {
+  content:" - - - - - - - - - - "
+}
