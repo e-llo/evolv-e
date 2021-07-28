@@ -19,7 +19,11 @@ Our goal is to demonstrate how natural selection enables complex populations and
 * You can also run this application locally
 
 ## How can I run this locally?
-### 💻Prerequisites
+### ☁️ Clone this repository
+```bash
+https://github.com/evolv-e/evolv-e.git
+``` 
+<!-- ### 💻Prerequisites
 * Install [Node.js](https://nodejs.org/en/)
 
 ### ☁️Step 1: Clone this repository
@@ -38,6 +42,7 @@ On the command line:
 ```bash
 npm start
 ```
+-->
 Then open the index.html file on your browser or [click here](https://evolv-e.github.io/evolv-e/)
 
 

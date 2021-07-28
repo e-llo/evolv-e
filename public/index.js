@@ -32,20 +32,22 @@ var fome_h = 0.8; // porcentagem da energia máxima acima da qual eles não come
 
 
 // Variáveis para o gráfico (herbívoro)
-var velMedH = 0;
-var forcaMedH = 0;
-var raioMedH = 0;
-var raioDetMedH = 0;
-var energMedH = 0;
-var taxaEnergMedH = 0;
+var popH;
+var velMedH;
+var forcaMedH;
+var raioMedH;
+var raioDetMedH;
+var energMedH;
+var taxaEnergMedH;
 
 // Variáveis para o gráfico (carnívoro)
-var velMedC = 0;
-var forcaMedC = 0;
-var raioMedC = 0;
-var raioDetMedC = 0;
-var energMedC = 0;
-var taxaEnergMedC = 0;
+var popC;
+var velMedC;
+var forcaMedC;
+var raioMedC;
+var raioDetMedC;
+var energMedC;
+var taxaEnergMedC;
 
 // Variáveis para alterações nas mutações
 // var probabilidade_mutacao = labelProb; // chances de cada gene (atributo) sofrer mutação
@@ -408,59 +410,97 @@ function criaPontos(){
 }
 
 function calculaDadosGrafico(){
+    // Liberar espaço de memória das variáveis anteriores
+    popH = velMedH = forcaMedH = raioMedH = raioDetMedH = energMedH = taxaEnergMedH = null;
+    popC = velMedC = forcaMedC = raioMedC = raioDetMedC = energMedC = taxaEnergMedC = null;
+
     // Resetando as variáveis para os herbívoros
-    velMedH = 0;
-    forcaMedH = 0;
-    raioMedH = 0;
-    raioDetMedH = 0;
-    energMedH = 0;
-    taxaEnergMedH = 0;
+    popH = {esq: 0, dir: 0}
+    velMedH = {esq: 0, dir: 0};
+    forcaMedH = {esq: 0, dir: 0};
+    raioMedH = {esq: 0, dir: 0};
+    raioDetMedH = {esq: 0, dir: 0};
+    energMedH = {esq: 0, dir: 0};
+    taxaEnergMedH = {esq: 0, dir: 0};
 
     // Resetando as variáveis para os carnívoros
-    velMedC = 0;
-    forcaMedC = 0;
-    raioMedC = 0;
-    raioDetMedC = 0;
-    energMedC = 0;
-    taxaEnergMedC = 0;
+    popC = {esq: 0, dir: 0}
+    velMedC = {esq: 0, dir: 0};
+    forcaMedC = {esq: 0, dir: 0};
+    raioMedC = {esq: 0, dir: 0};
+    raioDetMedC = {esq: 0, dir: 0};
+    energMedC = {esq: 0, dir: 0};
+    taxaEnergMedC = {esq: 0, dir: 0};
 
 
     Herbivoro.herbivoros.forEach(herbivoro => {
+         // Checa se estah a direita ou a esquerda
+         let lado;
+         if(herbivoro.posicao.x < canvas.width / 2 - 31) {
+             lado = "esq"
+         } else {
+             lado = "dir"
+         }
          // Soma o valor das variáveis pra todos os herbívoros
-         velMedH += herbivoro.vel_max;
-         forcaMedH += herbivoro.forca_max;
-         raioMedH += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
-         raioDetMedH += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
-         energMedH += herbivoro.energia_max;
-         taxaEnergMedH += herbivoro.taxa_gasto_energia_max;
+         popH[lado]++
+         velMedH[lado] += herbivoro.vel_max;
+         forcaMedH[lado] += herbivoro.forca_max;
+         raioMedH[lado] += herbivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
+         raioDetMedH[lado] += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+         energMedH[lado] += herbivoro.energia_max;
+         taxaEnergMedH[lado] += herbivoro.taxa_gasto_energia_max;
     });
 
     Carnivoro.carnivoros.forEach(carnivoro => {
+        // Checa se estah a direita ou a esquerda
+        let lado;
+        if(carnivoro.posicao.x < canvas.width / 2 - 31) {
+            lado = "esq"
+        } else {
+            lado = "dir"
+        }
         // Soma o valor das variáveis pra todos os carnívoros
-        velMedC += carnivoro.vel_max;
-        forcaMedC += carnivoro.forca_max;
-        raioMedC += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
-        raioDetMedC += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
-        energMedC += carnivoro.energia_max;
-        taxaEnergMedC += carnivoro.taxa_gasto_energia_max;
+        popC[lado]++
+        velMedC[lado] += carnivoro.vel_max;
+        forcaMedC[lado] += carnivoro.forca_max;
+        raioMedC[lado] += carnivoro.raio_min * 1.5; // o raio máximo é 1.5 * o mínimo
+        raioDetMedC[lado] += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+        energMedC[lado] += carnivoro.energia_max;
+        taxaEnergMedC[lado] += carnivoro.taxa_gasto_energia_max;
     });
 
 
     // Divide o valor (a soma total) pelo número de herbívoros para obter a média
-    velMedH /= Herbivoro.herbivoros.length;
-    forcaMedH /= Herbivoro.herbivoros.length;
-    raioMedH /= Herbivoro.herbivoros.length;
-    raioDetMedH /= Herbivoro.herbivoros.length;
-    energMedH /= Herbivoro.herbivoros.length;
-    taxaEnergMedH /= Herbivoro.herbivoros.length;
+     // Lado esquerdo
+     velMedH.esq /= popH.esq;
+     forcaMedH.esq /= popH.esq;
+     raioMedH.esq /= popH.esq;
+     raioDetMedH.esq /= popH.esq;
+     energMedH.esq /= popH.esq;
+     taxaEnergMedH.esq /= popH.esq;
+     // Lado direito
+     velMedH.dir /= popH.dir;
+     forcaMedH.dir /= popH.dir;
+     raioMedH.dir /= popH.dir;
+     raioDetMedH.dir /= popH.dir;
+     energMedH.dir /= popH.dir;
+     taxaEnergMedH.dir /= popH.dir;
 
     // Divide o valor (a soma total) pelo número de carnívoros para obter a média
-    velMedC /= Carnivoro.carnivoros.length;
-    forcaMedC /= Carnivoro.carnivoros.length;
-    raioMedC /= Carnivoro.carnivoros.length;
-    raioDetMedC /= Carnivoro.carnivoros.length;
-    energMedC /= Carnivoro.carnivoros.length;
-    taxaEnergMedC /= Carnivoro.carnivoros.length;
+     // Lado esquerdo
+     velMedC.esq /= popC.esq;
+     forcaMedC.esq /= popC.esq;
+     raioMedC.esq /= popC.esq;
+     raioDetMedC.esq /= popC.esq;
+     energMedC.esq /= popC.esq;
+     taxaEnergMedC.esq /= popC.esq;
+     // Lado direito
+     velMedC.dir /= popC.dir;
+     forcaMedC.dir /= popC.dir;
+     raioMedC.dir /= popC.dir;
+     raioDetMedC.dir /= popC.dir;
+     energMedC.dir /= popC.dir;
+     taxaEnergMedC.dir /= popC.dir;
 }
 
 function checaPopulacoesDivididas(){

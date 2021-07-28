@@ -21,22 +21,22 @@ function insertNextDataChart() {
   segundoRepetido = segundos;
   // Salva os valores atuais no historico
     //  Carnivoros
-    historico.carnivoros.populacao.push(Carnivoro.carnivoros.length)
-    historico.carnivoros.velocidade.push(velMedC)
-    historico.carnivoros.agilidade.push(forcaMedC)
-    historico.carnivoros.raio.push(raioMedC)
-    historico.carnivoros.deteccao.push(raioDetMedC)
-    historico.carnivoros.energia.push(energMedC)
-    historico.carnivoros.gasto.push(taxaEnergMedC)
+    historico.carnivoros.populacao.push(popC.esq + popC.dir)
+    historico.carnivoros.velocidade.push( (velMedC.esq + velMedC.dir)/2 )
+    historico.carnivoros.agilidade.push( (forcaMedC.esq + forcaMedC.dir)/2 )
+    historico.carnivoros.raio.push( (raioMedC.esq + raioMedC.dir)/2 )
+    historico.carnivoros.deteccao.push( (raioDetMedC.esq + raioDetMedC.dir)/2 )
+    historico.carnivoros.energia.push( (energMedC.esq + energMedC.dir)/2 )
+    historico.carnivoros.gasto.push( (taxaEnergMedC.esq + taxaEnergMedC.dir)/2 )
 
     //  Herbivoros
-    historico.herbivoros.populacao.push(Herbivoro.herbivoros.length)
-    historico.herbivoros.velocidade.push(velMedH)
-    historico.herbivoros.agilidade.push(forcaMedH)
-    historico.herbivoros.raio.push(raioMedH)
-    historico.herbivoros.deteccao.push(raioDetMedH)
-    historico.herbivoros.energia.push(energMedH)
-    historico.herbivoros.gasto.push(taxaEnergMedH)
+    historico.herbivoros.populacao.push(popH.esq + popH.dir)
+    historico.herbivoros.velocidade.push( (velMedH.esq + velMedH.dir)/2 )
+    historico.herbivoros.agilidade.push( (forcaMedH.esq + forcaMedH.dir)/2 )
+    historico.herbivoros.raio.push( (raioMedH.esq + raioMedH.dir)/2 )
+    historico.herbivoros.deteccao.push( (raioDetMedH.esq + raioDetMedH.dir)/2 )
+    historico.herbivoros.energia.push( (energMedH.esq + energMedH.dir)/2 )
+    historico.herbivoros.gasto.push( (taxaEnergMedH.esq + taxaEnergMedH.dir)/2 )
 
     //  Segundos
     historico.segundos.push(segundos)
