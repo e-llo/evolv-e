@@ -31,7 +31,7 @@ class Organismo{
         this.tempo_vida = {};
         this.tempo_vida.min = tempo_vida_min; // em ssegundos
         this.tempo_vida.max = tempo_vida_max;
-        this.tempo_vida.real = geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max); // tempo de vida do organismo
+        this.tempo_vida.real = parseInt(geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max)); // tempo de vida do organismo
         // let cronometro_morte = setTimeout(() => {this.morre()}, this.tempo_vida.real); // variável que guarda a função de matar o indivíduo depois do tempo de vida real
 
         // Variáveis booleanas usadas no método vagueia()

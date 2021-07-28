@@ -680,7 +680,8 @@ function getOrganismo(x, y) {
                 <rect width="18" height="18" style="fill:${organismo.cor}"/>
                 </svg> ${organismo.cor}<br/>
                 <!-- Fome: <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
-                Estado: <div id="pop-estado-${popover_id}" style="display: inline">${organismo.estado}</div>
+                Estado: <div id="pop-estado-${popover_id}" style="display: inline">${organismo.estado}</div><br/>
+                Vida: <div id="pop-vida-${popover_id}" style="display: inline">${segundo - organismo.segundo_nascimento}</div>/${organismo.tempo_vida.real}<br/>
             </div>
             <button type="button" class="btn close" aria-label="Close"
                 onclick="deletePopover(${popover_id}, ${organismo.id})">
@@ -704,7 +705,7 @@ function getOrganismo(x, y) {
             document.getElementById(`pop-energia-${pop_id}`).textContent = organismo.energia.toFixed(1);
             document.getElementById(`pop-estado-${pop_id}`).textContent = organismo.estado;
             // organismo.energia <= organismo.energia_max * 0.8 ? document.getElementById(`pop-fome-${pop_id}`).textContent = "Com fome": document.getElementById(`pop-fome-${pop_id}`).textContent = "Satisfeito"
-
+            document.getElementById(`pop-vida-${pop_id}`).textContent = segundo - organismo.segundo_nascimento;
             return true;
         }
     })
