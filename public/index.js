@@ -661,7 +661,6 @@ function animate(){
 // Função atrelada ao evento click para encontrar o organismo na lista e retornar suas propriedades
 function getOrganismo(x, y) {
     let organismo = Organismo.organismos.find(o => Math.abs(o.posicao.x - x) <= 5 && Math.abs(o.posicao.y - y) <= 5)
-    
     if(organismo == undefined) {
         return; //console.log("não encontrou")
     }
@@ -669,17 +668,19 @@ function getOrganismo(x, y) {
     let popover = `
         <div id="popover-${popover_id}" class="popover-info" style="top:${parseInt(organismo.posicao.y - 20)}px; left:${parseInt(organismo.posicao.x + 15)}px">
             <div class="popover-title">
-                ${(organismo instanceof Carnivoro) ? "Carnivoro":"Herbivoro"}
+                ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"}
             </div>
             <div class="popover-content">
                 Raio: ${organismo.raio.toFixed(2)}<br/>
                 Velocidade máxima: ${organismo.vel_max.toFixed(2)}<br/>
                 Raio de detecção: ${organismo.raio_deteccao.toFixed(2)}<br/>
-                Energia: ${organismo.energia.toFixed(2)}/${organismo.energia_max.toFixed(2)}<br/>
+                Energia: <div id="pop-energia-${popover_id}" style="display: inline">${organismo.energia.toFixed(2)}</div>/${organismo.energia_max.toFixed(2)}<br/>
                 Gasto energético: ${organismo.taxa_gasto_energia_max.toFixed(2)}<br/>
                 Cor: <svg width="20" height="20">
                 <rect width="18" height="18" style="fill:${organismo.cor}"/>
-                </svg> ${organismo.cor}
+                </svg> ${organismo.cor}<br/>
+                <!-- Fome: <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
+                Estado: <div id="pop-estado-${popover_id}" style="display: inline">${organismo.estado}</div>
             </div>
             <button type="button" class="btn close" aria-label="Close"
                 onclick="deletePopover(${popover_id}, ${organismo.id})">
@@ -700,6 +701,10 @@ function getOrganismo(x, y) {
                 {left: parseInt(value + 15)} : {top: parseInt(value - 20)}
             // Popover acompanhar a posicao do organismo
             $(`#popover-${pop_id}`).css(cssProperty);
+            document.getElementById(`pop-energia-${pop_id}`).textContent = organismo.energia.toFixed(1);
+            document.getElementById(`pop-estado-${pop_id}`).textContent = organismo.estado;
+            // organismo.energia <= organismo.energia_max * 0.8 ? document.getElementById(`pop-fome-${pop_id}`).textContent = "Com fome": document.getElementById(`pop-fome-${pop_id}`).textContent = "Satisfeito"
+
             return true;
         }
     })

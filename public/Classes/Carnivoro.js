@@ -30,6 +30,7 @@ class Carnivoro extends Organismo{
     }
 
     buscarHerbivoro(qtree, visaoC){
+        this.estado = "procurando presas"
         this.comendo = false;
         // Var recorde: qual a menor distância (a recorde) de um herbivoro até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
@@ -55,6 +56,7 @@ class Carnivoro extends Organismo{
         // Momento em que ele vai comer!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
             this.comendo = true;
+            this.estado = "caçando"
             if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
                 
                 let indice_lista_estatica = 0;

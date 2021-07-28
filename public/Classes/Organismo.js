@@ -22,6 +22,7 @@ class Organismo{
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
         this.tempo_vivido = 0;
+        this.estado;
         // setInterval(this.updateTempoVivido, 1000);
         // setInterval(console.log("teste"), 1000);
 
@@ -316,38 +317,39 @@ class Organismo{
 
     // Método que fará o organismo vaguear por aí quando não está fugindo ou perseguindo
     vagueia(){
+        this.estado = "vagueando";
         // A ideia é criar uma pequena força a cada frame logo à frente do organismo, a uma d dele.
         // Desenharemos um círculo à frente do organismo, e o vetor da força de deslocamento partirá do centro
         // do círculo e terá o tamanho de seu raio. Assim, quanto maior o círculo, maior a força.
         // A fim de sabermos qual é a frente do organismo, utilizaremos o vetor velocidade para nos auxiliar, 
         // já que ele está sempre apontando na direção do movimento do organismo.
 
-            // CRIANDO O CÍRCULO
-            var centro_circulo = new Vetor(0, 0); // Criamos um vetor que representará a distância do organismo ao centro do círculo
-            centro_circulo = this.vel.copy(); // Isso é para que o círculo esteja exatamente à frente do organismo (como explicado um pouco acima)
-            centro_circulo.normalize(); // Normalizamos o vetor, ou seja, seu tamanho agora é 1 (e não mais o tamanho do vetor velocidade, como era na linha acima)
-            centro_circulo.mul(this.d_circulo); // A variável d_circulo é uma constante definida globalmente, e guarda o valor da distância do centro do círculo
-            
-            // CRIANDO A FORÇA DE DESLOCAMENTO
-            var deslocamento = new Vetor(0, -1);
-            deslocamento.mul(this.raio_circulo); // A força terá o tamanho do raio do círculo
-            // Mudando a direção da força randomicamente
-            deslocamento.rotateDegs(this.angulo_vagueio); // Rotaciona a força em angulo_vagueio (variável definida no construtor)
-            // Mudando ligeiramente o valor de angulo_vagueio para que ele mude pouco a pouco a cada frame
-            this.angulo_vagueio += Math.random() * 30 - 15; // Muda num valor entre -15 e 15
-            
-            // CRIANDO A FORÇA DE VAGUEIO
-            // A força de vagueio pode ser pensada como um vetor que sai da posição do organismo e vai até um ponto
-            // na circunferência do círculo que criamos
-            // Agora que os vetores do centro do círculo e da força de deslocamento foram criados, basta somá-los
-            // para criar a força de vagueio
-            var forca_vagueio = new Vetor(0, 0);
-            forca_vagueio = centro_circulo.add(deslocamento);
-            // Diminui a força de vagueio quando vai comer ou fugir para dar prioridade a estas tarefas
-            if(this.comendo || this.fugindo){
-                forca_vagueio.mul(0);
-            }
-            this.aplicaForca(forca_vagueio.mul(0.1));
+        // CRIANDO O CÍRCULO
+        var centro_circulo = new Vetor(0, 0); // Criamos um vetor que representará a distância do organismo ao centro do círculo
+        centro_circulo = this.vel.copy(); // Isso é para que o círculo esteja exatamente à frente do organismo (como explicado um pouco acima)
+        centro_circulo.normalize(); // Normalizamos o vetor, ou seja, seu tamanho agora é 1 (e não mais o tamanho do vetor velocidade, como era na linha acima)
+        centro_circulo.mul(this.d_circulo); // A variável d_circulo é uma constante definida globalmente, e guarda o valor da distância do centro do círculo
+        
+        // CRIANDO A FORÇA DE DESLOCAMENTO
+        var deslocamento = new Vetor(0, -1);
+        deslocamento.mul(this.raio_circulo); // A força terá o tamanho do raio do círculo
+        // Mudando a direção da força randomicamente
+        deslocamento.rotateDegs(this.angulo_vagueio); // Rotaciona a força em angulo_vagueio (variável definida no construtor)
+        // Mudando ligeiramente o valor de angulo_vagueio para que ele mude pouco a pouco a cada frame
+        this.angulo_vagueio += Math.random() * 30 - 15; // Muda num valor entre -15 e 15
+        
+        // CRIANDO A FORÇA DE VAGUEIO
+        // A força de vagueio pode ser pensada como um vetor que sai da posição do organismo e vai até um ponto
+        // na circunferência do círculo que criamos
+        // Agora que os vetores do centro do círculo e da força de deslocamento foram criados, basta somá-los
+        // para criar a força de vagueio
+        var forca_vagueio = new Vetor(0, 0);
+        forca_vagueio = centro_circulo.add(deslocamento);
+        
+        if(this.comendo || this.fugindo){ // Diminui a força de vagueio quando vai comer ou fugir para dar prioridade a estas tarefas
+            forca_vagueio.mul(0);
+        }
+        this.aplicaForca(forca_vagueio.mul(0.1));
     }
 
     // Método que calcula a força de redirecionamento em direção a um alvo
@@ -387,10 +389,10 @@ class Organismo{
        
         
         // desenhando o raio de detecção
-        // c.beginPath();
-        // c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
-        // c.strokeStyle = "grey";
-        // c.stroke();
+        c.beginPath();
+        c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+        c.strokeStyle = "grey";
+        c.stroke();
     }
     
     remove(lista) {
