@@ -118,21 +118,21 @@ var telaDividida;
 var limitador_de_loop = 0;
 
 function geraAlimento(x,y){
-    var raio = Math.random() + 1;
+    var raio = geraNumeroPorIntervalo(1, 2);
     new Alimento(x, y, raio);
 }
 
 
 function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros manualmente 
-    raio_min = Math.random() * 3 + 4;
-    vel_max = Math.random() * 1.2 + 1; 
-    forca_max = Math.random()/20 + 0.001; 
+    raio_min = geraNumeroPorIntervalo(4, 7);
+    vel_max = geraNumeroPorIntervalo(1, 2.2); 
+    forca_max = geraNumeroPorIntervalo(0.001, 0.05);
     cor = geraCor();
-    raio_deteccao_min = Math.random() * 50 + 10;
+    raio_deteccao_min = geraNumeroPorIntervalo(10, 60);
     eficiencia_energetica = geraNumeroPorIntervalo(0.8, 1.2);
-    energia_max = Math.random() * 100 + 80
-    cansaco_max = Math.random() * 50 + 20;
-    taxa_aum_cansaco = Math.random() + 0.05;
+    energia_max = geraNumeroPorIntervalo(80, 180);
+    cansaco_max = geraNumeroPorIntervalo(20, 70);
+    taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
     tempo_vida_min = 120; // em segundos
     tempo_vida_max = 300; // em segundos
 
@@ -154,15 +154,15 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
 
 
 function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros manualmente    
-    raio_min = Math.random() * 3 + 4;
-    vel_max = Math.random() * 1.2 + 1; // Altere esse valor para ver o comportamento dos bichos!
-    forca_max = Math.random()/20 + 0.001; // Altere esse valor para ver o comportamento do bicho!
+    raio_min = geraNumeroPorIntervalo(4, 7);
+    vel_max = geraNumeroPorIntervalo(1, 2.2); 
+    forca_max = geraNumeroPorIntervalo(0.001, 0.05);
     cor = geraCor();
-    raio_deteccao_min = Math.random() * 50 + 10;
+    raio_deteccao_min = geraNumeroPorIntervalo(10, 60);
     eficiencia_energetica = geraNumeroPorIntervalo(0.8, 1.2);
-    energia_max = Math.random() * 100 + 80;
-    cansaco_max = Math.random() * 50 + 20;
-    taxa_aum_cansaco = Math.random() + 0.05;
+    energia_max = geraNumeroPorIntervalo(80, 180);
+    cansaco_max = geraNumeroPorIntervalo(20, 70);
+    taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
     tempo_vida_min = 120; // em segundos
     tempo_vida_max = 300; // em segundos
 
@@ -296,7 +296,7 @@ function newMutacao(valor) {// exemplo: valor = 20;  magnitude_mutacao = 0.05 ||
 
 function geraNumeroPorIntervalo(min, max) {
     let delta = max - min; // exemplo: 4000 e 6000. 6000 - 4000 = 2000
-    return (Math.random() * delta + min).toFixed(4); // Math.random() * 2000 + 4000
+    return parseFloat((Math.random() * delta + min).toFixed(4)); // Math.random() * 2000 + 4000
 }
 
 function criaAlimentosGradativo(){
@@ -711,17 +711,15 @@ function getOrganismo(x, y) {
                 ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"}
             </div>
             <div class="popover-content">
-                Raio: ${organismo.raio.toFixed(2)}<br/>
-                Velocidade máxima: ${organismo.vel_max.toFixed(2)}<br/>
-                Raio de detecção: ${organismo.raio_deteccao.toFixed(2)}<br/>
-                Energia: <div id="pop-energia-${popover_id}" style="display: inline">${organismo.energia.toFixed(2)}</div>/${organismo.energia_max.toFixed(2)}<br/>
-                Gasto energético: ${organismo.taxa_gasto_energia_max.toFixed(2)}<br/>
-                Cor: <svg width="20" height="20">
-                <rect width="18" height="18" style="fill:${organismo.cor}"/>
-                </svg> ${organismo.cor}<br/>
-                <!-- Fome: <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
-                Estado: <div id="pop-estado-${popover_id}" style="display: inline">${organismo.estado}</div><br/>
-                Vida: <div id="pop-vida-${popover_id}" style="display: inline">${segundo - organismo.segundo_nascimento}</div>/${organismo.tempo_vida.real}<br/>
+                <b>Raio:</b> ${organismo.raio.toFixed(2)}<br/>
+                <b>Velocidade máxima:</b> ${organismo.vel_max.toFixed(2)}<br/>
+                <b>Raio de detecção:</b> ${organismo.raio_deteccao.toFixed(2)}<br/>
+                <b>Energia:</b> <div id="pop-energia-${popover_id}" style="display: inline">${organismo.energia.toFixed(2)}</div>/${organismo.energia_max.toFixed(2)}<br/>
+                <b>Gasto energético:</b> ${organismo.taxa_gasto_energia_max.toFixed(2)}<br/>
+                <b>Cor:</b> <svg width="20" height="20"><rect width="18" height="18" style="fill:${organismo.cor}"/></svg> ${organismo.cor}<br/>
+                <!-- <b>Fome:</b> <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
+                <b>Estado:</b> <div id="pop-estado-${popover_id}" style="display: inline">${organismo.estado}</div><br/>
+                <b>Vida:</b> <div id="pop-vida-${popover_id}" style="display: inline">${segundo - organismo.segundo_nascimento}</div>/${organismo.tempo_vida.real}<br/>
             </div>
             <button type="button" class="btn close" aria-label="Close"
                 onclick="deletePopover(${popover_id}, ${organismo.id})">

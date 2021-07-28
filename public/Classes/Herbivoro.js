@@ -6,8 +6,6 @@ class Herbivoro extends Organismo{
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
 
-        
-
         Herbivoro.herbivoros.push(this);
     }
 

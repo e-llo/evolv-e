@@ -6,8 +6,6 @@ class Carnivoro extends Organismo{
         
         // variável para contar quando um carnívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
-        
-        // this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 1000;
 
         Carnivoro.carnivoros.push(this);
     }
@@ -101,13 +99,11 @@ class Carnivoro extends Organismo{
         }
         herbivoro.morre() // O herbívoro comido morre (é retirado da lista de herbívoros)
         this.aumentaTamanho();
-        
     }
     aumentaTamanho(){
         if(this.raio<(this.raio_min*1.5)){
             this.raio += 0.03*this.raio;
             this.raio_deteccao += 0.02*this.raio_deteccao;
         }
-       
     }
 }

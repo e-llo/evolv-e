@@ -6,7 +6,7 @@ class Organismo{
         this.posicao = new Vetor(x, y);
         this.raio_min = raio_min;
         this.raio = this.raio_min;
-        this.vel = new Vetor(1, 1);
+        this.vel = new Vetor(0.0001, 0.0001);
         this.acel = new Vetor(0, 0);
         this.vel_max = vel_max;
         this.forca_max = forca_max;
@@ -17,7 +17,8 @@ class Organismo{
         this.energia_max = energia_max;
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia;
-        this.taxa_gasto_energia_max = ((Math.pow(this.raio_min, 2) * Math.pow(this.vel_max, 2)) / 2000) * eficiencia_energetica; // Usado como valor para o cálculo da média da população
+        this.taxa_gasto_energia_max = ((Math.pow(this.raio_min, 2) * Math.pow(this.vel_max, 2)) / 2000).toFixed(4) * eficiencia_energetica; // Usado como valor para o cálculo da média da população
+        this.gasto_minimo = (this.taxa_gasto_energia_max / 8).toFixed(4); // Gasto de energia mínimo (que independe da velocidade)
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
@@ -102,20 +103,20 @@ class Organismo{
         // var tempo_vida_max_filho = newMutacao(this.tempo_vida.max);
 
         var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
-        raio_deteccao_min: raio_deteccao_min_filho, eficiencia_energetica: eficiencia_energetica_filho, energia_max: energia_max_filho, cansaco_max: cansaco_max_filho,
-        taxa_aum_cansaco: taxa_aum_cansaco_filho, tempo_vida_min: this.tempo_vida.min, tempo_vida_max: this.tempo_vida.max};
+        raio_deteccao_min: raio_deteccao_min_filho, eficiencia_energetica: eficiencia_energetica_filho, energia_max: energia_max_filho, 
+        cansaco_max: cansaco_max_filho, taxa_aum_cansaco: taxa_aum_cansaco_filho, tempo_vida_min: this.tempo_vida.min, 
+        tempo_vida_max: this.tempo_vida.max};
 
         return dados_filho;
     }
 
     // Método para atualizar o estado do organismo
     update(){
-        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000;
-
+        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000; // Atualiza de acordo com a velocidade atual
         // this.tempo_vivido++;
         // Taxa de diminuição de energia
         if(this.energia > 0){
-            this.energia -= this.taxa_gasto_energia;
+            this.energia -= (this.taxa_gasto_energia);
             // if(this.energia > this.energia_max * 0.7){ // Se estiver com mais que 70% de energia, pode se reproduzir
             //     if(Math.random() < 0.0014){ // Número baixo pois testa a cada frame
             //         if(Math.random() <= this.chance_de_reproducao){
@@ -317,7 +318,7 @@ class Organismo{
 
     // Método que fará o organismo vaguear por aí quando não está fugindo ou perseguindo
     vagueia(){
-        this.estado = "vagueando";
+        this.estado = "vagando";
         // A ideia é criar uma pequena força a cada frame logo à frente do organismo, a uma d dele.
         // Desenharemos um círculo à frente do organismo, e o vetor da força de deslocamento partirá do centro
         // do círculo e terá o tamanho de seu raio. Assim, quanto maior o círculo, maior a força.
