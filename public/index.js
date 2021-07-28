@@ -803,17 +803,17 @@ function showEditPanel(type) {
                 </div>  
                 <div class="col offset-1 p-0">                 
                     <label for="input-velocidade">Vel max</label>
-                    <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max:vel_max}" class="form-control p-0">
+                    <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max.toFixed(2):vel_max.toFixed(2)}" class="form-control p-0">
                 </div>
                 <div class="col offset-1 p-0">
                     <label for="input-forca">Forca max</label>
-                    <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max:forca_max}" class="form-control p-0">
+                    <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max.toFixed(2):forca_max.toFixed(2)}" class="form-control p-0">
                 </div>
             </div>
             <div class="row p-0">
                 <div class="col p-0">
                     <label for="input-energia">Energia max</label>
-                    <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max:energia_max}" class="form-control p-0">
+                    <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max.toFixed(2):energia_max.toFixed(2)}" class="form-control p-0">
                 </div>  
                 <div class="col offset-1 p-0">  
                     <label for="input-vida-min">Vida min</label>
