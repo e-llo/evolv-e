@@ -28,7 +28,7 @@ class Herbivoro extends Organismo{
     }
     
     buscarAlimento(qtree, visaoH){
-        this.estado = "buscando alimento";
+        this.status = "buscando alimento";
         this.comendo = false;
         // Var recorde: qual a menor distância (a recorde) de um alimento até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
@@ -55,7 +55,7 @@ class Herbivoro extends Organismo{
         // Momento em que ele vai comer!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
             this.comendo = true;
-            this.estado = "pegando alimento";
+            this.status = "pegando alimento";
             if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
                 
                 let indice_lista_estatica = 0;
@@ -73,13 +73,13 @@ class Herbivoro extends Organismo{
                 this.comeAlimento(alimentos_proximos[i_mais_perto], indice_lista_estatica);
 
                 this.contagem_pra_reproducao++;
-
                 ///////////////////////////////////////////////////////////////////////////////
-                if(this.contagem_pra_reproducao == 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                if(this.contagem_pra_reproducao >= 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
+                         this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                     }
-                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                   
                 }
                 //////////////////////////////////////////////////////////////////////////////////////////
                 
@@ -98,7 +98,9 @@ class Herbivoro extends Organismo{
         } else{ 
             this.energia = energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }
-        
+        if(this.energia > this.energia_max){
+            this.energia = this.energia_max;
+        }
         Alimento.alimentos.splice(i, 1); // Retira o alimento da lista de alimentos
         this.aumentaTamanho();
     }
@@ -141,7 +143,9 @@ class Herbivoro extends Organismo{
         // Momento em que ele vai fugir!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
             this.fugindo = true;
-            this.estado = "fugindo";
+            this.comendo = false;
+            this.vagueando = false;
+            this.status = "fugindo";
             if(carnivoros_proximos.length != 0){
                 // Chamada do método foge(), que muda a velocidade do herbívoro para a direção oposta ao do predador
                 this.foge(carnivoros_proximos[i_mais_perto]); 

@@ -130,7 +130,7 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
     cor = geraCor();
     raio_deteccao_min = geraNumeroPorIntervalo(10, 60);
     eficiencia_energetica = geraNumeroPorIntervalo(0.8, 1.2);
-    energia_max = geraNumeroPorIntervalo(80, 180);
+    energia_max = geraNumeroPorIntervalo(120, 280);
     cansaco_max = geraNumeroPorIntervalo(20, 70);
     taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
     tempo_vida_min = 120; // em segundos
@@ -160,7 +160,7 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     cor = geraCor();
     raio_deteccao_min = geraNumeroPorIntervalo(10, 60);
     eficiencia_energetica = geraNumeroPorIntervalo(0.8, 1.2);
-    energia_max = geraNumeroPorIntervalo(80, 180);
+    energia_max = geraNumeroPorIntervalo(120, 280);
     cansaco_max = geraNumeroPorIntervalo(20, 70);
     taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
     tempo_vida_min = 120; // em segundos
@@ -718,7 +718,7 @@ function getOrganismo(x, y) {
                 <b>Gasto energético:</b> ${organismo.taxa_gasto_energia_max.toFixed(2)}<br/>
                 <b>Cor:</b> <svg width="20" height="20"><rect width="18" height="18" style="fill:${organismo.cor}"/></svg> ${organismo.cor}<br/>
                 <!-- <b>Fome:</b> <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
-                <b>Estado:</b> <div id="pop-estado-${popover_id}" style="display: inline">${organismo.estado}</div><br/>
+                <b>Status:</b> <div id="pop-status-${popover_id}" style="display: inline">${organismo.status}</div><br/>
                 <b>Vida:</b> <div id="pop-vida-${popover_id}" style="display: inline">${segundo - organismo.segundo_nascimento}</div>/${organismo.tempo_vida.real}<br/>
             </div>
             <button type="button" class="btn close" aria-label="Close"
@@ -741,7 +741,7 @@ function getOrganismo(x, y) {
             // Popover acompanhar a posicao do organismo
             $(`#popover-${pop_id}`).css(cssProperty);
             document.getElementById(`pop-energia-${pop_id}`).textContent = organismo.energia.toFixed(1);
-            document.getElementById(`pop-estado-${pop_id}`).textContent = organismo.estado;
+            document.getElementById(`pop-status-${pop_id}`).textContent = organismo.status;
             // organismo.energia <= organismo.energia_max * 0.8 ? document.getElementById(`pop-fome-${pop_id}`).textContent = "Com fome": document.getElementById(`pop-fome-${pop_id}`).textContent = "Satisfeito"
             document.getElementById(`pop-vida-${pop_id}`).textContent = segundo - organismo.segundo_nascimento;
             return true;

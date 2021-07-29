@@ -28,7 +28,7 @@ class Carnivoro extends Organismo{
     }
 
     buscarHerbivoro(qtree, visaoC){
-        this.estado = "procurando presas"
+        this.status = "procurando presas"
         this.comendo = false;
         // Var recorde: qual a menor distância (a recorde) de um herbivoro até agora
         var recorde = Infinity; // Inicialmente, setaremos essa distância como sendo infinita
@@ -54,7 +54,8 @@ class Carnivoro extends Organismo{
         // Momento em que ele vai comer!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
             this.comendo = true;
-            this.estado = "caçando"
+            this.vagueando = false;
+            this.status = "caçando"
             if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
                 
                 let indice_lista_estatica = 0;
@@ -74,11 +75,12 @@ class Carnivoro extends Organismo{
                 ///////////////////////////////////////////////////////////////////////////////
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 3){ // se o carnívoro comer 4 herbívoros e já tiver vivido o suficiente
+                if(this.contagem_pra_reproducao >= 3){ // se o carnívoro comer 3 herbívoros e já tiver vivido o suficiente
                     if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
                         this.reproduzir();
+                        this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                     }
-                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                    
                 }
                 ///////////////////////////////////////////////////////////////////////////////
                 
@@ -96,6 +98,9 @@ class Carnivoro extends Organismo{
             this.energia += herbivoro.energia_max * 0.1; // O carnívoro, ao comer o herbívoro, ganha 10% da energia deste
         } else{
             this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
+        }
+        if(this.energia > this.energia_max){
+            this.energia = this.energia_max;
         }
         herbivoro.morre() // O herbívoro comido morre (é retirado da lista de herbívoros)
         this.aumentaTamanho();
