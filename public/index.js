@@ -665,7 +665,6 @@ function animate(){
             qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
         });
         
-        
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();

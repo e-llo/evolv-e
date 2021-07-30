@@ -1,5 +1,6 @@
 class Organismo{
     static organismos = [];
+    static n_total_organismos = 0;
     static id = 0;
 
     constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
@@ -57,6 +58,7 @@ class Organismo{
         this.id = Organismo.id++;
 
         Organismo.organismos.push(this);
+        Organismo.n_total_organismos++;
     }
   
     // Criando um método de reprodução comum a todos os organismos
@@ -136,9 +138,9 @@ class Organismo{
         }
 
         if(telaDividida){
-            this.criaBordas(this.posicao.x, true);
+            this.criaBordas(true);
         } else{
-            this.criaBordas(this.posicao.x, false);
+            this.criaBordas(false);
         }
         
         // this.delimitaBordas(this.posicao.x); // Limita posição pela borda do canvas caso o bicho não consiga desacelerar o suficiente
@@ -217,7 +219,6 @@ class Organismo{
         }
         
     }
-
 
     // Método para aplicar força ao organismo que o impeça de continuar a seguir por uma trajetória para fora da tela
     evitaBordas(telaDividida){
@@ -301,7 +302,7 @@ class Organismo{
             vel_desejada.normalize(); // Normaliza (transforma para ter tamanho 1) o vetor vel_desejada
             vel_desejada.mul(this.vel_max); // Multiplica o vetor (que agora tem tamanho 1) pela velocidade máxima
             var redirecionamento = vel_desejada.sub(this.vel); // Cria um vetor de força que redirecionará o organismo
-            redirecionamento.limit(this.forca_max * 10); // Limita essa força com uma folga maior ("* 1.5") para dar chances dela ser maior que as outras forças atuantes nele
+            redirecionamento.limit(this.forca_max * 100); // Limita essa força com uma folga maior para dar chances dela ser maior que as outras forças atuantes nele
             this.aplicaForca(redirecionamento); // Aplica esta força no organismo e a deixa levemente mais forte para ganhar prioridade em relação a outras forças
         }
     }
@@ -362,6 +363,7 @@ class Organismo{
     // Método que calcula a força de redirecionamento em direção a um alvo
     // REDIRECIONAMENTO = VELOCIDADE DESEJADA - VELOCIDADE
     persegue(alvo){
+        alvo.fugindo = true;
         // if(this instanceof Carnivoro){
         //     this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 1200; // Aumenta o gasto de energia ao perseguir
         // }

@@ -22,9 +22,9 @@ class Herbivoro extends Organismo{
     }
 
     morre(){
-        
         if(this.popover_id) deletePopover(this.popover_id, this.id);
         Herbivoro.herbivoros = super.remove(Herbivoro.herbivoros, this);
+        Organismo.organismos = super.remove(Organismo.organismos, this)
     }
     
     buscarAlimento(qtree, visaoH){

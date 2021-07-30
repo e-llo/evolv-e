@@ -22,9 +22,9 @@ class Carnivoro extends Organismo{
     }
 
     morre(){
-
         if(this.popover_id) deletePopover(this.popover_id, this.id);
         Carnivoro.carnivoros = super.remove(Carnivoro.carnivoros, this);
+        Organismo.organismos = super.remove(Organismo.organismos, this);
     }
 
     buscarHerbivoro(qtree, visaoC){
@@ -58,19 +58,16 @@ class Carnivoro extends Organismo{
             this.status = "caçando"
             if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
                 
-                let indice_lista_estatica = 0;
-                
                 // Loop para achar o herbívoro que contenha o id do herbívoro mais próximo a fim de deletá-lo da lista estática com base em seu id 
-                Herbivoro.herbivoros.every(h => {
-                    if(h.checaId(herbivoros_proximos[i_mais_perto].id)){
-                        return false;
-                    }
-                    indice_lista_estatica++;
+                // Herbivoro.herbivoros.every(h => {
+                //     if(h.checaId(herbivoros_proximos[i_mais_perto].id)){
+                //         return false;
+                //     }
 
-                    return true;
-                });
+                //     return true;
+                // });
 
-                this.comeHerbivoro(herbivoros_proximos[i_mais_perto], indice_lista_estatica);
+                this.comeHerbivoro(herbivoros_proximos[i_mais_perto]);
 
                 ///////////////////////////////////////////////////////////////////////////////
                 this.contagem_pra_reproducao++;
@@ -90,7 +87,7 @@ class Carnivoro extends Organismo{
         }
     }
     
-    comeHerbivoro(herbivoro, i){
+    comeHerbivoro(herbivoro){
         // Absorção de energia ao comer o herbívoro
         // Se a energia que ele adquirá do herbívoro (10% da energia total do herbívoro)
         // for menor que o quanto falta para encher a barra de energia, ela será somada integralmente (os 10%)
@@ -105,6 +102,7 @@ class Carnivoro extends Organismo{
         herbivoro.morre() // O herbívoro comido morre (é retirado da lista de herbívoros)
         this.aumentaTamanho();
     }
+
     aumentaTamanho(){
         if(this.raio<(this.raio_min*1.5)){
             this.raio += 0.03*this.raio;
