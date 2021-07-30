@@ -72,12 +72,11 @@ class Carnivoro extends Organismo{
                 ///////////////////////////////////////////////////////////////////////////////
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao >= 3){ // se o carnívoro comer 3 herbívoros e já tiver vivido o suficiente
+                if(this.contagem_pra_reproducao = 3){ // se o carnívoro comer 3 herbívoros e já tiver vivido o suficiente
                     if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
                         this.reproduzir();
-                        this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                     }
-                    
+                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }
                 ///////////////////////////////////////////////////////////////////////////////
                 

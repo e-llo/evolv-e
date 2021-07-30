@@ -55,6 +55,7 @@ class Herbivoro extends Organismo{
         // Momento em que ele vai comer!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
             this.comendo = true;
+            this.vagueando = false;
             this.status = "pegando alimento";
             if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
                 
@@ -74,12 +75,11 @@ class Herbivoro extends Organismo{
 
                 this.contagem_pra_reproducao++;
                 ///////////////////////////////////////////////////////////////////////////////
-                if(this.contagem_pra_reproducao >= 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                if(this.contagem_pra_reproducao = 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
-                         this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                     }
-                   
+                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
                 }
                 //////////////////////////////////////////////////////////////////////////////////////////
                 
