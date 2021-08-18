@@ -21,7 +21,7 @@ Our goal is to demonstrate how natural selection enables complex populations and
 ## How can I run this locally?
 ### ☁️ Clone this repository
 ```bash
-https://github.com/evolv-e/evolv-e.git
+https://github.com/e-llo/evolv-e.git
 ``` 
 <!-- ### 💻Prerequisites
 * Install [Node.js](https://nodejs.org/en/)
@@ -45,5 +45,35 @@ npm start
 -->
 Then open the index.html file on your browser or [click here](https://evolv-e.github.io/evolv-e/)
 
+---
 
+## 👩‍💻👨‍💻👨‍💻 Contributors
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/julia-rolemberg">
+        <img src="https://avatars.githubusercontent.com/u/61888090?v=4" width="150px;" alt="Julia Rolemberg profile picture"/><br>
+        <sub>
+          <b>Julia Rolemberg</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/pedroheck">
+        <img src="https://avatars.githubusercontent.com/u/68083697?v=4" width="150px;" alt="Pedro Heck profile picture"/><br>
+        <sub>
+          <b>Pedro Heck</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/RaphaelJesus1">
+        <img src="https://avatars.githubusercontent.com/u/61888147?v=4" width="150px;" alt="Raphael Menezes profile picture"/><br>
+        <sub>
+          <b>Raphael Menezes de Jesus</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
