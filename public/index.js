@@ -137,13 +137,13 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
     tempo_vida_max = 300; // em segundos
 
     if(conf_c) {
-        raio_min = parseFloat(conf_c.raio);
-        vel_max = parseFloat(conf_c.vel_max);
-        forca_max = parseFloat(conf_c.forca_max);
+        raio_min = conf_c.raio;
+        vel_max = conf_c.vel_max;
+        forca_max = conf_c.forca_max;
         cor = conf_c.cor;
-        energia_max = parseFloat(conf_c.energia_max);
-        tempo_vida_min = parseFloat(conf_c.tempo_vida_min);
-        tempo_vida_max = parseFloat(conf_c.tempo_vida_max);
+        energia_max = conf_c.energia_max;
+        tempo_vida_min = conf_c.tempo_vida_min;
+        tempo_vida_max = conf_c.tempo_vida_max;
     }
 
     new Carnivoro(
@@ -167,13 +167,13 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     tempo_vida_max = 300; // em segundos
 
     if(conf_h) {
-        raio_min = parseFloat(conf_h.raio);
-        vel_max = parseFloat(conf_h.vel_max);
-        forca_max = parseFloat(conf_h.forca_max);
+        raio_min = conf_h.raio;
+        vel_max = conf_h.vel_max;
+        forca_max = conf_h.forca_max;
         cor = conf_h.cor;
-        energia_max = parseFloat(conf_h.energia_max);
-        tempo_vida_min = parseFloat(conf_h.tempo_vida_min);
-        tempo_vida_max = parseFloat(conf_h.tempo_vida_max);
+        energia_max = conf_h.energia_max;
+        tempo_vida_min = conf_h.tempo_vida_min;
+        tempo_vida_max = conf_h.tempo_vida_max;
     }
 
     new Herbivoro(
@@ -263,7 +263,7 @@ function corMutacao(estilo) {
             });
         
         // console.log("MUTAÇÃO DE COR");
-        return `rgb(${cores[0]}, ${cores[1]}, ${cores[2]})`
+        return `rgb(${cores[0]},${cores[1]},${cores[2]})`
     } else{
         return estilo;
     }
@@ -796,29 +796,29 @@ function showEditPanel(type) {
             <div class="row p-0">
                 <div class="col p-0">
                     <label for="input-raio">Raio</label>
-                    <input id="input-raio" name="raio" type="number" value="${config? config.raio:(raio||6.12)}" class="form-control p-0">
+                    <input id="input-raio" name="raio" type="number" value="${config? config.raio:(raio||geraNumeroPorIntervalo(4, 7).toFixed(2))}" class="form-control p-0">
                 </div>  
                 <div class="col offset-1 p-0">                 
                     <label for="input-velocidade">Vel max</label>
-                    <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max.toFixed(2):vel_max.toFixed(2)}" class="form-control p-0">
+                    <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max.toFixed(2):geraNumeroPorIntervalo(1, 2.2).toFixed(2)}" class="form-control p-0">
                 </div>
                 <div class="col offset-1 p-0">
                     <label for="input-forca">Forca max</label>
-                    <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max.toFixed(2):forca_max.toFixed(2)}" class="form-control p-0">
+                    <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max.toFixed(2):geraNumeroPorIntervalo(0.001, 0.05).toFixed(2)}" class="form-control p-0">
                 </div>
             </div>
             <div class="row p-0">
                 <div class="col p-0">
                     <label for="input-energia">Energia max</label>
-                    <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max.toFixed(2):energia_max.toFixed(2)}" class="form-control p-0">
+                    <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max.toFixed(2):geraNumeroPorIntervalo(120, 280).toFixed(2)}" class="form-control p-0">
                 </div>  
                 <div class="col offset-1 p-0">  
                     <label for="input-vida-min">Vida min</label>
-                    <input id="input-vida-min" name="tempo_vida_min" type="number" min="1" value="${config? config.tempo_vida_min:tempo_vida_min}" class="form-control p-0">
+                    <input id="input-vida-min" name="tempo_vida_min" type="number" min="1" value="${config? config.tempo_vida_min:120}" class="form-control p-0">
                 </div>
                 <div class="col offset-1 p-0">    
                     <label for="input-vida-max">Vida max</label>
-                    <input id="input-vida-max" name="tempo_vida_max" type="number" min="1" value="${config? config.tempo_vida_max:tempo_vida_max}" class="form-control p-0">
+                    <input id="input-vida-max" name="tempo_vida_max" type="number" min="1" value="${config? config.tempo_vida_max:300}" class="form-control p-0">
                 </div>
             </div>
         </form>
@@ -843,6 +843,14 @@ function serializarFormConfig(type) {
     // Converter cor
     obj.cor = hexToRgb(obj["cor"])
     
+    // Converter numeros
+    obj.raio = parseFloat(obj.raio);
+    obj.vel_max = parseFloat(obj.vel_max);
+    obj.forca_max = parseFloat(obj.forca_max);
+    obj.energia_max = parseFloat(obj.energia_max);
+    obj.tempo_vida_min = parseFloat(obj.tempo_vida_min);
+    obj.tempo_vida_max = parseFloat(obj.tempo_vida_max);
+
     if(type == 1) {
         conf_c = obj;
     } else {
