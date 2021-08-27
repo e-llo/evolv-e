@@ -142,15 +142,15 @@
                             </div>
                             
                         </div>
-                    </div>
-                    <div id="btnsChart" class="d-flex justify-content-center flex-wrap d-none" style="width: 100%;">
-                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(1)">População</button>
-                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(2)">Velocidade</button>
-                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(3)">Agilidade</button>
-                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(4)">Raio</button>
-                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(5)">Detecção</button>
-                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(6)">Energia</button>
-                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(7)">Gasto</button>
+                        <div id="btnsChart" class="d-flex justify-content-center flex-wrap d-none" style="width: 100%;">
+                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(1)">População</button>
+                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(2)">Velocidade</button>
+                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(3)">Agilidade</button>
+                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(4)">Raio</button>
+                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(5)">Detecção</button>
+                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(6)">Energia</button>
+                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(7)">Gasto</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -293,6 +293,8 @@
 
         function mostrarPainelInicial() {
             destroiObjetos();
+            resetaCronometro();
+            resetChart();
             antesDoPlay = true;
             clearInterval(insereDadosGrafico)
             inputTalim = document.getElementById("inputTaxaAlimentos");
@@ -304,6 +306,7 @@
             document.getElementById("inputsIniciais").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.remove("d-none");
             document.getElementById("botoesSecundarios").classList.add("d-none");
+            document.getElementById("painelSecundario").classList.add("d-none");
         }
 
         // function paraAlimentos(){

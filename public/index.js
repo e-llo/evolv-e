@@ -99,14 +99,6 @@ function destroiObjetos(){
     // mudaIntervaloAlimentos(1001);
 }
 
-function resetaCronometro(){
-    hora = minuto = segundo = milisegundo = segundos = 0;
-
-    //limpar o cronometro se ele existe.
-    try {
-        clearInterval(cronometro);
-    } catch(e){}
-}
 
 // cria mais alimentos ao longo do tempo
 // a função setInterval() permite que ele chame o loop a cada x milisegundos
@@ -890,8 +882,10 @@ function randomConfig(type) {
 // ----------------------------------------------------------------------------------------------
 //                                         Cronômetro
 // ----------------------------------------------------------------------------------------------
+var cronometro;
+
 function criaCronometro(){
-    var cronometro = setInterval(() => { timer(); }, 10);
+    cronometro = setInterval(() => { timer(); }, 10);
 }
 
 function timer() {
@@ -918,6 +912,20 @@ function timer() {
   
 function returnData(input) {
     return input > 10 ? input : `0${input}`
+}
+
+function resetaCronometro(){
+    hora = minuto = segundo = milisegundo = segundos = 0;
+
+    //limpar o cronometro se ele existe.
+    try {
+        clearInterval(cronometro);
+    } catch(e){}
+
+    document.getElementById('hora').innerText = "00";
+    document.getElementById('minuto').innerText = "00";
+    document.getElementById('segundo').innerText = "00";
+    document.getElementById('milisegundo').innerText = "00";
 }
 
 // ----------------------------------------------------------------------------------------------
