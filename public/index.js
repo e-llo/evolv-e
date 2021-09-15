@@ -56,9 +56,6 @@ var magnitude_mutacao = 0.1; // magnitude da mutação (o quanto vai variar)
 var lado_direito_vazio = true;
 var lado_esquerdo_vazio = true;
 
-// Variável para calcular frame rate (usada no animate())
-// var lastLoop = new Date();
-
 // QuadTree
 let retanguloCanvas = new Retangulo(canvas.width/2, canvas.height/2, canvas.width/2, canvas.height/2);
 
@@ -550,13 +547,7 @@ function animate(){
         idAnimate = requestAnimationFrame(animate);
     }
     
-    
     c.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // // Calcula frame rate
-    // var thisFrameTime = (thisLoop=new Date) - lastLoop;
-    // frameTime+= (thisFrameTime - frameTime) / filterStrength;
-    // lastLoop = thisLoop;
 
     // Criando a Quadtree
     let qtree = new QuadTree(retanguloCanvas, 10);
@@ -608,8 +599,7 @@ function animate(){
             qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
         });
 
-        // lado_direito_vazio = true;
-        // lado_esquerdo_vazio = true;
+        // Chamando os métodos dos organismos
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
@@ -633,8 +623,6 @@ function animate(){
             if(carnivoro.energia <= carnivoro.energia_max * fome_c){ // FOME
                 carnivoro.buscarHerbivoro(qtree, visaoC);
             }
-
-            // carnivoro.buscarHerbivoro(qtree, visaoC, false);
         })
     } else{ // se a tela NÃO estiver dividida
         limitador_de_loop = 0;
@@ -657,6 +645,7 @@ function animate(){
             qtree.inserirCarnivoro(carnivoro); // Insere o carnivoro na QuadTree
         });
         
+        // Chamando os métodos dos organismos
         Herbivoro.herbivoros.forEach(herbivoro => {
             herbivoro.update();
             herbivoro.vagueia();
@@ -681,8 +670,6 @@ function animate(){
             if(carnivoro.energia <= carnivoro.energia_max * fome_c){ // FOME
                 carnivoro.buscarHerbivoro(qtree, visaoC);
             }
-
-            // carnivoro.buscarHerbivoro(qtree, visaoC);
         })
     }
 }

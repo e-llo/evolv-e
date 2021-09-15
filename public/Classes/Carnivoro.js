@@ -79,7 +79,7 @@ class Carnivoro extends Organismo{
                 ///////////////////////////////////////////////////////////////////////////////
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 3){ // se o carnívoro comer <contagem_pra_reproducao> herbívoros
+                if(this.contagem_pra_reproducao >= 3){ // se o carnívoro comer <contagem_pra_reproducao> herbívoros
                     if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
                         this.reproduzir();
                     }

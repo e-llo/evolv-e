@@ -76,7 +76,7 @@ class Herbivoro extends Organismo{
                 ///////////////////////////////////////////////////////////////////////////////
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao == 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                if(this.contagem_pra_reproducao >= 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }
