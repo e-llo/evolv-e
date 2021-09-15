@@ -374,3 +374,30 @@ canvas {
 .sideTitle:before, .sideTitle:after {
   content:" - - - - - - - - - - "
 }
+
+.icone-folha{
+  display: inline-block;
+  vertical-align: middle;
+  width: 5px;
+  height: 5px;
+  border-radius: 5px;
+  background-color: #fff9;
+}
+
+.icone-herbivoro{
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #fff9;
+}
+
+.icone-carnivoro{
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: #fff9;
+}
