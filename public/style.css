@@ -401,3 +401,13 @@ canvas {
   border-radius: 20px;
   background-color: #fff9;
 }
+#linkGit{
+  margin-left: 10px; 
+  text-decoration: none; 
+  color: white; 
+  opacity: 0.5
+}
+#linkGit:hover{
+  opacity: 0.9;
+
+}
