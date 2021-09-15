@@ -73,9 +73,10 @@ class Herbivoro extends Organismo{
 
                 this.comeAlimento(alimentos_proximos[i_mais_perto], indice_lista_estatica);
 
-                this.contagem_pra_reproducao++;
                 ///////////////////////////////////////////////////////////////////////////////
-                if(this.contagem_pra_reproducao = 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                this.contagem_pra_reproducao++;
+
+                if(this.contagem_pra_reproducao == 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
                     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
                         this.reproduzir();
                     }
@@ -142,10 +143,7 @@ class Herbivoro extends Organismo{
 
         // Momento em que ele vai fugir!
         if(recorde <= Math.pow(this.raio_deteccao, 2)){
-            this.fugindo = true;
-            this.comendo = false;
-            this.vagueando = false;
-            this.status = "fugindo";
+            
             if(carnivoros_proximos.length != 0){
                 // Chamada do método foge(), que muda a velocidade do herbívoro para a direção oposta ao do predador
                 this.foge(carnivoros_proximos[i_mais_perto]); 

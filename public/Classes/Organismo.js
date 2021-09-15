@@ -12,6 +12,8 @@ class Organismo{
         this.vel_max = vel_max;
         this.forca_max = forca_max;
         this.cor = cor;
+        var rgb = cor.substring(4, cor.length - 1).split(",");
+        this.cor2 = "rgba(" + Math.floor(parseInt(rgb[0]) * 0.4) + "," + Math.floor(parseInt(rgb[1]) * 0.4) + "," + Math.floor(parseInt(rgb[2]) * 0.4) + ")";
         this.raio_deteccao_min = raio_deteccao_min;
         this.raio_deteccao = raio_deteccao_min;
         this.eficiencia_energetica = eficiencia_energetica;
@@ -393,7 +395,10 @@ class Organismo{
     display(){
         c.beginPath();
         c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        
-        c.fillStyle = this.cor;
+        c.fillStyle = this.cor2;
+        c.strokeStyle = this.cor;
+        c.lineWidth = 5;
+        c.stroke();
         c.fill();
        
         

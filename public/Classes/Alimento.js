@@ -17,7 +17,7 @@ class Alimento{
     display(){
         c.beginPath();
         c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);
-        c.fillStyle = "rgb(81, 186, 81)";
+        c.fillStyle = "rgb(115, 158, 115)";
         c.fill();
     }
 

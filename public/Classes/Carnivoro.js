@@ -56,6 +56,13 @@ class Carnivoro extends Organismo{
             this.comendo = true;
             this.vagueando = false;
             this.status = "caçando"
+
+            herbivoros_proximos[i_mais_perto].fugindo = true;
+            herbivoros_proximos[i_mais_perto].comendo = false;
+            herbivoros_proximos[i_mais_perto].vagueando = false;
+            herbivoros_proximos[i_mais_perto].status = "fugindo";
+
+
             if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
                 
                 // Loop para achar o herbívoro que contenha o id do herbívoro mais próximo a fim de deletá-lo da lista estática com base em seu id 
@@ -72,7 +79,7 @@ class Carnivoro extends Organismo{
                 ///////////////////////////////////////////////////////////////////////////////
                 this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao = 3){ // se o carnívoro comer 3 herbívoros e já tiver vivido o suficiente
+                if(this.contagem_pra_reproducao == 3){ // se o carnívoro comer <contagem_pra_reproducao> herbívoros
                     if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
                         this.reproduzir();
                     }
