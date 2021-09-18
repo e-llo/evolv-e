@@ -77,8 +77,8 @@
                             <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
                             <input type="range" min="0" max="500" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
                         </div>
-                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">40</label> milissegundos</label>
-                        <input type="range" min="1" max="1001" value="40" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: <label id="numTaxaAli">25</label> por segundo</label>
+                        <input type="range" min="0" max="1000" value="25" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
                             onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                         
 
@@ -293,8 +293,8 @@
             document.getElementById("numProbMutacao").textContent = 8;
             document.getElementById("numMagMutacao").textContent = 5;
 
-            labelTaxa.textContent = 80;
-            inputTalim.value = 80;
+            labelTaxa.textContent = 25;
+            inputTalim.value = 25;
             inputPMut.value = 8;
             inputMMut.value = 5;
         }
@@ -395,7 +395,7 @@
         }
 
         function mudouInputTaxa() {
-            if(inputTalim.value < 1001) {
+            if(inputTalim.value > 0) {
                 labelTaxa.textContent = inputTalim.value;
             } else {
                 labelTaxa.textContent = "nenhum";

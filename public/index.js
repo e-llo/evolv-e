@@ -372,7 +372,8 @@ function criaAlimentosGradativo(){
     }
 }
 
-function mudaIntervaloAlimentos(novoTempo, criar=false) {
+function mudaIntervaloAlimentos(novoValor, criar=false) {
+    novoTempo = 1000 / novoValor
     if(!criar) {
         clearInterval(intervaloTaxaAlimentos);
     }
