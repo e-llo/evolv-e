@@ -159,6 +159,10 @@
             <div id="chart"></div>
             <div id="chartSecundario">
             </div>
+
+            <div id="baixar-dados" class="d-none">
+                <button id="baixar-dados-btn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd; width: 40%; margin-left: 30%" onclick="exportarDados()">Baixar Dados</button>
+            </div>
         </div>
     </div>
 
@@ -271,6 +275,7 @@
             document.getElementById("painelSecundario").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.add("d-none");
             document.getElementById("botoesSecundarios").classList.remove("d-none");
+            document.getElementById("baixar-dados").classList.remove("d-none");
             if(!rodando && !pausado) { animate(); };
             rodando = true;
         }
@@ -406,6 +411,31 @@
 
         function mostrarBtnGraficos() {
             $("#btnsChart").removeClass("d-none");
+        }
+
+        function exportarDados(){
+            dados_simulacao = [
+                [makeId(4)], // ID da simulação para separá-las no banco de dados
+                [historico.herbivoros.populacao[0]], // População Inicial de herbívoros
+                [historico.carnivoros.populacao[0]], // População Inicial de carnívoros
+                historico.taxa_alimentos, // Taxa de alimentos por segundo em cada momento
+                historico.segundos, 
+                historico.herbivoros.populacao, 
+                historico.herbivoros.velocidade, 
+                historico.herbivoros.agilidade, 
+                historico.herbivoros.raio, 
+                historico.herbivoros.deteccao, 
+                historico.herbivoros.energia, 
+                historico.herbivoros.gasto, 
+                historico.carnivoros.populacao, 
+                historico.carnivoros.velocidade, 
+                historico.carnivoros.agilidade, 
+                historico.carnivoros.raio, 
+                historico.carnivoros.deteccao, 
+                historico.carnivoros.energia, 
+                historico.carnivoros.gasto
+            ]
+            exportToCsv("dados-simulacao.csv", dados_simulacao)
         }
 
     </script>

@@ -27,8 +27,8 @@ var cansaco_max;
 var taxa_aum_cansaco;
 var tempo_vida_min;
 var tempo_vida_max;
-var fome_c = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
-var fome_h = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
+var fome_c = 1; // porcentagem da energia máxima acima da qual eles não comerão
+var fome_h = 1; // porcentagem da energia máxima acima da qual eles não comerão
 
 
 // Variáveis para o gráfico (herbívoro)
@@ -69,6 +69,48 @@ var conf_h;
 // ---------------------------------------------------------------------------------------
 //                                  FUNÇÕES
 // ---------------------------------------------------------------------------------------
+
+function exportToCsv(filename, rows) {
+    var processRow = function (row) {
+        var finalVal = '';
+        for (var j = 0; j < row.length; j++) {
+            var innerValue = row[j] === null ? '' : row[j].toString();
+            if (row[j] instanceof Date) {
+                innerValue = row[j].toLocaleString();
+            };
+            var result = innerValue.replace(/""/g, '""""');
+            result = result.replace(".", ",")
+            if (result.search(/("|,|\n)/g) >= 0)
+                result = '"' + result + '"';
+            if (j > 0)
+                finalVal += ';';
+            finalVal += result;
+        }
+        return finalVal + '\n';
+    };
+
+    var csvFile = '';
+    for (var i = 0; i < rows.length; i++) {
+        csvFile += processRow(rows[i]);
+    }
+
+    var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, filename);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
 
 
 function criaObjetos(n_carnivoros, n_herbivoros, n_alimentos){
@@ -323,7 +365,7 @@ function criaAlimentosGradativo(){
             var y = Math.random() * (canvas.height - 62) + 31;
             var raio = Math.random() * 1.5 + 1;
 
-            if(Alimento.alimentos.length < 2000){ // Limitador para não sobrecarregar a simulação
+            if(Alimento.alimentos.length < 3000){ // Limitador para não sobrecarregar a simulação
                 new Alimento(x, y, raio);
             }
         }
@@ -915,6 +957,17 @@ function resetaCronometro(){
     document.getElementById('milisegundo').innerText = "00";
 }
 
+function makeId(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * 
+        charactersLength));
+   }
+   return result;
+}
+
 // ----------------------------------------------------------------------------------------------
 //                                         Frame rate
 // ----------------------------------------------------------------------------------------------
@@ -954,73 +1007,3 @@ function resetaCronometro(){
 
 //     document.getElementById("framerate").innerHTML = fps;
 // }, 1000);
-
-
-
-
-
-/////////////////////////////////////////////////
-// Função para verificar igualdade entre objetos
-
-
-// var isEqual = function (value, other) {
-
-// 	// Get the value type
-// 	var type = Object.prototype.toString.call(value);
-
-// 	// If the two objects are not the same type, return false
-// 	if (type !== Object.prototype.toString.call(other)) return false;
-
-// 	// If items are not an object or array, return false
-// 	if (['[object Array]', '[object Object]'].indexOf(type) < 0) return false;
-
-// 	// Compare the length of the length of the two items
-// 	var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
-// 	var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
-// 	if (valueLen !== otherLen) return false;
-
-// 	// Compare two items
-// 	var compare = function (item1, item2) {
-
-// 		// Get the object type
-// 		var itemType = Object.prototype.toString.call(item1);
-
-// 		// If an object or array, compare recursively
-// 		if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
-// 			if (!isEqual(item1, item2)) return false;
-// 		}
-
-// 		// Otherwise, do a simple comparison
-// 		else {
-
-// 			// If the two items are not the same type, return false
-// 			if (itemType !== Object.prototype.toString.call(item2)) return false;
-
-// 			// Else if it's a function, convert to a string and compare
-// 			// Otherwise, just compare
-// 			if (itemType === '[object Function]') {
-// 				if (item1.toString() !== item2.toString()) return false;
-// 			} else {
-// 				if (item1 !== item2) return false;
-// 			}
-
-// 		}
-// 	};
-
-// 	// Compare properties
-// 	if (type === '[object Array]') {
-// 		for (var i = 0; i < valueLen; i++) {
-// 			if (compare(value[i], other[i]) === false) return false;
-// 		}
-// 	} else {
-// 		for (var key in value) {
-// 			if (value.hasOwnProperty(key)) {
-// 				if (compare(value[key], other[key]) === false) return false;
-// 			}
-// 		}
-// 	}
-
-// 	// If nothing failed, return true
-// 	return true;
-
-// };

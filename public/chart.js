@@ -73,6 +73,9 @@ function insertNextDataChart() {
     //  Segundos
     historico.segundos.push(segundos)
 
+    // Outras infos para a análise de dados
+    historico.taxa_alimentos.push(1000 / inputTaxaAlimentos.value)
+
     if(telaDividida) {
       // Historico do lado esquerdo
         // Carnivoros
@@ -95,6 +98,8 @@ function insertNextDataChart() {
 
         historicoE.segundos.push(segundos)
 
+        historicoE.taxa_alimentos.push(1000 / inputTaxaAlimentos.value)
+
       // Historico do lado direito
         // Carnivoros
         historicoD.carnivoros.populacao.push(popC.dir)
@@ -115,6 +120,8 @@ function insertNextDataChart() {
         historicoD.herbivoros.gasto.push(taxaEnergMedH.dir)
 
         historicoD.segundos.push(segundos)
+
+        historicoD.taxa_alimentos.push(1000 / inputTaxaAlimentos.value)
     }
   // ------------------------------------------------------------------------------------------
   // Mesma variável de tempo para todos
