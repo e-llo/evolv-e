@@ -1,7 +1,7 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -11,12 +11,12 @@ class Herbivoro extends Organismo{
 
 
     reproduzir(){
-    
+        this.vezes_reproduzidas++;
         var filho = this._reproduzir();
     
         return new Herbivoro(
             this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
-            filho.cor, filho.raio_deteccao_min, filho.eficiencia_energetica, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
+            filho.cor, filho.raio_deteccao_min, filho.cansaco_max, filho.taxa_aum_cansaco,
             filho.tempo_vida_min, filho.tempo_vida_max
         );
     }
@@ -91,13 +91,14 @@ class Herbivoro extends Organismo{
     }
 
     comeAlimento(alimento, i){
+        this.qdade_comida++;
         // Absorção de energia ao comer alimento:
         // Se a energia do alimento for menor que o quanto falta para encher a barra de energia, 
         // o herbívoro adquire ela toda
         if(this.energia_max - this.energia >= alimento.energia_alimento * 0.1){
             this.energia += alimento.energia_alimento * 0.1;
         } else{ 
-            this.energia = energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
+            this.energia = this.energia_max; // Limitanto a energia para não ultrapassar sua energia máxima
         }
         if(this.energia > this.energia_max){
             this.energia = this.energia_max;
@@ -111,6 +112,7 @@ class Herbivoro extends Organismo{
             this.raio += 0.03*this.raio;
             this.raio_deteccao += 0.02*this.raio_deteccao;
         }
+        this.energia_max = Math.pow(this.raio, 2) * 6;
     }
 
     // Método para detectar um predador (basicamente idêntico ao buscarAlimento())
@@ -186,9 +188,9 @@ class Herbivoro extends Organismo{
         c.fill();
 
         // desenhando o raio de detecção
-    //     c.beginPath();
-    //     c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
-    //     c.strokeStyle = "grey";
-    //     c.stroke();
+        //     c.beginPath();
+        //     c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+        //     c.strokeStyle = "grey";
+        //     c.stroke();
     }
 }
