@@ -36,7 +36,7 @@
     </style>
     <script type="text/javascript">
         var hora = minuto = segundo = milisegundo = 0;
-        var segundos = 0;
+        var segundos_totais = 0;
     </script>
 </head>
 
@@ -74,11 +74,11 @@
                             <input type="range" min="0" max="500" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
                             <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
                             <input type="range" min="0" max="500" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
-                            <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
+                            <label id="alimento" name="alimento" for="inputAlimentos">Vegetais: <label id="numAli">150</label></label>
                             <input type="range" min="0" max="500" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
                         </div>
-                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: 1 a cada <label id="numTaxaAli">40</label> milissegundos</label>
-                        <input type="range" min="1" max="1001" value="40" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de vegetais: <label id="numTaxaAli">25</label> por segundo</label>
+                        <input type="range" min="0" max="1000" value="25" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
                             onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                         
 
@@ -131,7 +131,7 @@
                                 <button type="button" id="btnHerb" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-success w-100" onclick="addHerbivoro()"><span class="icone-herbivoro"></span>Adicionar Herbívoro</button>
                                 <button type="button" class="btn btn-gray" onclick="showEditPanel(2)"><i class="fas fa-edit p-0"></i></button>
                             </div>
-                            <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning" onclick="addAlimento()"><span class="icone-folha "></span>Adicionar Folha</button>
+                            <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning" onclick="addAlimento()"><span class="icone-vegetal"></span>Adicionar Vegetal</button>
                             <!-- PAINEL DE EDICAO PARA INSERIR NOVO ORGANISMO -->
                             <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
                                 <!-- Gerado automaticamente pelos botoes de editar -->
@@ -159,6 +159,10 @@
             <div id="chart"></div>
             <div id="chartSecundario">
             </div>
+
+            <!-- <div id="baixar-dados" class="d-none">
+                <button id="baixar-dados-btn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd; width: 40%; margin-left: 30%" onclick="exportarDados()">Baixar Dados</button>
+            </div> -->
         </div>
     </div>
 
@@ -271,6 +275,7 @@
             document.getElementById("painelSecundario").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.add("d-none");
             document.getElementById("botoesSecundarios").classList.remove("d-none");
+            // document.getElementById("baixar-dados").classList.remove("d-none"); // FIND DADOS
             if(!rodando && !pausado) { animate(); };
             rodando = true;
         }
@@ -288,8 +293,8 @@
             document.getElementById("numProbMutacao").textContent = 8;
             document.getElementById("numMagMutacao").textContent = 5;
 
-            labelTaxa.textContent = 80;
-            inputTalim.value = 80;
+            labelTaxa.textContent = 25;
+            inputTalim.value = 25;
             inputPMut.value = 8;
             inputMMut.value = 5;
         }
@@ -390,7 +395,7 @@
         }
 
         function mudouInputTaxa() {
-            if(inputTalim.value < 1001) {
+            if(inputTalim.value > 0) {
                 labelTaxa.textContent = inputTalim.value;
             } else {
                 labelTaxa.textContent = "nenhum";
@@ -406,6 +411,31 @@
 
         function mostrarBtnGraficos() {
             $("#btnsChart").removeClass("d-none");
+        }
+
+        function exportarDados(){
+            dados_simulacao = [
+                [makeId(4)], // ID da simulação para separá-las no banco de dados
+                [historico.herbivoros.populacao[0]], // População Inicial de herbívoros
+                [historico.carnivoros.populacao[0]], // População Inicial de carnívoros
+                historico.taxa_alimentos, // Taxa de alimentos por segundo em cada momento
+                historico.segundos, 
+                historico.herbivoros.populacao, 
+                historico.herbivoros.velocidade, 
+                historico.herbivoros.agilidade, 
+                historico.herbivoros.raio, 
+                historico.herbivoros.deteccao, 
+                historico.herbivoros.energia, 
+                historico.herbivoros.gasto, 
+                historico.carnivoros.populacao, 
+                historico.carnivoros.velocidade, 
+                historico.carnivoros.agilidade, 
+                historico.carnivoros.raio, 
+                historico.carnivoros.deteccao, 
+                historico.carnivoros.energia, 
+                historico.carnivoros.gasto
+            ]
+            exportToCsv("dados-simulacao.csv", dados_simulacao)
         }
 
     </script>

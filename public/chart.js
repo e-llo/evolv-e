@@ -47,31 +47,34 @@ function removeChartTitle() {
 
 function insertNextDataChart() {
   // Não deixa inserir dados para segundos repetidos
-  if(segundos == segundoRepetido) {
+  if(segundos_totais == segundoRepetido) {
     return;
   }
-  segundoRepetido = segundos;
+  segundoRepetido = segundos_totais;
   // Salva os valores atuais no(s) historico(s) ---------------------------------------------
     //  Carnivoros
-    historico.carnivoros.populacao.push(popC.esq + popC.dir)
-    historico.carnivoros.velocidade.push( (velMedC.esq + velMedC.dir)/2 )
-    historico.carnivoros.agilidade.push( (forcaMedC.esq + forcaMedC.dir)/2 )
-    historico.carnivoros.raio.push( (raioMedC.esq + raioMedC.dir)/2 )
-    historico.carnivoros.deteccao.push( (raioDetMedC.esq + raioDetMedC.dir)/2 )
-    historico.carnivoros.energia.push( (energMedC.esq + energMedC.dir)/2 )
-    historico.carnivoros.gasto.push( (taxaEnergMedC.esq + taxaEnergMedC.dir)/2 )
+    historico.carnivoros.populacao.push(popC.sem_div)
+    historico.carnivoros.velocidade.push(velMedC.sem_div)
+    historico.carnivoros.agilidade.push(forcaMedC.sem_div)
+    historico.carnivoros.raio.push(raioMedC.sem_div)
+    historico.carnivoros.deteccao.push(raioDetMedC.sem_div)
+    historico.carnivoros.energia.push(energMedC.sem_div)
+    historico.carnivoros.gasto.push(taxaEnergMedC.sem_div)
 
     //  Herbivoros
-    historico.herbivoros.populacao.push(popH.esq + popH.dir)
-    historico.herbivoros.velocidade.push( (velMedH.esq + velMedH.dir)/2 )
-    historico.herbivoros.agilidade.push( (forcaMedH.esq + forcaMedH.dir)/2 )
-    historico.herbivoros.raio.push( (raioMedH.esq + raioMedH.dir)/2 )
-    historico.herbivoros.deteccao.push( (raioDetMedH.esq + raioDetMedH.dir)/2 )
-    historico.herbivoros.energia.push( (energMedH.esq + energMedH.dir)/2 )
-    historico.herbivoros.gasto.push( (taxaEnergMedH.esq + taxaEnergMedH.dir)/2 )
+    historico.herbivoros.populacao.push(popH.sem_div)
+    historico.herbivoros.velocidade.push(velMedH.sem_div)
+    historico.herbivoros.agilidade.push(forcaMedH.sem_div)
+    historico.herbivoros.raio.push(raioMedH.sem_div)
+    historico.herbivoros.deteccao.push(raioDetMedH.sem_div)
+    historico.herbivoros.energia.push(energMedH.sem_div)
+    historico.herbivoros.gasto.push(taxaEnergMedH.sem_div)
 
     //  Segundos
-    historico.segundos.push(segundos)
+    historico.segundos.push(segundos_totais)
+
+    // Outras infos para a análise de dados
+    historico.taxa_alimentos.push(inputTaxaAlimentos.value)
 
     if(telaDividida) {
       // Historico do lado esquerdo
@@ -93,7 +96,9 @@ function insertNextDataChart() {
         historicoE.herbivoros.energia.push(energMedH.esq)
         historicoE.herbivoros.gasto.push(taxaEnergMedH.esq)
 
-        historicoE.segundos.push(segundos)
+        historicoE.segundos.push(segundos_totais)
+
+        historicoE.taxa_alimentos.push(inputTaxaAlimentos.value)
 
       // Historico do lado direito
         // Carnivoros
@@ -114,11 +119,13 @@ function insertNextDataChart() {
         historicoD.herbivoros.energia.push(energMedH.dir)
         historicoD.herbivoros.gasto.push(taxaEnergMedH.dir)
 
-        historicoD.segundos.push(segundos)
+        historicoD.segundos.push(segundos_totais)
+
+        historicoD.taxa_alimentos.push(inputTaxaAlimentos.value)
     }
   // ------------------------------------------------------------------------------------------
   // Mesma variável de tempo para todos
-  let arraySeconds = [[segundos], [segundos]];
+  let arraySeconds = [[segundos_totais], [segundos_totais]];
 
   // Identificar qual o gráfico atual
   let valores;

@@ -1,8 +1,8 @@
 class Carnivoro extends Organismo{
     static carnivoros = [];
    
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max); // referenciando o construtor da classe mãe
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max); // referenciando o construtor da classe mãe
         
         // variável para contar quando um carnívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -11,11 +11,12 @@ class Carnivoro extends Organismo{
     }
     // Método de reprodução (com mutações)
     reproduzir(){
+        this.vezes_reproduzidas++;
         var filho = this._reproduzir();
 
         return new Carnivoro(
             this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
-            filho.cor, filho.raio_deteccao_min, filho.eficiencia_energetica, filho.energia_max, filho.cansaco_max, filho.taxa_aum_cansaco,
+            filho.cor, filho.raio_deteccao_min, filho.cansaco_max, filho.taxa_aum_cansaco,
             filho.tempo_vida_min, filho.tempo_vida_max
         );
         
@@ -77,14 +78,14 @@ class Carnivoro extends Organismo{
                 this.comeHerbivoro(herbivoros_proximos[i_mais_perto]);
 
                 ///////////////////////////////////////////////////////////////////////////////
-                this.contagem_pra_reproducao++;
+                // this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao >= 3){ // se o carnívoro comer <contagem_pra_reproducao> herbívoros
-                    if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
-                        this.reproduzir();
-                    }
-                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
-                }
+                // if(this.contagem_pra_reproducao >= 4){ // se o carnívoro comer <contagem_pra_reproducao> herbívoros
+                //     if(Math.random() < this.chance_de_reproducao ){ // chance de se reproduzir
+                //         this.reproduzir();
+                //     }
+                //     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                // }
                 ///////////////////////////////////////////////////////////////////////////////
                 
             } else if(herbivoros_proximos.length != 0){
@@ -94,6 +95,7 @@ class Carnivoro extends Organismo{
     }
     
     comeHerbivoro(herbivoro){
+        this.qdade_comida++;
         // Absorção de energia ao comer o herbívoro
         // Se a energia que ele adquirá do herbívoro (10% da energia total do herbívoro)
         // for menor que o quanto falta para encher a barra de energia, ela será somada integralmente (os 10%)
@@ -114,5 +116,23 @@ class Carnivoro extends Organismo{
             this.raio += 0.03*this.raio;
             this.raio_deteccao += 0.02*this.raio_deteccao;
         }
+        this.energia_max = Math.pow(this.raio, 2) * 6
+    }
+
+    display(){
+        c.beginPath();
+        c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);
+        c.fillStyle = this.cor2;
+        c.strokeStyle = this.cor;
+        c.lineWidth = 5;
+        c.stroke();
+        c.fill();
+       
+        
+        // // desenhando o raio de detecção
+        // c.beginPath();
+        // c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
+        // c.strokeStyle = "grey";
+        // c.stroke();
     }
 }

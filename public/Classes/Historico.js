@@ -3,6 +3,7 @@ class Historico {
         this.herbivoros = new Genes();
         this.carnivoros = new Genes();
         this.segundos = [];
+        this.taxa_alimentos = []; // Alimentos por segundo
     }
 
     clear() {

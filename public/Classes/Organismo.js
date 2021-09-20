@@ -3,7 +3,7 @@ class Organismo{
     static n_total_organismos = 0;
     static id = 0;
 
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
         this.posicao = new Vetor(x, y);
         this.raio_min = raio_min;
         this.raio = this.raio_min;
@@ -16,22 +16,24 @@ class Organismo{
         this.cor2 = "rgba(" + Math.floor(parseInt(rgb[0]) * 0.4) + "," + Math.floor(parseInt(rgb[1]) * 0.4) + "," + Math.floor(parseInt(rgb[2]) * 0.4) + ")";
         this.raio_deteccao_min = raio_deteccao_min;
         this.raio_deteccao = raio_deteccao_min;
-        this.eficiencia_energetica = eficiencia_energetica;
-        this.energia_max = energia_max;
+        this.energia_max = Math.pow(this.raio, 2) * 6;
+        this.energia_max_fixa = Math.pow(this.raio_min * 1.5, 2) * 6; // Usada para obter valores não-variáveis no gráfico
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia;
-        this.taxa_gasto_energia_max = ((Math.pow(this.raio_min, 2) * Math.pow(this.vel_max, 2)) / 2500).toFixed(4) * eficiencia_energetica; // Usado como valor para o cálculo da média da população
-        this.gasto_minimo = parseFloat((this.taxa_gasto_energia_max / 10).toFixed(4)); // Gasto de energia mínimo (que independe da velocidade)
+        this.gasto_minimo = 0.002 * Math.pow(Math.pow(this.raio, 2), 0.75); // Seguindo a lei de Kleiber para a taxa metabólica dos seres vivos
+        this.taxa_gasto_energia_max = this.gasto_minimo + (Math.pow(this.raio_min * 1.5, 2) * Math.pow(this.vel_max, 2)) * 0.00012;;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
         this.tempo_vivido = 0;
         this.status;
+        this.qdade_comida = 0;
+        this.vezes_reproduzidas = 0;
         // setInterval(this.updateTempoVivido, 1000);
         // setInterval(console.log("teste"), 1000);
 
         // Tempo de vida
-        this.segundo_nascimento = segundo; // "segundo" é a variável global
+        this.segundo_nascimento = segundos_totais; // "segundo" é a variável global
         this.tempo_vida = {};
         this.tempo_vida.min = tempo_vida_min; // em ssegundos
         this.tempo_vida.max = tempo_vida_max;
@@ -89,12 +91,6 @@ class Organismo{
             raio_deteccao_min_filho = 5;
         }
 
-        // eficiência energética
-        var eficiencia_energetica_filho = newMutacao(this.eficiencia_energetica);
-
-        // energia máxima
-        var energia_max_filho = newMutacao(this.energia_max);
-
         // cansaço máximo
         var cansaco_max_filho = newMutacao(this.cansaco_max);
 
@@ -108,29 +104,25 @@ class Organismo{
         // var tempo_vida_max_filho = newMutacao(this.tempo_vida.max);
 
         var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
-        raio_deteccao_min: raio_deteccao_min_filho, eficiencia_energetica: eficiencia_energetica_filho, energia_max: energia_max_filho, 
-        cansaco_max: cansaco_max_filho, taxa_aum_cansaco: taxa_aum_cansaco_filho, tempo_vida_min: this.tempo_vida.min, 
-        tempo_vida_max: this.tempo_vida.max};
+        raio_deteccao_min: raio_deteccao_min_filho, cansaco_max: cansaco_max_filho, taxa_aum_cansaco: taxa_aum_cansaco_filho, 
+        tempo_vida_min: this.tempo_vida.min, tempo_vida_max: this.tempo_vida.max};
 
         return dados_filho;
     }
 
     // Método para atualizar o estado do organismo
     update(){
-        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 2000; // Atualiza de acordo com a velocidade atual
+        this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) * 0.0002; // Atualiza de acordo com a velocidade atual
         // this.tempo_vivido++;
         // Taxa de diminuição de energia
         if(this.energia > 0){
             this.energia -= (this.taxa_gasto_energia + this.gasto_minimo);
-            // console.log(this.energia);
-            // console.log(this.gasto_minimo);
-            // if(this.energia > this.energia_max * 0.7){ // Se estiver com mais que 70% de energia, pode se reproduzir
-            //     if(Math.random() < 0.0014){ // Número baixo pois testa a cada frame
-            //         if(Math.random() <= this.chance_de_reproducao){
-            //             this.reproduzir();
-            //         }
-            //     } 
-            // }
+
+            if(Math.random() < (0.0005 * this.qdade_comida)/10){ // Número baixo pois testa a cada frame. Quando mais comeu, maiores as chances
+                if(Math.random() <= this.chance_de_reproducao){
+                    this.reproduzir();
+                }
+            }
         } else{
             this.morre(); 
         }
@@ -366,15 +358,10 @@ class Organismo{
     // REDIRECIONAMENTO = VELOCIDADE DESEJADA - VELOCIDADE
     persegue(alvo){
         alvo.fugindo = true;
-        // if(this instanceof Carnivoro){
-        //     this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) / 1200; // Aumenta o gasto de energia ao perseguir
-        // }
         // O vetor da velocidade desejada é o vetor de posição do alvo menos o da própria posição
         var vel_desejada = alvo.posicao.subNew(this.posicao); // Um vetor apontando da localização dele para o alvo
         // Amplia a velocidade desejada para a velocidade máxima
         vel_desejada.setMag(this.vel_max);
-
-        
 
         // Redirecionamento = velocidade desejada - velocidade
         var redirecionamento = vel_desejada.subNew(this.vel);
@@ -390,23 +377,6 @@ class Organismo{
     
     updateTempoVivido(){
         this.tempo_vivido++;
-    }
-
-    display(){
-        c.beginPath();
-        c.arc(this.posicao.x, this.posicao.y, this.raio, 0, Math.PI * 2);        
-        c.fillStyle = this.cor2;
-        c.strokeStyle = this.cor;
-        c.lineWidth = 5;
-        c.stroke();
-        c.fill();
-       
-        
-        // // desenhando o raio de detecção
-        // c.beginPath();
-        // c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);
-        // c.strokeStyle = "grey";
-        // c.stroke();
     }
     
     remove(lista) {

@@ -273,7 +273,6 @@ canvas {
   #chart{
   width: 100%;
   margin: 0 auto;
-
   }
   body{
     overflow: auto;
@@ -383,7 +382,7 @@ canvas {
   content:" - - - - - - - - - - "
 }
 
-.icone-folha{
+.icone-vegetal{
   display: inline-block;
   vertical-align: middle;
   width: 5px;
