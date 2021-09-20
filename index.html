@@ -136,6 +136,16 @@
                             <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
                                 <!-- Gerado automaticamente pelos botoes de editar -->
                             </div>
+                            <div class="text-center">
+                                <input id="highlightFalse" name="highlight" type="radio" onclick="highlight()" checked/>
+                                <label for="highlightFalse">todos</label>
+
+                                <input id="highlightCarn" name="highlight" type="radio" onclick="highlight('c')"/>
+                                <label for="highlightCarn">carnivoros</label>
+
+                                <input id="highlightHerb" name="highlight" type="radio" onclick="highlight('h')"/>
+                                <label for="highlightHerb">herbivoros</label>
+                            </div>
                             <div>
                                 <!-- <button type="button" id="divisao" name="divisao" class="btn btn-sm btn-outline-secondary" onclick="desenhaDivisao()">Dividir populações</button> -->
                                 <label class ="form-check-label" for = "divisao">Dividir populações</label>
@@ -436,6 +446,16 @@
                 historico.carnivoros.gasto
             ]
             exportToCsv("dados-simulacao.csv", dados_simulacao)
+        }
+
+        function highlight(organismo = false) {
+            Carnivoro.highlight = false
+            Herbivoro.highlight = false
+
+            if(organismo == "c")
+                Carnivoro.highlight = true
+            else if(organismo == "h")
+                Herbivoro.highlight = true
         }
 
     </script>
