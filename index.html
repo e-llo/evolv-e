@@ -160,9 +160,9 @@
             <div id="chartSecundario">
             </div>
 
-            <div id="baixar-dados" class="d-none">
+            <!-- <div id="baixar-dados" class="d-none">
                 <button id="baixar-dados-btn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd; width: 40%; margin-left: 30%" onclick="exportarDados()">Baixar Dados</button>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -275,7 +275,7 @@
             document.getElementById("painelSecundario").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.add("d-none");
             document.getElementById("botoesSecundarios").classList.remove("d-none");
-            document.getElementById("baixar-dados").classList.remove("d-none");
+            // document.getElementById("baixar-dados").classList.remove("d-none"); // FIND DADOS
             if(!rodando && !pausado) { animate(); };
             rodando = true;
         }
