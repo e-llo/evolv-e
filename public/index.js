@@ -12,7 +12,7 @@ const c = canvas.getContext('2d');
 
 
 
-// ------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------ZOOM IN / PANNING--------------------------------------------------
 
 
 
@@ -340,8 +340,8 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     raio_deteccao_min = geraNumeroPorIntervalo(15, 60);
     cansaco_max = geraNumeroPorIntervalo(20, 70);
     taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
-    tempo_vida_min = 12; // em segundos
-    tempo_vida_max = 30; // em segundos
+    tempo_vida_min = 120; // em segundos
+    tempo_vida_max = 300; // em segundos
 
     if(conf_h) {
         raio_min = conf_h.raio;
