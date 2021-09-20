@@ -1,7 +1,9 @@
 class Herbivoro extends Organismo{
     static herbivoros = [];
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
+    static highlight = false;
+    
+    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -183,8 +185,13 @@ class Herbivoro extends Organismo{
         // desenhaOval(c, this.posicao.x, this.posicao.y, this.raio*2, this.raio, 'red');
         c.ellipse(this.posicao.x, this.posicao.y, this.raio * 0.7, this.raio * 1.1, this.vel.headingRads() - Math.PI/2, 0, Math.PI * 2);
         // console.log(this.vel.headingDegs());
-        c.fillStyle = this.cor;
-        c.strokeStyle = this.cor;
+        if(Carnivoro.highlight) {
+            c.fillStyle = "rgba(" + this.cor.substr(4).replace(")","") + ",0.15)";
+            c.strokeStyle = "rgba(" + this.cor.substr(4).replace(")","") + ",0.15)";
+        } else {
+            c.fillStyle = this.cor;
+            c.strokeStyle = this.cor;
+        }
         c.fill();
 
         // desenhando o raio de detecção
