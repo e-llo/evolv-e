@@ -74,10 +74,10 @@
                             <input type="range" min="0" max="500" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
                             <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
                             <input type="range" min="0" max="500" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
-                            <label id="alimento" name="alimento" for="inputAlimentos">Alimentos: <label id="numAli">150</label></label>
+                            <label id="alimento" name="alimento" for="inputAlimentos">Vegetais: <label id="numAli">150</label></label>
                             <input type="range" min="0" max="500" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
                         </div>
-                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de alimentos: <label id="numTaxaAli">25</label> por segundo</label>
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de vegetais: <label id="numTaxaAli">25</label> por segundo</label>
                         <input type="range" min="0" max="1000" value="25" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
                             onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                         
@@ -131,7 +131,7 @@
                                 <button type="button" id="btnHerb" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-success w-100" onclick="addHerbivoro()"><span class="icone-herbivoro"></span>Adicionar Herbívoro</button>
                                 <button type="button" class="btn btn-gray" onclick="showEditPanel(2)"><i class="fas fa-edit p-0"></i></button>
                             </div>
-                            <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning" onclick="addAlimento()"><span class="icone-folha "></span>Adicionar Folha</button>
+                            <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning" onclick="addAlimento()"><span class="icone-vegetal"></span>Adicionar Vegetal</button>
                             <!-- PAINEL DE EDICAO PARA INSERIR NOVO ORGANISMO -->
                             <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
                                 <!-- Gerado automaticamente pelos botoes de editar -->
