@@ -912,15 +912,16 @@ function getOrganismo(x, y) {
                 ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"}
             </div>
             <div class="popover-content">
-                <b>Raio:</b> <div id="pop-raio-${popover_id}" style="display: inline">${organismo.raio.toFixed(2)}</div><br/>
+                <b>Raio:</b> <div id="pop-raio-${popover_id}" style="display: inline">${organismo.raio.toFixed(2)}</div>/${(organismo.raio_inicial * 1.5).toFixed(2)}<br/>
                 <b>Velocidade máxima:</b> ${organismo.vel_max.toFixed(2)}<br/>
                 <b>Raio de detecção:</b> ${organismo.raio_deteccao.toFixed(2)}<br/>
                 <b>Energia:</b> <div id="pop-energia-${popover_id}" style="display: inline">${organismo.energia.toFixed(2)}</div>/<div id="pop-energia-max-${popover_id}" style="display: inline">${organismo.energia_max.toFixed(2)}</div><br/>
-                <b>Gasto energético:</b> ${organismo.taxa_gasto_energia_max.toFixed(2)}<br/>
+                <b>Gasto energético:</b> <div id="pop-gasto-${popover_id}" style="display: inline">${(organismo.taxa_gasto_energia + organismo.gasto_minimo).toFixed(3)}</div><br/>
                 <b>Cor:</b> <svg width="20" height="20"><rect width="18" height="18" style="fill:${organismo.cor}"/></svg> ${organismo.cor}<br/>
                 <!-- <b>Fome:</b> <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
                 <b>Status:</b> <div id="pop-status-${popover_id}" style="display: inline">${organismo.status}</div><br/>
                 <b>Vida:</b> <div id="pop-vida-${popover_id}" style="display: inline">${segundos_totais - organismo.segundo_nascimento}</div>/${organismo.tempo_vida}<br/>
+                <b>Filhos:</b> <div id="pop-vezes-reproduzidas-${popover_id}" style="display: inline">${organismo.vezes_reproduzidas}</div><br/>
                 <button type="button" class="btn btn-danger btn-sm" onclick="excluirOrganismoPopover(${popover_id}, ${organismo.id})" style="margin-top: 10px">Excluir ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"}</button>
             </div>
             <button type="button" class="btn close" aria-label="Close"
@@ -945,7 +946,9 @@ function getOrganismo(x, y) {
             document.getElementById(`pop-raio-${pop_id}`).textContent = organismo.raio.toFixed(1);
             document.getElementById(`pop-energia-${pop_id}`).textContent = organismo.energia.toFixed(1);
             document.getElementById(`pop-energia-max-${pop_id}`).textContent = organismo.energia_max.toFixed(1);
+            document.getElementById(`pop-gasto-${pop_id}`).textContent = (organismo.taxa_gasto_energia + organismo.gasto_minimo).toFixed(3);
             document.getElementById(`pop-status-${pop_id}`).textContent = organismo.status;
+            document.getElementById(`pop-vezes-reproduzidas-${pop_id}`).textContent = organismo.vezes_reproduzidas;
             // organismo.energia <= organismo.energia_max * 0.8 ? document.getElementById(`pop-fome-${pop_id}`).textContent = "Com fome": document.getElementById(`pop-fome-${pop_id}`).textContent = "Satisfeito"
             document.getElementById(`pop-vida-${pop_id}`).textContent = segundos_totais - organismo.segundo_nascimento;
             return true;

@@ -33,7 +33,7 @@ class Organismo{
         this.energia_max_fixa = Math.pow(this.raio_inicial * 1.5, 2) * 6; // Usada para obter valores não-variáveis no gráfico
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia;
-        this.gasto_minimo = 0.002 * Math.pow(Math.pow(this.raio, 2), 0.75); // Seguindo a lei de Kleiber para a taxa metabólica dos seres vivos
+        this.gasto_minimo = 0.0032 * Math.pow(Math.pow(this.raio, 2), 0.75); // Seguindo a lei de Kleiber para a taxa metabólica dos seres vivos
         this.taxa_gasto_energia_max = this.gasto_minimo + (Math.pow(this.raio_inicial * 1.5, 2) * Math.pow(this.vel_max, 2)) * 0.00012;;
         this.chance_de_reproducao = 0.5;
         this.tempo_vivido = 0;
