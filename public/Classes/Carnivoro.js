@@ -2,8 +2,8 @@ class Carnivoro extends Organismo{
     static carnivoros = [];
     static highlight = false;
    
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max); // referenciando o construtor da classe mãe
+    constructor(x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco){
+        super(x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco); // referenciando o construtor da classe mãe
         
         // variável para contar quando um carnívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -16,9 +16,8 @@ class Carnivoro extends Organismo{
         var filho = this._reproduzir();
 
         return new Carnivoro(
-            this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
+            this.posicao.x, this.posicao.y, filho.raio_inicial, filho.vel_max, filho.forca_max, 
             filho.cor, filho.raio_deteccao_min, filho.cansaco_max, filho.taxa_aum_cansaco,
-            filho.tempo_vida_min, filho.tempo_vida_max
         );
         
     }
@@ -113,7 +112,7 @@ class Carnivoro extends Organismo{
     }
 
     aumentaTamanho(){
-        if(this.raio<(this.raio_min*1.5)){
+        if(this.raio<(this.raio_inicial*1.5)){
             this.raio += 0.03*this.raio;
             this.raio_deteccao += 0.02*this.raio_deteccao;
         }

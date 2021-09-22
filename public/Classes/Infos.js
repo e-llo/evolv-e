@@ -1,4 +1,4 @@
-class Genes {
+class Infos {
     constructor(){
         this.populacao = [];
         this.velocidade = [];

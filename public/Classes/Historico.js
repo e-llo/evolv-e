@@ -1,7 +1,7 @@
 class Historico {
     constructor() {
-        this.herbivoros = new Genes();
-        this.carnivoros = new Genes();
+        this.herbivoros = new Infos();
+        this.carnivoros = new Infos();
         this.segundos = [];
         this.taxa_alimentos = []; // Alimentos por segundo
     }

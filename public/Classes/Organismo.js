@@ -3,10 +3,13 @@ class Organismo{
     static n_total_organismos = 0;
     static id = 0;
 
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
+    constructor(x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco){
+        this.dna = {
+            
+        };
         this.posicao = new Vetor(x, y);
-        this.raio_min = raio_min;
-        this.raio = this.raio_min;
+        this.raio_inicial = raio_inicial;
+        this.raio = this.raio_inicial;
         this.vel = new Vetor(0.0001, 0.0001);
         this.acel = new Vetor(0, 0);
         this.vel_max = vel_max;
@@ -17,11 +20,11 @@ class Organismo{
         this.raio_deteccao_min = raio_deteccao_min;
         this.raio_deteccao = raio_deteccao_min;
         this.energia_max = Math.pow(this.raio, 2) * 6;
-        this.energia_max_fixa = Math.pow(this.raio_min * 1.5, 2) * 6; // Usada para obter valores não-variáveis no gráfico
+        this.energia_max_fixa = Math.pow(this.raio_inicial * 1.5, 2) * 6; // Usada para obter valores não-variáveis no gráfico
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia;
         this.gasto_minimo = 0.002 * Math.pow(Math.pow(this.raio, 2), 0.75); // Seguindo a lei de Kleiber para a taxa metabólica dos seres vivos
-        this.taxa_gasto_energia_max = this.gasto_minimo + (Math.pow(this.raio_min * 1.5, 2) * Math.pow(this.vel_max, 2)) * 0.00012;;
+        this.taxa_gasto_energia_max = this.gasto_minimo + (Math.pow(this.raio_inicial * 1.5, 2) * Math.pow(this.vel_max, 2)) * 0.00012;;
         this.cansaco_max = cansaco_max;
         this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
@@ -34,11 +37,7 @@ class Organismo{
 
         // Tempo de vida
         this.segundo_nascimento = segundos_totais; // "segundo" é a variável global
-        this.tempo_vida = {};
-        this.tempo_vida.min = tempo_vida_min; // em ssegundos
-        this.tempo_vida.max = tempo_vida_max;
-        this.tempo_vida.real = parseInt(geraNumeroPorIntervalo(tempo_vida_min, tempo_vida_max)); // tempo de vida do organismo
-        // let cronometro_morte = setTimeout(() => {this.morre()}, this.tempo_vida.real); // variável que guarda a função de matar o indivíduo depois do tempo de vida real
+        this.tempo_vida = parseInt(geraNumeroPorIntervalo(200, 300)); // tempo de vida do organismo
 
         // Variáveis de status
         this.comendo = false;
@@ -69,9 +68,9 @@ class Organismo{
     _reproduzir(){
 
         // raio mínimo
-        var raio_min_filho = newMutacao(this.raio_min);
-        if(raio_min_filho < 0){
-            raio_min_filho = 0;
+        var raio_inicial_filho = newMutacao(this.raio_inicial);
+        if(raio_inicial_filho < 0){
+            raio_inicial_filho = 0;
         }
         // velocidade máxima
         var vel_max_filho = newMutacao(this.vel_max);
@@ -96,16 +95,11 @@ class Organismo{
 
         // taxa de aumento do cansaço
         var taxa_aum_cansaco_filho = newMutacao(this.taxa_aum_cansaco);
-        
-        // // tempo de vida mínimo
-        // var tempo_vida_min_filho = newMutacao(this.tempo_vida.min);
     
-        // //tempo de vida máximo
-        // var tempo_vida_max_filho = newMutacao(this.tempo_vida.max);
 
-        var dados_filho = {raio_min: raio_min_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
-        raio_deteccao_min: raio_deteccao_min_filho, cansaco_max: cansaco_max_filho, taxa_aum_cansaco: taxa_aum_cansaco_filho, 
-        tempo_vida_min: this.tempo_vida.min, tempo_vida_max: this.tempo_vida.max};
+        var dados_filho = {raio_inicial: raio_inicial_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
+        raio_deteccao_min: raio_deteccao_min_filho, cansaco_max: cansaco_max_filho, taxa_aum_cansaco: taxa_aum_cansaco_filho
+        };
 
         return dados_filho;
     }
@@ -127,7 +121,7 @@ class Organismo{
             this.morre(); 
         }
         
-        if(segundos_totais - this.segundo_nascimento >= this.tempo_vida.real){ // se se passar mais tempo desde o nascimento que o tempo de vida do organismo
+        if(segundos_totais - this.segundo_nascimento >= this.tempo_vida){ // se se passar mais tempo desde o nascimento que o tempo de vida do organismo
             this.morre();
         }
 

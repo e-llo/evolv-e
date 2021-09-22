@@ -166,7 +166,7 @@ var mudarGrafico = false;
 var x;
 var y;
 var raio;
-var raio_min;
+var raio_inicial;
 var vel_max; // Altere esse valor para ver o comportamento do bicho!
 var forca_max; // Altere esse valor para ver o comportamento do bicho!
 var cor = geraCor();
@@ -176,8 +176,6 @@ var energia;
 var taxa_gasto_energia;
 var cansaco_max;
 var taxa_aum_cansaco;
-var tempo_vida_min;
-var tempo_vida_max;
 var fome_c = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
 var fome_h = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
 
@@ -306,55 +304,45 @@ function geraAlimento(x,y){
 
 
 function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros manualmente 
-    raio_min = geraNumeroPorIntervalo(4, 7);
+    raio_inicial = geraNumeroPorIntervalo(4, 7);
     vel_max = geraNumeroPorIntervalo(1, 2.2); 
     forca_max = geraNumeroPorIntervalo(0.001, 0.05);
     cor = geraCor();
     raio_deteccao_min = geraNumeroPorIntervalo(15, 60);
     cansaco_max = geraNumeroPorIntervalo(20, 70);
     taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
-    tempo_vida_min = 120; // em segundos
-    tempo_vida_max = 300; // em segundos
 
     if(conf_c) {
-        raio_min = conf_c.raio;
+        raio_inicial = conf_c.raio_inicial;
         vel_max = conf_c.vel_max;
         forca_max = conf_c.forca_max;
         cor = conf_c.cor;
-        tempo_vida_min = conf_c.tempo_vida_min;
-        tempo_vida_max = conf_c.tempo_vida_max;
     }
 
     new Carnivoro(
-        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min,
-        cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
+        x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco
     );
 }
 
 
 function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros manualmente    
-    raio_min = geraNumeroPorIntervalo(4, 7);
+    raio_inicial = geraNumeroPorIntervalo(4, 7);
     vel_max = geraNumeroPorIntervalo(1, 2.2); 
     forca_max = geraNumeroPorIntervalo(0.001, 0.05);
     cor = geraCor();
     raio_deteccao_min = geraNumeroPorIntervalo(15, 60);
     cansaco_max = geraNumeroPorIntervalo(20, 70);
     taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
-    tempo_vida_min = 120; // em segundos
-    tempo_vida_max = 300; // em segundos
 
     if(conf_h) {
-        raio_min = conf_h.raio;
+        raio_inicial = conf_h.raio_inicial;
         vel_max = conf_h.vel_max;
         forca_max = conf_h.forca_max;
         cor = conf_h.cor;
-        tempo_vida_min = conf_h.tempo_vida_min;
-        tempo_vida_max = conf_h.tempo_vida_max;
     }
 
     new Herbivoro(
-        x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min,
-        cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max
+        x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco
     );
 }
 
@@ -615,7 +603,7 @@ function calculaDadosGrafico(){
         popH["sem_div"]++
         velMedH["sem_div"] += herbivoro.vel_max;
         forcaMedH["sem_div"] += herbivoro.forca_max;
-        raioMedH["sem_div"] += herbivoro.raio_min * 1.5; // o raio máximo é (1.5 * raio_minimo)
+        raioMedH["sem_div"] += herbivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
         raioDetMedH["sem_div"] += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
         energMedH["sem_div"] += herbivoro.energia_max_fixa;
         taxaEnergMedH["sem_div"] += herbivoro.taxa_gasto_energia_max;
@@ -632,7 +620,7 @@ function calculaDadosGrafico(){
             popH[lado]++
             velMedH[lado] += herbivoro.vel_max;
             forcaMedH[lado] += herbivoro.forca_max;
-            raioMedH[lado] += herbivoro.raio_min * 1.5; // o raio máximo é (1.5 * raio_minimo)
+            raioMedH[lado] += herbivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
             raioDetMedH[lado] += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedH[lado] += herbivoro.energia_max_fixa;
             taxaEnergMedH[lado] += herbivoro.taxa_gasto_energia_max;
@@ -644,7 +632,7 @@ function calculaDadosGrafico(){
         popC["sem_div"]++
         velMedC["sem_div"] += carnivoro.vel_max;
         forcaMedC["sem_div"] += carnivoro.forca_max;
-        raioMedC["sem_div"] += carnivoro.raio_min * 1.5; // o raio máximo é (1.5 * raio_minimo)
+        raioMedC["sem_div"] += carnivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
         raioDetMedC["sem_div"] += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
         energMedC["sem_div"] += carnivoro.energia_max_fixa;
         taxaEnergMedC["sem_div"] += carnivoro.taxa_gasto_energia_max;
@@ -661,7 +649,7 @@ function calculaDadosGrafico(){
             popC[lado]++
             velMedC[lado] += carnivoro.vel_max;
             forcaMedC[lado] += carnivoro.forca_max;
-            raioMedC[lado] += carnivoro.raio_min * 1.5; // o raio máximo é (1.5 * raio_minimo)
+            raioMedC[lado] += carnivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
             raioDetMedC[lado] += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedC[lado] += carnivoro.energia_max_fixa;
             taxaEnergMedC[lado] += carnivoro.taxa_gasto_energia_max;
@@ -925,7 +913,7 @@ function getOrganismo(x, y) {
                 <b>Cor:</b> <svg width="20" height="20"><rect width="18" height="18" style="fill:${organismo.cor}"/></svg> ${organismo.cor}<br/>
                 <!-- <b>Fome:</b> <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
                 <b>Status:</b> <div id="pop-status-${popover_id}" style="display: inline">${organismo.status}</div><br/>
-                <b>Vida:</b> <div id="pop-vida-${popover_id}" style="display: inline">${segundos_totais - organismo.segundo_nascimento}</div>/${organismo.tempo_vida.real}<br/>
+                <b>Vida:</b> <div id="pop-vida-${popover_id}" style="display: inline">${segundos_totais - organismo.segundo_nascimento}</div>/${organismo.tempo_vida}<br/>
                 <button type="button" class="btn btn-danger btn-sm" onclick="excluirOrganismoPopover(${popover_id}, ${organismo.id})" style="margin-top: 10px">Excluir ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"}</button>
             </div>
             <button type="button" class="btn close" aria-label="Close"
@@ -1010,38 +998,28 @@ function showEditPanel(type) {
 
         <form id="formConfig" class="container-fluid">
             <div class="row mb-3">
-                <div class="col-6 p-0">
+                <div style="display: inline; width: 50%">
                     <!-- desenho do organismo com atualizacao em tempo real -->
-                    <label for="input-cor">Cor</label>
+                    <b><label for="input-cor">Cor</label></b>
                     <input id="input-cor" name="cor" type="color" value="${config? rgbToHex(config.cor):"#ff0000"}">
                 </div>
             </div>
             <div class="row p-0">
-                <div class="col p-0">
-                    <label for="input-raio">Raio</label>
-                    <input id="input-raio" name="raio" type="number" value="${config? config.raio:(raio||geraNumeroPorIntervalo(4, 7).toFixed(2))}" class="form-control p-0">
+                <div style="display: inline; width: 50%">
+                    <b><label for="input-raio">Raio</label></b>
+                    <input id="input-raio" name="raio_inicial" type="number" value="${config? config.raio_inicial:(raio_inicial||geraNumeroPorIntervalo(3, 7).toFixed(2))}" class="form-control p-0">
                 </div>  
-                <div class="col offset-1 p-0">                 
-                    <label for="input-velocidade">Vel max</label>
+                <div style="display: inline; width: 50%">                 
+                    <b><label for="input-velocidade">Velocidade</label></b>
                     <input id="input-velocidade" name="vel_max" type="number" value="${config? config.vel_max.toFixed(2):geraNumeroPorIntervalo(1, 2.2).toFixed(2)}" class="form-control p-0">
                 </div>
-                <div class="col offset-1 p-0">
-                    <label for="input-forca">Forca max</label>
+                <div style="display: inline; width: 50%">
+                    <b><label for="input-forca">Agilidade</label></b>
                     <input id="input-forca" name="forca_max" type="number" value="${config? config.forca_max.toFixed(2):geraNumeroPorIntervalo(0.001, 0.05).toFixed(2)}" class="form-control p-0">
                 </div>
-            </div>
-            <div class="row p-0">
-                <div class="col p-0">
-                    <label for="input-energia">Energia max</label>
-                    <input id="input-energia" name="energia_max" type="number" value="${config? config.energia_max.toFixed(2):geraNumeroPorIntervalo(120, 280).toFixed(2)}" class="form-control p-0">
-                </div>  
-                <div class="col offset-1 p-0">  
-                    <label for="input-vida-min">Vida min</label>
-                    <input id="input-vida-min" name="tempo_vida_min" type="number" min="1" value="${config? config.tempo_vida_min:120}" class="form-control p-0">
-                </div>
-                <div class="col offset-1 p-0">    
-                    <label for="input-vida-max">Vida max</label>
-                    <input id="input-vida-max" name="tempo_vida_max" type="number" min="1" value="${config? config.tempo_vida_max:300}" class="form-control p-0">
+                <div style="display: inline; width: 50%">
+                    <b><label for="input-deteccao">Visão</label></b>
+                    <input id="input-deteccao" name="raio_deteccao" type="number" value="${config? config.raio_deteccao_min.toFixed(2):geraNumeroPorIntervalo(15, 60).toFixed(2)}" class="form-control p-0">
                 </div>
             </div>
         </form>
@@ -1067,12 +1045,10 @@ function serializarFormConfig(type) {
     obj.cor = hexToRgb(obj["cor"])
     
     // Converter numeros
-    obj.raio = parseFloat(obj.raio);
+    obj.raio_inicial = parseFloat(obj.raio_inicial);
     obj.vel_max = parseFloat(obj.vel_max);
     obj.forca_max = parseFloat(obj.forca_max);
-    obj.energia_max = parseFloat(obj.energia_max);
-    obj.tempo_vida_min = parseFloat(obj.tempo_vida_min);
-    obj.tempo_vida_max = parseFloat(obj.tempo_vida_max);
+    obj.raio_deteccao_min = parseFloat(obj.raio_deteccao_min);
 
     if(type == 1) {
         conf_c = obj;
