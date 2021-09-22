@@ -138,13 +138,13 @@
                             </div>
                             <div class="text-center">
                                 <input id="highlightFalse" name="highlight" type="radio" onclick="highlight()" checked/>
-                                <label for="highlightFalse">todos</label>
+                                <label for="highlightFalse">Todos</label>
 
                                 <input id="highlightCarn" name="highlight" type="radio" onclick="highlight('c')"/>
-                                <label for="highlightCarn">carnivoros</label>
+                                <label for="highlightCarn">Carnívoros</label>
 
                                 <input id="highlightHerb" name="highlight" type="radio" onclick="highlight('h')"/>
-                                <label for="highlightHerb">herbivoros</label>
+                                <label for="highlightHerb">Herbívoros</label>
                             </div>
                             <div>
                                 <!-- <button type="button" id="divisao" name="divisao" class="btn btn-sm btn-outline-secondary" onclick="desenhaDivisao()">Dividir populações</button> -->
@@ -268,7 +268,10 @@
             canvas.addEventListener("click", getOrg) // Habilita funcionalidade de pesquisar organismo
 
             calculaDadosGrafico(); // Chama só 1x para não ficar valor 0 antes do primeiro segundo
+            
             setInterval(calculaDadosGrafico, 1000);
+            
+            
             resetChart();
             buildChart(chartType);
             mostrarBtnGraficos();
@@ -286,7 +289,9 @@
             document.getElementById("botoesIniciais").classList.add("d-none");
             document.getElementById("botoesSecundarios").classList.remove("d-none");
             document.getElementById("baixar-dados").classList.remove("d-none"); // FIND DADOS
-            if(!rodando && !pausado) { animate(); };
+            if(!rodando && !pausado) { 
+                animate(); 
+            }
             rodando = true;
         }
        

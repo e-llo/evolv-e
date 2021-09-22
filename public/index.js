@@ -906,7 +906,7 @@ function animate(){
 // ----------------------------------------------------------------------------------------------
 // Função atrelada ao evento click para encontrar o organismo na lista e retornar suas propriedades
 function getOrganismo(x, y) {
-    let organismo = Organismo.organismos.find(o => Math.abs(o.posicao.x - x) <= 5 && Math.abs(o.posicao.y - y) <= 5)
+    let organismo = Organismo.organismos.find(o => Math.abs(o.posicao.x - x) <= 10 && Math.abs(o.posicao.y - y) <= 10)
     if(organismo == undefined) {
         return; //console.log("não encontrou")
     }
@@ -926,6 +926,7 @@ function getOrganismo(x, y) {
                 <!-- <b>Fome:</b> <div id="pop-fome-${popover_id}" style="display: inline">${organismo.energia <= organismo.energia_max * 0.8 ? "Com fome":"Satisfeito"}</div><br/> -->
                 <b>Status:</b> <div id="pop-status-${popover_id}" style="display: inline">${organismo.status}</div><br/>
                 <b>Vida:</b> <div id="pop-vida-${popover_id}" style="display: inline">${segundos_totais - organismo.segundo_nascimento}</div>/${organismo.tempo_vida.real}<br/>
+                <button type="button" class="btn btn-danger btn-sm" onclick="excluirOrganismoPopover(${popover_id}, ${organismo.id})" style="margin-top: 10px">Excluir ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"}</button>
             </div>
             <button type="button" class="btn close" aria-label="Close"
                 onclick="deletePopover(${popover_id}, ${organismo.id})">
@@ -968,6 +969,19 @@ function deletePopover(popoverId, organismoId) {
     if(organismo) {
         delete organismo.proxy
         delete organismo.popover_id
+    }
+    $(`#popover-${popoverId}`).remove()
+}
+
+function excluirOrganismoPopover(popoverId, organismoId){
+    // Capturar organismo
+    const organismo = Organismo.organismos.find(o => o.id == organismoId) || 0;
+    if(organismo) {
+        organismo.morre();
+        if(pausado){
+            despausa(); // Se não fizer isso, o organismo continua aparecendo enquanto estiver pausado 
+            pausa();
+        }
     }
     $(`#popover-${popoverId}`).remove()
 }
