@@ -43,7 +43,7 @@ On the command line:
 npm start
 ```
 -->
-Then open the index.html file on your browser or [click here](https://evolv-e.github.io/evolv-e/)
+Then open the index.html file on your browser
 
 ---
 
