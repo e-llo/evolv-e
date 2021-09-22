@@ -430,27 +430,41 @@
         }
 
         function exportarDados(){
+            id_simulacao = makeId(4);
+            qtd_linhas = historico.segundos.length;
+
+            // Linha para nomear as colunas
             dados_simulacao = [
-                [makeId(4)], // ID da simulação para separá-las no banco de dados
-                [historico.herbivoros.populacao[0]], // População Inicial de herbívoros
-                [historico.carnivoros.populacao[0]], // População Inicial de carnívoros
-                historico.taxa_alimentos, // Taxa de alimentos por segundo em cada momento
-                historico.segundos, 
-                historico.herbivoros.populacao, 
-                historico.herbivoros.velocidade, 
-                historico.herbivoros.agilidade, 
-                historico.herbivoros.raio, 
-                historico.herbivoros.deteccao, 
-                historico.herbivoros.energia, 
-                historico.herbivoros.gasto, 
-                historico.carnivoros.populacao, 
-                historico.carnivoros.velocidade, 
-                historico.carnivoros.agilidade, 
-                historico.carnivoros.raio, 
-                historico.carnivoros.deteccao, 
-                historico.carnivoros.energia, 
-                historico.carnivoros.gasto
+                ["idSimulacao","popInicialHerb","popInicialCarn","taxaAlimentosPs","segundos",
+                 "popHerb","velHerb","agiHerb","raiHerb","detHerb","engHerb","gstHerb",
+                 "popCarn","velCarn","agiCarn","raiCarn","detCarn","engCarn","gstCarn"]
             ]
+
+            for(let i=0; i < qtd_linhas; i++){
+                dados_simulacao.push(
+                    [
+                        id_simulacao, // ID da simulação para separá-las no banco de dados
+                        historico.herbivoros.populacao[0], // População Inicial de herbívoros
+                        historico.carnivoros.populacao[0], // População Inicial de carnívoros
+                        historico.taxa_alimentos[i], // Taxa de alimentos por segundo em cada momento
+                        historico.segundos[i], 
+                        historico.herbivoros.populacao[i], 
+                        historico.herbivoros.velocidade[i], 
+                        historico.herbivoros.agilidade[i], 
+                        historico.herbivoros.raio[i], 
+                        historico.herbivoros.deteccao[i], 
+                        historico.herbivoros.energia[i], 
+                        historico.herbivoros.gasto[i], 
+                        historico.carnivoros.populacao[i], 
+                        historico.carnivoros.velocidade[i], 
+                        historico.carnivoros.agilidade[i], 
+                        historico.carnivoros.raio[i], 
+                        historico.carnivoros.deteccao[i], 
+                        historico.carnivoros.energia[i], 
+                        historico.carnivoros.gasto[i]
+                    ]
+                )
+            }
             exportToCsv("dados-simulacao.csv", dados_simulacao)
         }
 
