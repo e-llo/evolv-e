@@ -169,16 +169,15 @@ var raio;
 var raio_inicial;
 var vel_max; // Altere esse valor para ver o comportamento do bicho!
 var forca_max; // Altere esse valor para ver o comportamento do bicho!
-var cor = geraCor();
-var raio_deteccao_min;
+var cor;
+var raio_deteccao_inicial;
 var raio_deteccao;
 var energia;
 var taxa_gasto_energia;
-var cansaco_max;
-var taxa_aum_cansaco;
+var dna;
+
 var fome_c = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
 var fome_h = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
-
 
 // Variáveis para o gráfico (herbívoro)
 var popH;
@@ -308,9 +307,7 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
     vel_max = geraNumeroPorIntervalo(1, 2.2); 
     forca_max = geraNumeroPorIntervalo(0.001, 0.05);
     cor = geraCor();
-    raio_deteccao_min = geraNumeroPorIntervalo(15, 60);
-    cansaco_max = geraNumeroPorIntervalo(20, 70);
-    taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
+    raio_deteccao_inicial = geraNumeroPorIntervalo(15, 60);
 
     if(conf_c) {
         raio_inicial = conf_c.raio_inicial;
@@ -319,8 +316,16 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
         cor = conf_c.cor;
     }
 
+    dna = new DNA(
+        raio_inicial,
+        vel_max,
+        forca_max,
+        cor,
+        raio_deteccao_inicial
+    )
+
     new Carnivoro(
-        x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco
+        x, y, dna
     );
 }
 
@@ -330,9 +335,7 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
     vel_max = geraNumeroPorIntervalo(1, 2.2); 
     forca_max = geraNumeroPorIntervalo(0.001, 0.05);
     cor = geraCor();
-    raio_deteccao_min = geraNumeroPorIntervalo(15, 60);
-    cansaco_max = geraNumeroPorIntervalo(20, 70);
-    taxa_aum_cansaco = geraNumeroPorIntervalo(0.05, 1.05);
+    raio_deteccao_inicial = geraNumeroPorIntervalo(15, 60);
 
     if(conf_h) {
         raio_inicial = conf_h.raio_inicial;
@@ -341,8 +344,16 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
         cor = conf_h.cor;
     }
 
+    dna = new DNA(
+        raio_inicial,
+        vel_max,
+        forca_max,
+        cor,
+        raio_deteccao_inicial
+    )
+
     new Herbivoro(
-        x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco
+        x, y, dna
     );
 }
 
@@ -534,10 +545,6 @@ function desenhaDivisao(){
 function desenhaQuadTree(qtree){
     qtree.desenha();
 
-    // document.addEventListener('mousemove', (event) => {
-    //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
-    // });
-
     let alcance = new Retangulo(Math.random() * canvas.width, Math.random() * canvas.height, 170, 123);
     c.rect(alcance.x - alcance.w, alcance.y - alcance.h, alcance.w*2, alcance.h*2);
     c.strokeStyle = "green";
@@ -603,8 +610,8 @@ function calculaDadosGrafico(){
         popH["sem_div"]++
         velMedH["sem_div"] += herbivoro.vel_max;
         forcaMedH["sem_div"] += herbivoro.forca_max;
-        raioMedH["sem_div"] += herbivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
-        raioDetMedH["sem_div"] += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+        raioMedH["sem_div"] += herbivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicial)
+        raioDetMedH["sem_div"] += herbivoro.raio_deteccao_inicial; // não há ainda uma fórmula que relaciona o mín e o máx
         energMedH["sem_div"] += herbivoro.energia_max_fixa;
         taxaEnergMedH["sem_div"] += herbivoro.taxa_gasto_energia_max;
 
@@ -621,7 +628,7 @@ function calculaDadosGrafico(){
             velMedH[lado] += herbivoro.vel_max;
             forcaMedH[lado] += herbivoro.forca_max;
             raioMedH[lado] += herbivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
-            raioDetMedH[lado] += herbivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+            raioDetMedH[lado] += herbivoro.raio_deteccao_inicial; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedH[lado] += herbivoro.energia_max_fixa;
             taxaEnergMedH[lado] += herbivoro.taxa_gasto_energia_max;
         }
@@ -632,8 +639,8 @@ function calculaDadosGrafico(){
         popC["sem_div"]++
         velMedC["sem_div"] += carnivoro.vel_max;
         forcaMedC["sem_div"] += carnivoro.forca_max;
-        raioMedC["sem_div"] += carnivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
-        raioDetMedC["sem_div"] += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+        raioMedC["sem_div"] += carnivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicial)
+        raioDetMedC["sem_div"] += carnivoro.raio_deteccao_inicial; // não há ainda uma fórmula que relaciona o mín e o máx
         energMedC["sem_div"] += carnivoro.energia_max_fixa;
         taxaEnergMedC["sem_div"] += carnivoro.taxa_gasto_energia_max;
 
@@ -650,7 +657,7 @@ function calculaDadosGrafico(){
             velMedC[lado] += carnivoro.vel_max;
             forcaMedC[lado] += carnivoro.forca_max;
             raioMedC[lado] += carnivoro.raio_inicial * 1.5; // o raio máximo é (1.5 * raio_inicialimo)
-            raioDetMedC[lado] += carnivoro.raio_deteccao_min; // não há ainda uma fórmula que relaciona o mín e o máx
+            raioDetMedC[lado] += carnivoro.raio_deteccao_inicial; // não há ainda uma fórmula que relaciona o mín e o máx
             energMedC[lado] += carnivoro.energia_max_fixa;
             taxaEnergMedC[lado] += carnivoro.taxa_gasto_energia_max;
         }        
@@ -1019,7 +1026,7 @@ function showEditPanel(type) {
                 </div>
                 <div style="display: inline; width: 50%">
                     <b><label for="input-deteccao">Visão</label></b>
-                    <input id="input-deteccao" name="raio_deteccao" type="number" value="${config? config.raio_deteccao_min.toFixed(2):geraNumeroPorIntervalo(15, 60).toFixed(2)}" class="form-control p-0">
+                    <input id="input-deteccao" name="raio_deteccao_inicial" type="number" value="${config? config.raio_deteccao_inicial.toFixed(2):geraNumeroPorIntervalo(15, 60).toFixed(2)}" class="form-control p-0">
                 </div>
             </div>
         </form>
@@ -1048,7 +1055,7 @@ function serializarFormConfig(type) {
     obj.raio_inicial = parseFloat(obj.raio_inicial);
     obj.vel_max = parseFloat(obj.vel_max);
     obj.forca_max = parseFloat(obj.forca_max);
-    obj.raio_deteccao_min = parseFloat(obj.raio_deteccao_min);
+    obj.raio_deteccao_inicial = parseFloat(obj.raio_deteccao_inicial);
 
     if(type == 1) {
         conf_c = obj;

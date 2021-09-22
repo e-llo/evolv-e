@@ -2,8 +2,8 @@ class Herbivoro extends Organismo{
     static herbivoros = [];
     static highlight = false;
     
-    constructor(x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco){
-        super(x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco);
+    constructor(x, y, dna){
+        super(x, y, dna);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -14,11 +14,10 @@ class Herbivoro extends Organismo{
 
     reproduzir(){
         this.vezes_reproduzidas++;
-        var filho = this._reproduzir();
+        var dna_filho = this._reproduzir();
     
         return new Herbivoro(
-            this.posicao.x, this.posicao.y, filho.raio_inicial, filho.vel_max, filho.forca_max, 
-            filho.cor, filho.raio_deteccao_min, filho.cansaco_max, filho.taxa_aum_cansaco,
+            this.posicao.x, this.posicao.y, dna_filho
         );
     }
 

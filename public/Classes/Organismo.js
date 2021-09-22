@@ -3,47 +3,49 @@ class Organismo{
     static n_total_organismos = 0;
     static id = 0;
 
-    constructor(x, y, raio_inicial, vel_max, forca_max, cor, raio_deteccao_min, cansaco_max, taxa_aum_cansaco){
-        this.dna = {
-            
-        };
+    constructor(x, y, dna){
+        this.id = Organismo.id++;        
         this.posicao = new Vetor(x, y);
-        this.raio_inicial = raio_inicial;
+
+        this.raio_inicial = dna.raio_inicial;
+        this.vel_max = dna.vel_max;
+        this.forca_max = dna.forca_max;
+        this.cor = dna.cor;
+        this.raio_deteccao_inicial = dna.raio_deteccao_inicial;
+
+        // DNA -> Objeto para separar apenas os atributos passados para os descendentes
+        this.dna = new DNA(
+            this.raio_inicial,
+            this.vel_max,
+            this.forca_max,
+            this.cor,
+            this.raio_deteccao_inicial
+        )
+
         this.raio = this.raio_inicial;
         this.vel = new Vetor(0.0001, 0.0001);
         this.acel = new Vetor(0, 0);
-        this.vel_max = vel_max;
-        this.forca_max = forca_max;
-        this.cor = cor;
         var rgb = cor.substring(4, cor.length - 1).split(",");
         this.cor2 = "rgba(" + Math.floor(parseInt(rgb[0]) * 0.4) + "," + Math.floor(parseInt(rgb[1]) * 0.4) + "," + Math.floor(parseInt(rgb[2]) * 0.4) + ")";
-        this.raio_deteccao_min = raio_deteccao_min;
-        this.raio_deteccao = raio_deteccao_min;
+        
+        this.raio_deteccao = raio_deteccao_inicial;
         this.energia_max = Math.pow(this.raio, 2) * 6;
         this.energia_max_fixa = Math.pow(this.raio_inicial * 1.5, 2) * 6; // Usada para obter valores não-variáveis no gráfico
         this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
         this.taxa_gasto_energia;
         this.gasto_minimo = 0.002 * Math.pow(Math.pow(this.raio, 2), 0.75); // Seguindo a lei de Kleiber para a taxa metabólica dos seres vivos
         this.taxa_gasto_energia_max = this.gasto_minimo + (Math.pow(this.raio_inicial * 1.5, 2) * Math.pow(this.vel_max, 2)) * 0.00012;;
-        this.cansaco_max = cansaco_max;
-        this.taxa_aum_cansaco = taxa_aum_cansaco;
         this.chance_de_reproducao = 0.5;
         this.tempo_vivido = 0;
         this.status;
         this.qdade_comida = 0;
         this.vezes_reproduzidas = 0;
-        // setInterval(this.updateTempoVivido, 1000);
-        // setInterval(console.log("teste"), 1000);
-
-        // Tempo de vida
         this.segundo_nascimento = segundos_totais; // "segundo" é a variável global
         this.tempo_vida = parseInt(geraNumeroPorIntervalo(200, 300)); // tempo de vida do organismo
-
         // Variáveis de status
         this.comendo = false;
         this.fugindo = false;
         this.vagueando = false;
-        // this.perto_da_borda;
 
         // Variável que delimita a distância da borda a partir da qual os organismos começarão a fazer a curva para não bater nas bordas 
         this.d = 20; 
@@ -57,51 +59,13 @@ class Organismo{
         this.antes_da_divisao = false;
         this.posicao_fixa_momentanea = new Vetor(x, y);
 
-        // ID 
-        this.id = Organismo.id++;
-
         Organismo.organismos.push(this);
         Organismo.n_total_organismos++;
     }
   
     // Criando um método de reprodução comum a todos os organismos
     _reproduzir(){
-
-        // raio mínimo
-        var raio_inicial_filho = newMutacao(this.raio_inicial);
-        if(raio_inicial_filho < 0){
-            raio_inicial_filho = 0;
-        }
-        // velocidade máxima
-        var vel_max_filho = newMutacao(this.vel_max);
-        if(vel_max_filho < 0){
-            vel_max_filho = 0;
-        }
-
-        // força máxima
-        var forca_max_filho = newMutacao(this.forca_max);
-
-        // cor
-        var cor_filho = corMutacao(this.cor);
-
-        // raio de detecção
-        var raio_deteccao_min_filho = newMutacao(this.raio_deteccao_min);
-        if(raio_deteccao_min_filho < 5){
-            raio_deteccao_min_filho = 5;
-        }
-
-        // cansaço máximo
-        var cansaco_max_filho = newMutacao(this.cansaco_max);
-
-        // taxa de aumento do cansaço
-        var taxa_aum_cansaco_filho = newMutacao(this.taxa_aum_cansaco);
-    
-
-        var dados_filho = {raio_inicial: raio_inicial_filho, vel_max: vel_max_filho, forca_max: forca_max_filho, cor: cor_filho,
-        raio_deteccao_min: raio_deteccao_min_filho, cansaco_max: cansaco_max_filho, taxa_aum_cansaco: taxa_aum_cansaco_filho
-        };
-
-        return dados_filho;
+        return this.dna.mutar();
     }
 
     // Método para atualizar o estado do organismo
