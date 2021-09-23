@@ -298,7 +298,7 @@ var limitador_de_loop = 0;
 
 function geraAlimento(x,y){
     var raio = geraNumeroPorIntervalo(1, 2);
-    new Alimento(x, y, raio);
+    return new Alimento(x, y, raio);
 }
 
 
@@ -324,7 +324,7 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
         raio_deteccao_inicial
     )
 
-    new Carnivoro(
+    return new Carnivoro(
         x, y, dna
     );
 }
@@ -352,7 +352,7 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
         raio_deteccao_inicial
     )
 
-    new Herbivoro(
+    return new Herbivoro(
         x, y, dna
     );
 }

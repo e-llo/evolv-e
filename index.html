@@ -356,7 +356,8 @@
             cursorX = e.pageX;
             cursorY = e.pageY;
             if(cursorX<=canvas.width && cursorY<=canvas.height){
-                geraCarnivoro(cursorX,cursorY);
+                let carnivoro = geraCarnivoro(cursorX,cursorY);
+                carnivoro.display()
             }
         }
 
@@ -378,7 +379,8 @@
             cursorX = e.pageX;
             cursorY= e.pageY;
             if(cursorX<=canvas.width && cursorY<=canvas.height){
-                geraHerbivoro(cursorX,cursorY);
+                let herbivoro = geraHerbivoro(cursorX,cursorY);
+                herbivoro.display()
             }
             cursorX =null;
             cursorY = null;
@@ -424,7 +426,8 @@
             cursorX = e.pageX;
             cursorY= e.pageY;
             if(cursorX<=canvas.width && cursorY<=canvas.height){
-                geraAlimento(cursorX,cursorY);
+                let alimento = geraAlimento(cursorX,cursorY);
+                alimento.display()
             }
         }
 
