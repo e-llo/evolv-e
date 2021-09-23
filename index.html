@@ -225,6 +225,11 @@
         var outputAli = document.getElementById("numAli");
         outputAli.innerHTML = sliderAli.value;
 
+        // Variáveis para referenciar os botões de adicionar elementos na simulação
+        var btnAddHerb = document.getElementById("btnHerb");
+        var btnAddCarn = document.getElementById("btnCarn");
+        var btnAddAli = document.getElementById("btnAli");
+
         // Variáveis para pausar e despausar a simulação
         var btnPausa = document.getElementById("btnPausa");
         var btnDespausa = document.getElementById("btnDespausa");
@@ -333,19 +338,15 @@
             document.getElementById("painelSecundario").classList.add("d-none");
         }
 
-        // function paraAlimentos(){
-        //     mudaIntervaloAlimentos(1001);
-        // }
-
-        function addCarnivoro(){
-            // na posição que o mouse clicar    
-            var btnCarn = document.getElementById("btnCarn");
-            if(btnCarn.classList.contains("active")){
-                btnCarn.classList.remove("active");
+        function addCarnivoro(){ 
+            if(btnAddCarn.classList.contains("active")){
+                btnAddCarn.classList.remove("active");
                 document.removeEventListener('click', geradorC, true);
-                canvas.addEventListener("click", getOrg);
+                // habilitar getOrganismo soh se os outros botoes nao estiverem ativos
+                btnAddHerb.classList.contains("active") || btnAddAli.classList.contains("active") ?
+                    0 : canvas.addEventListener("click", getOrg);
             }else{
-                btnCarn.classList.add("active");
+                btnAddCarn.classList.add("active");
                 canvas.removeEventListener("click", getOrg);
                 document.addEventListener('click', geradorC, true);
             }
@@ -360,13 +361,14 @@
         }
 
         function addHerbivoro(){
-            var btnHerb = document.getElementById("btnHerb");
-            if(btnHerb.classList.contains("active")){
-                btnHerb.classList.remove("active");
+            if(btnAddHerb.classList.contains("active")){
+                btnAddHerb.classList.remove("active");
                 document.removeEventListener('click', geradorH, true);
-                canvas.addEventListener("click", getOrg);
+                // habilitar getOrganismo soh se os outros botoes nao estiverem ativos
+                btnAddCarn.classList.contains("active") || btnAddAli.classList.contains("active") ?
+                    0 : canvas.addEventListener("click", getOrg);
             }else{
-                btnHerb.classList.add("active");
+                btnAddHerb.classList.add("active");
                 canvas.removeEventListener("click", getOrg);
                 document.addEventListener('click', geradorH, true); 
             }
@@ -383,13 +385,14 @@
         }
 
         function addAlimento(){
-            var btnAli = document.getElementById("btnAli");
-            if(btnAli.classList.contains("active")){
-                btnAli.classList.remove("active");
+            if(btnAddAli.classList.contains("active")){
+                btnAddAli.classList.remove("active");
                 document.removeEventListener('click', geradorA, true);
-                canvas.addEventListener("click", getOrg);
+                // habilitar getOrganismo soh se os outros botoes nao estiverem ativos
+                btnAddCarn.classList.contains("active") || btnAddHerb.classList.contains("active") ?
+                    0 : canvas.addEventListener("click", getOrg);
             }else{
-                btnAli.classList.add("active");
+                btnAddAli.classList.add("active");
                 canvas.removeEventListener("click", getOrg);
                 document.addEventListener('click', geradorA, true); 
             }
