@@ -906,8 +906,14 @@ function getOrganismo(x, y) {
         return; //console.log("não encontrou")
     }
 
+    // Verificar se ja existe um popover referente ao organismo clicado
+    let popoverJaExiste = document.querySelectorAll(`.popover-info[data-organismoid="${organismo.id}"]`).length > 0 ? 1:0
+    if (popoverJaExiste) {
+        return;
+    }
+
     let popover = `
-        <div id="popover-${popover_id}" class="popover-info" style="top:${parseInt(organismo.posicao.y - 20)}px; left:${parseInt(organismo.posicao.x + 15)}px">
+        <div id="popover-${popover_id}" class="popover-info" data-organismoid="${organismo.id}" style="top:${parseInt(organismo.posicao.y - 20)}px; left:${parseInt(organismo.posicao.x + 15)}px">
             <div class="popover-title">
                 ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"}
             </div>
