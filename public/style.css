@@ -19,23 +19,8 @@ margin-right: auto;
 width: 50%;
 }
 
-#painel{
-  width: 485px;
-  height: 100vh;
-  display: inline-block;
-  vertical-align: top;
-  padding-top:20px;
-  background: #222;
-  color: #ddd;
-}
-#info{
-  width: 350px;
-  background: #222;
-  margin: 0 auto;
-  padding-bottom: 20px;
-}
 #chart{
-width: 460px;
+width: 480px;
 margin: 0 auto;
 
 }
@@ -242,12 +227,40 @@ transition: 0.3s;
 color: #f1f1f1;
 }
 
-.sidenav .closebtn {
-position: absolute;
-top: 0;
-right: 25px;
-font-size: 36px;
-margin-left: 50px;
+.tab-info{
+  position: absolute;
+  border-radius: 10px;
+  background-color: #222d;
+  color: #fff;
+  z-index: 2;
+}
+
+.tab-title {
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #222;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+  /* border: solid #bbb 1px; */
+  border-bottom: solid #bbb 2px;
+  border-top: none;
+  padding: 10px;
+}
+
+.tab-body {
+  padding: 10px;
+  max-width: 500px;
+}
+
+.close-btn > i {
+  color: #fff;
+}
+
+.w-300px{
+  width: 300px;
 }
 
 @media screen and (max-height: 450px) {
@@ -255,19 +268,6 @@ margin-left: 50px;
 .sidenav a {font-size: 18px;}
 }
 @media (max-width: 450px) {
-#painel{
-  width: 100%;
-  height: 100vh;
-  display: inline-block;
-  vertical-align: top;
-  padding-top:20px;
-}
-#info{
-  width: 100%;
-  padding: 8%;
-  margin: 0 auto;
-  padding-bottom: 20px;
-}
 #chart{
 width: 100%;
 margin: 0 auto;

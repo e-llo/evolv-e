@@ -46,9 +46,6 @@
         <div class="d-flex flex-column justify-content-center" style="height: inherit;">
             <div class="align-self-center">
                 <img id="img-splash" src="Images/capaFundoEscuro.png" alt=""/>
-                <!-- <p>
-                    Evolv<span>&#9679</span>e
-                </p> -->
             </div>
         </div>
     </div>
@@ -64,11 +61,29 @@
     <!-- <div class="framerate">
         <p>Frame rate: <span id="framerate"></span></p>
     </div> -->
+
+    <!-- Hierarquia tabs
+        tab-info > tab-title ou tab-body
+    -->
     
-    <div id="painel" >
-        <div style="overflow-y: auto; max-height: 100%;"> <!-- scroll para telas pequenas -->
-            <div id="info">
-                <div class="container slidecontainer">
+    <div id="tabs">
+        <div id="tabs-botoes" class="position-absolute d-flex" style="top:0; right:0;">
+            <button type="button" class="btn btn-dark" onclick="$('#tab-simulacao').show();">Simulação</button>
+            <button type="button" class="btn btn-dark" onclick="$('#tab-organismos').show();">Organismos</button>
+            <button type="button" class="btn btn-dark" onclick="$('#tab-dados').show();">Dados</button>
+        </div>
+
+        <div id="tabs-conteudos">
+            <!--------------------- TAB SIMULACAO ---------------------->
+            <div id="tab-simulacao" class="tab-info w-300px" style="right: 5px; top:calc(50% - 215px);">
+                <div class="tab-title">
+                    Simulação
+                    <button type="button" class="btn close-btn" onclick=" $(this).closest('.tab-info').hide()">
+                        <i class="fal fa-minus"></i>
+                    </button>
+                </div>
+                <div class="tab-body">
+
                     <div id="painelInicial">
                         <div id="inputsIniciais" class="p-0 m-0">
                             <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
@@ -120,23 +135,11 @@
                             </div>
                         </div>
                         
-                        
                     </div>
+
                     <div id="painelSecundario" class="d-none">
                         <div class="d-grid gap-2 mt-4">
-                            <div class="d-flex">
-                                <button type="button" id="btnCarn" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-danger w-100" onclick="addCarnivoro()"><span class="icone-carnivoro"></span>Adicionar Carnívoro</button>
-                                <button type="button" class="btn btn-gray" onclick="showEditPanel(1)"><i class="fas fa-edit p-0"></i></button>
-                            </div>
-                            <div class="d-flex">
-                                <button type="button" id="btnHerb" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-success w-100" onclick="addHerbivoro()"><span class="icone-herbivoro"></span>Adicionar Herbívoro</button>
-                                <button type="button" class="btn btn-gray" onclick="showEditPanel(2)"><i class="fas fa-edit p-0"></i></button>
-                            </div>
-                            <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning" onclick="addAlimento()"><span class="icone-vegetal"></span>Adicionar Vegetal</button>
-                            <!-- PAINEL DE EDICAO PARA INSERIR NOVO ORGANISMO -->
-                            <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
-                                <!-- Gerado automaticamente pelos botoes de editar -->
-                            </div>
+                            
                             <div class="text-center">
                                 <input id="highlightFalse" name="highlight" type="radio" onclick="highlight()" checked/>
                                 <label for="highlightFalse">Todos</label>
@@ -155,30 +158,72 @@
                             </div>
                             
                         </div>
-                        <div id="btnsChart" class="d-flex justify-content-center flex-wrap d-none" style="width: 100%;">
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(1)">População</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(2)">Velocidade</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(3)">Agilidade</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(4)">Raio</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(5)">Detecção</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(6)">Energia</button>
-                            <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(7)">Gasto</button>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div id="chart"></div>
-            <div id="chartSecundario">
-            </div>
+            <!--------------------- FIM TAB SIMULACAO ------------------>
 
-            <div id="baixar-dados" class="d-none">
-                <button id="baixar-dados-btn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd; width: 40%; margin-left: 30%" onclick="exportarDados()">Baixar Dados</button>
+            <!--------------------- TAB ORGANISMOS ---------------------->
+            <div id="tab-organismos" class="tab-info w-300px" style="left:50%; top:50%;display:none;">
+                <div class="tab-title">
+                    Organismos
+                    <button type="button" class="btn close-btn" onclick=" $(this).closest('.tab-info').hide()">
+                        <i class="fal fa-minus"></i>
+                    </button>
+                </div>
+                <div class="tab-body">
+                    <div class="d-flex">
+                        <button type="button" id="btnCarn" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-danger w-100" onclick="addCarnivoro()"><span class="icone-carnivoro"></span>Adicionar Carnívoro</button>
+                        <button type="button" class="btn btn-gray" onclick="showEditPanel(1)"><i class="fas fa-edit p-0"></i></button>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" id="btnHerb" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-success w-100" onclick="addHerbivoro()"><span class="icone-herbivoro"></span>Adicionar Herbívoro</button>
+                        <button type="button" class="btn btn-gray" onclick="showEditPanel(2)"><i class="fas fa-edit p-0"></i></button>
+                    </div>
+                    <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning w-100" onclick="addAlimento()"><span class="icone-vegetal"></span>Adicionar Vegetal</button>
+                    
+                    <!-- PAINEL DE EDICAO PARA INSERIR NOVO ORGANISMO -->
+                    <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
+                        <!-- Gerado automaticamente pelos botoes de editar -->
+                    </div>
+                </div>
             </div>
+            <!--------------------- FIM TAB ORGANISMOS ------------------>
+
+            <!--------------------- TAB DADOS ---------------------->
+            <div id="tab-dados" class="tab-info" style="left:5px; top:calc(50% - 319px);display:none;z-index: 1;">
+                <div class="tab-title">
+                    Dados
+                    <button type="button" class="btn close-btn" onclick=" $(this).closest('.tab-info').hide()">
+                        <i class="fal fa-minus"></i>
+                    </button>
+                </div>
+                <div class="tab-body">
+                    <div id="btnsChart" class="d-flex justify-content-center flex-wrap d-none" style="width: 100%;">
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(1)">População</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(2)">Velocidade</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(3)">Agilidade</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(4)">Raio</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(5)">Detecção</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(6)">Energia</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(7)">Gasto</button>
+                    </div>
+
+                    <div id="chart"></div>
+                    <div id="chartSecundario"></div>
+
+                    <div id="baixar-dados" class="d-none">
+                        <button id="baixar-dados-btn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd; width: 40%; margin-left: 30%" onclick="exportarDados()">Baixar Dados</button>
+                    </div>
+                </div>
+            </div>
+            <!--------------------- FIM TAB DADOS ------------------>
+
         </div>
     </div>
 
     <!-- TOAST -->
-    <div class="position-absolute" style="top: 100px; right: 450px;" >
+    <div class="position-absolute" style="top: 40%; right: 350px;" >
         <div role="alert" aria-live="assertive" aria-atomic="true" class="toast align-items-center text-white bg-secondary border-0" data-autohide="false" >
             <div class="d-flex">
                 <div class="toast-body">
@@ -258,6 +303,7 @@
             setTimeout(function(){
                 $(".splash").fadeOut(800)
             }, 1500)
+            document.querySelectorAll(".tab-info").forEach(elemento => dragElement(elemento))
         });
 
 
@@ -483,6 +529,49 @@
             else if(organismo == "h")
                 Herbivoro.highlight = true
         }
+
+        function dragElement(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+            // se for uma tab
+            if (elmnt.classList.contains("tab-info")) {
+                // inserir o evento de arrastar na div de titulo (primeiro filho dentro da tab)
+                elmnt.children[0].onmousedown = dragMouseDown;
+            } else {
+                // otherwise, move the DIV from anywhere inside the DIV:
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    // get the mouse cursor position at startup:
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    document.onmouseup = closeDragElement;
+                    // call a function whenever the cursor moves:
+                    document.onmousemove = elementDrag;
+                }
+
+            function elementDrag(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    // calculate the new cursor position:
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    // set the element's new position:
+                    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                }
+
+            function closeDragElement() {
+                    // stop moving when mouse button is released:
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                }
+            }
 
     </script>
     <script type="text/javascript" src="./public/index.js"></script>
