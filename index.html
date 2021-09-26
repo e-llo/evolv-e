@@ -86,21 +86,21 @@
 
                     <div id="painelInicial">
                         <div id="inputsIniciais" class="p-0 m-0">
-                            <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">14</label></label>
-                            <input type="range" min="0" max="500" value="14" class="slider-red" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
-                            <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">100</label></label>
-                            <input type="range" min="0" max="500" value="100" class="slider" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
-                            <label id="alimento" name="alimento" for="inputAlimentos">Vegetais: <label id="numAli">150</label></label>
-                            <input type="range" min="0" max="500" value="150" class="slider-yellow" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
+                            <label id="carnivoro" name="carnivoro" for="inputCarnivoros">Carnívoros: <label id="numCarn">35</label></label>
+                            <input type="range" min="0" max="500" value="35" class="slider-red" step="1" id="inputCarnivoros" oninput="numCarn.textContent=inputCarnivoros.value">
+                            <label id="herbivoro" name="herbivoro" for="inputHerbivoros">Herbívoros: <label id="numHerb">300</label></label>
+                            <input type="range" min="0" max="800" value="300" class="slider" step="1" id="inputHerbivoros" oninput="numHerb.textContent=inputHerbivoros.value">
+                            <label id="alimento" name="alimento" for="inputAlimentos">Vegetais: <label id="numAli">800</label></label>
+                            <input type="range" min="0" max="3000" value="800" class="slider-yellow" step="5" id="inputAlimentos" oninput="numAli.textContent=inputAlimentos.value">    
                         </div>
-                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de vegetais: <label id="numTaxaAli">25</label> por segundo</label>
-                        <input type="range" min="0" max="1000" value="25" class="slider-yellow" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
+                        <label id="taxaalimento" name="taxaalimento" for="inputTaxaAlimentos">Aparição de vegetais: <label id="numTaxaAli">100</label> por segundo</label>
+                        <input type="range" min="0" max="1000" value="100" class="slider-yellow" step="1" id="inputTaxaAlimentos" oninput="mudouInputTaxa()"
                             onchange="mudaIntervaloAlimentos(inputTaxaAlimentos.value)">
                         
 
 
-                        <label id="probMutacao" name="probMutacao" for="inputProbMutacao">Probabilidade de mutação: <label id="numProbMutacao">8</label>%</label>
-                        <input type="range" min="0" max="100" value="8" class="slider-blue" id="inputProbMutacao" oninput="mudouInputProb()"
+                        <label id="probMutacao" name="probMutacao" for="inputProbMutacao">Probabilidade de mutação: <label id="numProbMutacao">10</label>%</label>
+                        <input type="range" min="0" max="100" value="10" class="slider-blue" id="inputProbMutacao" oninput="mudouInputProb()"
                             onchange="mudaProbMutacao(inputProbMutacao.value)">
 
 
@@ -109,7 +109,11 @@
                         <input type="range" min="0" max="100" value="5" class="slider-blue" id="inputMagMutacao" oninput="mudouInputMag()"
                             onchange="mudaMagMutacao(inputMagMutacao.value)">
 
-
+                        <div id="divTamanhoUniverso">
+                            <label id="tamanhoUniverso" name="tamanhoUniverso" for="inputTamanhoUniverso">Tamanho do universo: <label id="numTamanhoUniverso">2</label></label>
+                            <input type="range" min="1" max="5" value="2" class="slider" id="inputTamanhoUniverso" oninput="reequilibraQuantidades()">
+                        </div>
+                        
 
                         <div id="botoesIniciais" class ="row mt-3">
                             <div class="col-sm-3 d-grid gap-2">
@@ -173,14 +177,14 @@
                 </div>
                 <div class="tab-body">
                     <div class="d-flex">
-                        <button type="button" id="btnCarn" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-danger w-100" onclick="addCarnivoro()"><span class="icone-carnivoro"></span>Adicionar Carnívoro</button>
+                        <button type="button" id="btnCarn" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-danger w-100 addObjeto" onclick="addCarnivoro()"><span class="icone-carnivoro"></span>Adicionar Carnívoro</button>
                         <button type="button" class="btn btn-gray" onclick="showEditPanel(1)"><i class="fas fa-edit p-0"></i></button>
                     </div>
                     <div class="d-flex">
-                        <button type="button" id="btnHerb" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-success w-100" onclick="addHerbivoro()"><span class="icone-herbivoro"></span>Adicionar Herbívoro</button>
+                        <button type="button" id="btnHerb" class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-success w-100 addObjeto" onclick="addHerbivoro()"><span class="icone-herbivoro"></span>Adicionar Herbívoro</button>
                         <button type="button" class="btn btn-gray" onclick="showEditPanel(2)"><i class="fas fa-edit p-0"></i></button>
                     </div>
-                    <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning w-100" onclick="addAlimento()"><span class="icone-vegetal"></span>Adicionar Vegetal</button>
+                    <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning w-100 addObjeto" onclick="addAlimento()"><span class="icone-vegetal"></span>Adicionar Vegetal</button>
                     
                     <!-- PAINEL DE EDICAO PARA INSERIR NOVO ORGANISMO -->
                     <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
@@ -207,13 +211,14 @@
                         <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(5)">Detecção</button>
                         <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(6)">Energia</button>
                         <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(7)">Gasto</button>
+                        <button type="button" class="btn btn-sm btn-outline-info mx-1 my-1 flex-fill" onclick="changeChart(8)">Ninhada</button>
                     </div>
 
                     <div id="chart"></div>
                     <div id="chartSecundario"></div>
 
                     <div id="baixar-dados" class="d-none">
-                        <button id="baixar-dados-btn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd; width: 40%; margin-left: 30%" onclick="exportarDados()">Baixar Dados</button>
+                        <button id="baixar-dados-btn" type="button" class="btn btn-sm btn-block btn-outline-secondary" style="color: #ddd; width: 40%; margin: 15px 0 5px 30%" onclick="exportarDados()">Baixar Dados</button>
                     </div>
                 </div>
             </div>
@@ -227,7 +232,8 @@
         <div role="alert" aria-live="assertive" aria-atomic="true" class="toast align-items-center text-white bg-secondary border-0" data-autohide="false" >
             <div class="d-flex">
                 <div class="toast-body">
-                    Informe os parâmetros de entrada e clique em Play para iniciar a simulação. Clique em Default para restaurar as configurações padrão.
+                    Informe os parâmetros de entrada e clique em Play para iniciar a simulação. Clique em Default para restaurar as configurações padrão.<br/>
+                    <b>Você também pode dar zoom in/out com a roda do mouse, além de usá-la para se mover pela tela clicando e arrastando!</b>
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -308,15 +314,19 @@
 
 
         function iniciarSimulacao(){ // não ta funcionando se coloco só no click do botão
-            n_carnivoros = parseInt(document.getElementById("numCarn").textContent);
-            n_herbivoros = parseInt(document.getElementById("numHerb").textContent);
-            n_alimentos = parseInt(document.getElementById("numAli").textContent);
+            tamanhoUniverso = parseInt(document.getElementById("numTamanhoUniverso").textContent);
+            n_carnivoros = parseInt(document.getElementById("numCarn").textContent) * tamanhoUniverso;
+            n_herbivoros = parseInt(document.getElementById("numHerb").textContent) * tamanhoUniverso;
+            n_alimentos = parseInt(document.getElementById("numAli").textContent) * tamanhoUniverso;
+            
 
             antesDoPlay = false;
             resetaCronometro();
             historico.clear();
             criaCronometro();
+            criaUniverso(tamanhoUniverso);
             criaObjetos(n_carnivoros, n_herbivoros, n_alimentos);
+            
             canvas.addEventListener("click", getOrg) // Habilita funcionalidade de pesquisar organismo
 
             calculaDadosGrafico(); // Chama só 1x para não ficar valor 0 antes do primeiro segundo
@@ -337,6 +347,7 @@
             inputMMut = document.getElementById("inputMagMutacao");
             mudaMagMutacao(inputMMut.value);
             document.getElementById("inputsIniciais").classList.add("d-none");
+            document.getElementById("divTamanhoUniverso").classList.add("d-none");
             document.getElementById("painelSecundario").classList.remove("d-none");
             document.getElementById("botoesIniciais").classList.add("d-none");
             document.getElementById("botoesSecundarios").classList.remove("d-none");
@@ -348,22 +359,44 @@
         }
        
         function restaurarPadroes(){// volta os parâmetros para o padrão inicial
-            document.getElementById("numCarn").textContent = 14;
-            document.getElementById("inputCarnivoros").value = 14;
+            document.getElementById("numCarn").textContent = 35;
+            document.getElementById("inputCarnivoros").value = 35;
 
-            document.getElementById("numHerb").textContent = 100;
-            document.getElementById("inputHerbivoros").value = 100;
+            document.getElementById("numHerb").textContent = 300;
+            document.getElementById("inputHerbivoros").value = 300;
 
-            document.getElementById("numAli").textContent = 150;
-            document.getElementById("inputAlimentos").value = 150;
+            document.getElementById("numAli").textContent = 800;
+            document.getElementById("inputAlimentos").value = 800;
 
-            document.getElementById("numProbMutacao").textContent = 8;
+            document.getElementById("numProbMutacao").textContent = 10;
             document.getElementById("numMagMutacao").textContent = 5;
 
-            labelTaxa.textContent = 25;
-            inputTalim.value = 25;
-            inputPMut.value = 8;
+            document.getElementById("numTamanhoUniverso").textContent = 2;
+            document.getElementById("inputTamanhoUniverso").value = 2;
+
+            labelTaxa.textContent = 100;
+            inputTalim.value = 100;
+            inputPMut.value = 10;
             inputMMut.value = 5;
+        }
+
+        // Função para mudar os valores inicias (populações, taxa de alimentos, etc.)
+        function reequilibraQuantidades(){
+            numTamanhoUniverso.textContent=inputTamanhoUniverso.value
+            var tamUniverso = parseInt(inputTamanhoUniverso.value)
+            var escala = Math.pow(tamUniverso, 1.3);
+
+            document.getElementById("numCarn").textContent = Math.round(15 * escala * 0.8);
+            document.getElementById("inputCarnivoros").value = Math.round(15 * escala * 0.8);
+
+            document.getElementById("numHerb").textContent = Math.round(100 * escala * 0.8);
+            document.getElementById("inputHerbivoros").value = Math.round(100 * escala * 0.8);
+
+            document.getElementById("numAli").textContent = Math.round(300 * escala);
+            document.getElementById("inputAlimentos").value = Math.round(300 * escala);
+
+            labelTaxa.textContent = Math.round(30 * escala * 1.5);
+            inputTalim.value = Math.round(30 * escala * 1.5);
         }
 
         function mostrarPainelInicial() {
@@ -487,9 +520,9 @@
 
             // Linha para nomear as colunas
             dados_simulacao = [
-                ["idSimulacao","popInicialHerb","popInicialCarn","taxaAlimentosPs","segundos",
-                 "popHerb","velHerb","agiHerb","raiHerb","detHerb","engHerb","gstHerb",
-                 "popCarn","velCarn","agiCarn","raiCarn","detCarn","engCarn","gstCarn"]
+                ["idSimulacao","População Inicial H","População Inicial C","Alimentos por Segundo","Segundos",
+                 "População H","Velocidade H","Agilidade H","Raio H","Detecção H","Energia H","Gasto H", "Ninhada Média H",
+                 "População C","Velocidade C","Agilidade C","Raio C","Detecção C","Energia C","Gasto C", "Ninhada Média C"]
             ]
 
             for(let i=0; i < qtd_linhas; i++){
@@ -506,14 +539,16 @@
                         historico.herbivoros.raio[i], 
                         historico.herbivoros.deteccao[i], 
                         historico.herbivoros.energia[i], 
-                        historico.herbivoros.gasto[i], 
+                        historico.herbivoros.gasto[i],
+                        historico.herbivoros.tamanho_medio_ninhada[i],
                         historico.carnivoros.populacao[i], 
                         historico.carnivoros.velocidade[i], 
                         historico.carnivoros.agilidade[i], 
                         historico.carnivoros.raio[i], 
                         historico.carnivoros.deteccao[i], 
                         historico.carnivoros.energia[i], 
-                        historico.carnivoros.gasto[i]
+                        historico.carnivoros.gasto[i],
+                        historico.carnivoros.tamanho_medio_ninhada[i]
                     ]
                 )
             }

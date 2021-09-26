@@ -1,10 +1,11 @@
 class DNA{
-    constructor(raio_inicial, vel_max, forca_max, cor, raio_deteccao_inicial){
+    constructor(raio_inicial, vel_max, forca_max, cor, raio_deteccao_inicial, intervalo_ninhada){
         this.raio_inicial = raio_inicial;
         this.vel_max = vel_max;
         this.forca_max = forca_max;
         this.cor = cor;
         this.raio_deteccao_inicial = raio_deteccao_inicial;
+        this.intervalo_ninhada = intervalo_ninhada;
     }
 
     mutar(){
@@ -33,12 +34,16 @@ class DNA{
             raio_deteccao_inicial_filho = raio_inicial_filho;
         }
 
+        // tamanho da ninhada
+        var intervalo_ninhada_filho = mutacaoNinhada(this.intervalo_ninhada[0], this.intervalo_ninhada[1]);
+
         dna_mutado = new DNA(
             raio_inicial_filho, 
             vel_max_filho,
             forca_max_filho,
             cor_filho,
-            raio_deteccao_inicial_filho
+            raio_deteccao_inicial_filho,
+            intervalo_ninhada_filho
             )
 
         return dna_mutado;

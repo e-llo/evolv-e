@@ -3,15 +3,20 @@ class Organismo{
     static n_total_organismos = 0;
     static id = 0;
 
-    constructor(x, y, dna){
+    constructor(x, y, dna, pai = null){
         this.id = Organismo.id++;        
         this.posicao = new Vetor(x, y);
+        if(pai){
+            this.pai = pai;
+        }
+        this.filhos = [];
 
         this.raio_inicial = dna.raio_inicial;
         this.vel_max = dna.vel_max;
         this.forca_max = dna.forca_max;
         this.cor = dna.cor;
         this.raio_deteccao_inicial = dna.raio_deteccao_inicial;
+        this.intervalo_ninhada = dna.intervalo_ninhada;
 
         // DNA -> Objeto para separar apenas os atributos passados para os descendentes
         this.dna = new DNA(
@@ -19,7 +24,8 @@ class Organismo{
             this.vel_max,
             this.forca_max,
             this.cor,
-            this.raio_deteccao_inicial
+            this.raio_deteccao_inicial,
+            this.intervalo_ninhada
         )
 
         this.raio = this.raio_inicial;
@@ -31,17 +37,31 @@ class Organismo{
         this.raio_deteccao = raio_deteccao_inicial;
         this.energia_max = Math.pow(this.raio, 2) * 6;
         this.energia_max_fixa = Math.pow(this.raio_inicial * 1.5, 2) * 6; // Usada para obter valores não-variáveis no gráfico
-        this.energia = this.energia_max * 0.5; // Começa com uma parcela da energia máxima
+
+
+        // NINHADAS
+
+        // this.energia = this.energia_max * 0.75
+        if(pai){
+            this.energia = (this.energia_max * (0.75 + Math.random() / 4)) / (pai.tamanho_ninhada) * 0.6; // Começa com uma parcela da energia máxima
+        } else{
+            this.energia = this.energia_max * 0.75
+        }
+
+
+        
         this.taxa_gasto_energia;
         this.gasto_minimo = 0.0032 * Math.pow(Math.pow(this.raio, 2), 0.75); // Seguindo a lei de Kleiber para a taxa metabólica dos seres vivos
         this.taxa_gasto_energia_max = this.gasto_minimo + (Math.pow(this.raio_inicial * 1.5, 2) * Math.pow(this.vel_max, 2)) * 0.00012;;
         this.chance_de_reproducao = 0.5;
-        this.tempo_vivido = 0;
         this.status;
         this.qdade_comida = 0;
         this.vezes_reproduzidas = 0;
         this.segundo_nascimento = segundos_totais; // "segundo" é a variável global
         this.tempo_vida = parseInt(geraNumeroPorIntervalo(200, 300)); // tempo de vida do organismo
+        this.tempo_vivido = 0;
+        this.tamanho_ninhada;
+
         // Variáveis de status
         this.comendo = false;
         this.fugindo = false;
@@ -70,35 +90,39 @@ class Organismo{
 
     // Método para atualizar o estado do organismo
     update(){
+        this.tempo_vivido = segundos_totais - this.segundo_nascimento;
         this.taxa_gasto_energia = (Math.pow(this.raio, 2) * Math.pow(this.vel.mag(), 2)) * 0.0002; // Atualiza de acordo com a velocidade atual
-        // this.tempo_vivido++;
         // Taxa de diminuição de energia
         if(this.energia > 0){
             this.energia -= (this.taxa_gasto_energia + this.gasto_minimo);
 
             if(Math.random() < (0.0005 * this.qdade_comida)/10){ // Número baixo pois testa a cada frame. Quando mais comeu, maiores as chances
                 if(Math.random() <= this.chance_de_reproducao){
-                    this.reproduzir();
+                    // this.reproduzir();
+                    // NINHADA
+
+                    this.tamanho_ninhada = geraInteiro(this.intervalo_ninhada[0], this.intervalo_ninhada[1] + 1);
+                    for(var i = 0; i < this.tamanho_ninhada; i++){
+                        if(Math.random() < 0.2){ // Para espaçar os nascimentos
+                            this.reproduzir();
+                        }
+                    }
                 }
             }
         } else{
             this.morre(); 
         }
         
-        if(segundos_totais - this.segundo_nascimento >= this.tempo_vida){ // se se passar mais tempo desde o nascimento que o tempo de vida do organismo
+        if(this.tempo_vivido >= this.tempo_vida){ // se se passar mais tempo desde o nascimento que o tempo de vida do organismo
             this.morre();
         }
 
+        // Delimitação de bordas
         if(telaDividida){
             this.criaBordas(true);
         } else{
             this.criaBordas(false);
         }
-        
-        // this.delimitaBordas(this.posicao.x); // Limita posição pela borda do canvas caso o bicho não consiga desacelerar o suficiente
-
-        // this.evitaBordas(this.posicao.x); // Faz com que o organismo verifique se está próximo às bordas a cada frame
-
     
         // Atualização da velocidade (soma vetor velocidade com o vetor aceleração)
         this.vel.add(this.acel);
@@ -120,6 +144,14 @@ class Organismo{
         this.display();
     }
 
+    aumentaTamanho(){
+        if(this.raio<(this.raio_inicial*1.5)){
+            this.raio += 0.05*this.raio;
+            this.raio_deteccao += 0.03*this.raio_deteccao;
+        }
+        this.energia_max = Math.pow(this.raio, 2) * 6
+    }
+
     // Método para criar bordas que delimitarão o espaço do organismo
     criaBordas(telaDividida){ // telaDividida: boolean
         this.delimitaBordas(telaDividida);
@@ -130,26 +162,26 @@ class Organismo{
     delimitaBordas(telaDividida){
         if(telaDividida == true){
             // Delimitação para quem ficou no lado esquerdo
-            if(this.posicao.x <= canvas.width/2){
-                if(this.posicao.x + 2*this.raio > canvas.width / 2) // borda direita (a divisão, ou seja, na metade da tela)
+            if(this.posicao.x <= universoWidth/2){
+                if(this.posicao.x + 2*this.raio > universoWidth / 2) // borda direita (a divisão, ou seja, na metade da tela)
                     this.vel.x = this.vel.x * -1; // inverte a velocidade x se ultrapassa a borda
 
                 if(this.posicao.x < 0) // borda esquerda
                     this.vel.x = this.vel.x * -1;
 
-                if(this.posicao.y + this.raio > canvas.height) // borda baixo
+                if(this.posicao.y + this.raio > universoHeight) // borda baixo
                     this.vel.y = this.vel.y* -1;
 
                 if(this.posicao.y < 0) // borda cima
                     this.vel.y = this.vel.y * -1;
             } else{ // Delimitação para quem ficou no lado direito
-                if(this.posicao.x + 2*this.raio > canvas.width) // borda direita
+                if(this.posicao.x + 2*this.raio > universoWidth) // borda direita
                     this.vel.x = this.vel.x * -1; //inverte a velocidade x se ultrapassa a borda do canvas
 
-                if(this.posicao.x - this.raio < canvas.width / 2) // borda esquerda (a divisão, ou seja, na metade da tela)
+                if(this.posicao.x - this.raio < universoWidth / 2) // borda esquerda (a divisão, ou seja, na metade da tela)
                     this.vel.x = this.vel.x * -1;
 
-                if(this.posicao.y + this.raio > canvas.height) // borda baixo
+                if(this.posicao.y + this.raio > universoHeight) // borda baixo
                     this.vel.y = this.vel.y* -1;
 
                 if(this.posicao.y < 0) // borda cima
@@ -157,13 +189,13 @@ class Organismo{
             }
             
         } else{ // se a tela NÃO estiver dividida
-            if(this.posicao.x + 2*this.raio > canvas.width) // borda direita
+            if(this.posicao.x + 2*this.raio > universoWidth) // borda direita
                 this.vel.x = this.vel.x * -1; //inverte a velocidade x se ultrapassa a borda do canvas
 
             if(this.posicao.x - this.raio < 0) // borda esquerda
                 this.vel.x = this.vel.x * -1;
 
-            if(this.posicao.y + this.raio > canvas.height) // borda baixo
+            if(this.posicao.y + this.raio > universoHeight) // borda baixo
                 this.vel.y = this.vel.y* -1;
 
             if(this.posicao.y < 0) // borda cima
@@ -179,14 +211,14 @@ class Organismo{
 
         if(telaDividida == true){
             // Para quem ficou na parte esquerda
-            if(this.posicao.x <= canvas.width/2){
+            if(this.posicao.x <= universoWidth/2){
                 // Borda esquerda
                 if(this.posicao.x - this.raio < this.d){ // d é um atributo de todo organismo que delimita a distância de uma borda a partir da qual ele começará a manobrar
                     vel_desejada = new Vetor(this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção x (para a direita)
                     this.perto_da_borda = true;
                 } 
                 // Borda direita
-                else if(this.posicao.x + 2*this.raio > canvas.width / 2 - this.d){ // a borda direita é a metade do canvas (na tela dividida)
+                else if(this.posicao.x + 2*this.raio > universoWidth / 2 - this.d){ // a borda direita é a metade do canvas (na tela dividida)
                     vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
                     this.perto_da_borda = true;
                 }
@@ -196,7 +228,7 @@ class Organismo{
                     this.perto_da_borda = true;
                 }
                 // Borda de baixo
-                else if(this.posicao.y + this.raio > canvas.height - this.d){
+                else if(this.posicao.y + this.raio > universoHeight - this.d){
                     vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
                     this.perto_da_borda = true;
                 }
@@ -205,12 +237,12 @@ class Organismo{
             // Para quem ficou na parte direita
             else{
                 // Borda esquerda
-                if(this.posicao.x - this.raio < canvas.width/2 + this.d){ // a borda esquerda é a metade do canvas (na tela dividida)
+                if(this.posicao.x - this.raio < universoWidth/2 + this.d){ // a borda esquerda é a metade do canvas (na tela dividida)
                     vel_desejada = new Vetor(this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção x (para a direita)
                     this.perto_da_borda = true;
                 } 
                 // Borda direita
-                else if(this.posicao.x + 2*this.raio > canvas.width - this.d){
+                else if(this.posicao.x + 2*this.raio > universoWidth - this.d){
                     vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
                     this.perto_da_borda = true;
                 }
@@ -220,7 +252,7 @@ class Organismo{
                     this.perto_da_borda = true;
                 }
                 // Borda de baixo
-                else if(this.posicao.y > canvas.height - this.d){
+                else if(this.posicao.y > universoHeight - this.d){
                     vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
                     this.perto_da_borda = true;
                 }
@@ -233,7 +265,7 @@ class Organismo{
                 this.perto_da_borda = true;
             } 
             // Borda direita
-            else if(this.posicao.x + this.raio > canvas.width - this.d){
+            else if(this.posicao.x + this.raio > universoWidth - this.d){
                 vel_desejada = new Vetor(-this.vel_max, this.vel.y); // Faz sua velocidade ser máxima na direção -x (para a esquerda)
                 this.perto_da_borda = true;
             }
@@ -243,7 +275,7 @@ class Organismo{
                 this.perto_da_borda = true;
             }
             // Borda de baixo
-            else if(this.posicao.y + this.raio> canvas.height - this.d){
+            else if(this.posicao.y + this.raio> universoHeight - this.d){
                 vel_desejada = new Vetor(this.vel.x, -this.vel_max); // Faz sua velocidade ser máxima na direção -y (para a cima)
                 this.perto_da_borda = true;
             }
@@ -305,10 +337,10 @@ class Organismo{
             var forca_vagueio = new Vetor(0, 0);
             forca_vagueio = centro_circulo.add(deslocamento);
             
-            // if(this.comendo || this.fugindo){ // Diminui a força de vagueio quando vai comer ou fugir para dar prioridade a estas tarefas
-            //     forca_vagueio.mul(0.1);
-            // }
-            this.aplicaForca(forca_vagueio.mul(0.1));
+            if(this.comendo || this.fugindo){ // Diminui a força de vagueio quando vai comer ou fugir para dar prioridade a estas tarefas
+                forca_vagueio.mul(0.03);
+            }
+            this.aplicaForca(forca_vagueio.mul(0.2));
         // }
     }
 
@@ -331,10 +363,6 @@ class Organismo{
 
     estaMorto(){
         return this.energia <= 0;
-    }
-    
-    updateTempoVivido(){
-        this.tempo_vivido++;
     }
     
     remove(lista) {

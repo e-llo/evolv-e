@@ -229,8 +229,10 @@ color: #f1f1f1;
 
 .tab-info{
   position: absolute;
-  border-radius: 10px;
-  background-color: #222d;
+  /* border: solid 1px #888; */
+  border-radius: 5px;
+  background: rgb(70, 70, 70, 0.4);
+  backdrop-filter: blur(3px);
   color: #fff;
   z-index: 2;
 }
@@ -240,10 +242,11 @@ color: #f1f1f1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #222;
+  background: #222;
+  backdrop-filter: blur(3px);
   font-size: 1.2em;
   font-weight: bold;
-  border-radius: 10px 10px 0 0;
+  border-radius: 5px 5px 0 0;
   /* border: solid #bbb 1px; */
   border-bottom: solid #bbb 2px;
   border-top: none;
@@ -278,10 +281,17 @@ body{
 
 }
 
+.addObjeto{
+  margin: 3px 0;
+}
+
 .popover-info{
 position: absolute;
-border-radius: 10px;
-background-color: #2228;
+width: 250px;
+/* border: solid 1px #888; */
+border-radius: 5px;
+background: rgb(70, 70, 70, 0.4);
+backdrop-filter: blur(3px);
 color: #fff;
 z-index: 9999;
 }
@@ -320,7 +330,7 @@ z-index: 1;
 background-color: #222;
 font-size: 1.2em;
 font-weight: bold;
-border-radius: 10px 10px 0 0;
+border-radius: 5px 5px 0 0;
 /* border: solid #bbb 1px; */
 border-bottom: solid #bbb 2px;
 border-top: none;
