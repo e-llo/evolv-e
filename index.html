@@ -186,6 +186,24 @@
                     </div>
                     <button type="button" id="btnAli"  class="d-flex justify-content-around align-items-center btn btn-sm btn-outline-warning w-100 addObjeto" onclick="addAlimento()"><span class="icone-vegetal"></span>Adicionar Vegetal</button>
                     
+                    <hr class="mt-4">
+                    <div class="text-center " id="secaoExcluir">
+                        <i class="fas fa-exclamation-triangle" style="color:rgb(255, 208, 0)"></i> Excluir
+                    </div>
+                    <div class="text-center">
+                        <input id="inputMataHerb" name="inputMata" type="radio" onclick="matar('h')"/>
+                        <label for="inputMataHerb">Herbívoros</label>
+
+                        <input id="inputMataCarn" name="inputMata" type="radio" onclick="matar('c')"/>
+                        <label for="inputMataCarn">Carnívoros</label>
+                    </div>
+                    <div class="text-center">
+                        <input id="inputMataAli" name="inputMata" type="radio" onclick="matar('a')"/>
+                        <label for="inputMataAli">Vegetais</label>
+
+                        <input id="inputMataTodos" name="inputMata" type="radio" onclick="matar()"/>
+                        <label for="inputMataTodos">Todos</label>
+                    </div>
                     <!-- PAINEL DE EDICAO PARA INSERIR NOVO ORGANISMO -->
                     <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
                         <!-- Gerado automaticamente pelos botoes de editar -->
@@ -563,6 +581,28 @@
                 Carnivoro.highlight = true
             else if(organismo == "h")
                 Herbivoro.highlight = true
+        }
+        function matar(organismo = false) { 
+
+            if(organismo == "c")
+                Carnivoro.carnivoros = []
+            else if(organismo == "h")
+                Herbivoro.herbivoros = []
+            else if(organismo == "a"){
+                Alimento.alimentos = []
+                inputTalim.value = 0;
+                labelTaxa.textContent = 0
+                mudaIntervaloAlimentos(0);
+            }
+            else{
+                Carnivoro.carnivoros = []
+                Herbivoro.herbivoros = []
+                Alimento.alimentos = []
+                inputTalim.value = 0;
+                labelTaxa.textContent = 0
+                mudaIntervaloAlimentos(0);
+            }
+
         }
 
         function dragElement(elmnt) {

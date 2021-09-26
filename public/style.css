@@ -201,6 +201,11 @@ color: #555;
 .btn-gray:hover > i, .btn-gray.active > i{
 color: #eee;
 }
+#secaoExcluir{
+  font-weight: 700;
+  margin-bottom: 5px;
+
+}
 
 .sidenav {
 height: 100%;
