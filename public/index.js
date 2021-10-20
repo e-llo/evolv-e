@@ -1109,6 +1109,11 @@ function deletePopover(popoverId, organismoId) {
         delete organismo.popover_id
     }
     $(`#popover-${popoverId}`).remove()
+
+    // Esconder botao de fechar todos os popovers se nao existem mais popover abertos
+    if($(".popover-info").length == 0) {
+        $("#btnDeletePopovers").hide();
+    }
 }
 
 function excluirOrganismoPopover(popoverId, organismoId){

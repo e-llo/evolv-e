@@ -204,6 +204,9 @@
                         <input id="inputMataTodos" name="inputMata" type="radio" onclick="matar()"/>
                         <label for="inputMataTodos">Todos</label>
                     </div>
+                    <div id="btnDeletePopovers" class="mt-2" style="display: none;">
+                        <button type="button" class="btn btn-outline-info btn-sm btn-block" onclick="deletePopovers()">Fechar popovers</button>
+                    </div>
                     <!-- PAINEL DE EDICAO PARA INSERIR NOVO ORGANISMO -->
                     <div id="painelEditar" class="container-fluid edit-organism my-3 d-none">
                         <!-- Gerado automaticamente pelos botoes de editar -->
@@ -502,6 +505,7 @@
             let cursorY = event.pageY
 
             getOrganismo(cursorX, cursorY)
+            $("#btnDeletePopovers").show()
         }
 
         function mudouInputProb(){
@@ -530,6 +534,19 @@
 
         function mostrarBtnGraficos() {
             $("#btnsChart").removeClass("d-none");
+        }
+
+        function deletePopovers() {
+            $(".popover-info").each((i, el) => {
+                // capturar id do popover
+                let popoverId = $(el).attr("id")
+                popoverId = popoverId.match(/\d{1,}/g)[0]
+                // pegar id do organismo
+                let organismoId = $(el).attr("data-organismoid")
+                // chamar funcao de deletePopover unitaria
+                deletePopover(popoverId, organismoId);
+            })
+            $("#btnDeletePopovers").hide();
         }
 
         function exportarDados(){
