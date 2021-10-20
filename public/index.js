@@ -527,9 +527,11 @@ function newMutacao(valor) {// exemplo: valor = 20;  magnitude_mutacao = 0.05 ||
     if(Math.random() < probabilidade_mutacao){ // Quanto menor for probabilidade_mutacao, menor será a chance da mutação ocorrer
         let p = Math.random();
         let variacao = valor * magnitude_mutacao; //  variacao = 20 * 0.05 = 1, ou seja, poderá variar de +1 a -1 no resultado
-        if(p < 0.002){ // Há 0.2% de chance de a mutação ser grande
+        if(p < 0.001){ // Há 0.1% de chance de a mutação ser bem grande
+            variacao *= 10;
+        } else if(p < 0.003){ // Há 0.2% de chance (0.3% - 0.1% do if anterior) de a mutação ser grande
             variacao *= 6;
-        } else if(p < 0.008){ /// Há 0.6% de chance (0.8% - o 0.2% do if anterior) de a mutação ser razoavelmente grande
+        } else if(p < 0.008){ /// Há 0.5% de chance (0.8% - o 0.3% do if anterior) de a mutação ser razoavelmente grande
             variacao *= 3.5;
         } else if(p < 0.028){ // Há 2% de chance (2.8% - o 0.8% do if anterior) de a mutação ser razoável
             variacao *= 2;
@@ -552,7 +554,7 @@ function mutacaoNinhada(ninhada_min, ninhada_max) {
     if(Math.random() < probabilidade_mutacao){ // Quanto menor for probabilidade_mutacao, menor será a chance da mutação ocorrer
         let variacao_ninhada_min = geraInteiro(0, 2 + Math.floor(magnitude_mutacao * 10));
         let variacao_ninhada_max = geraInteiro(0, 2 + Math.floor(magnitude_mutacao * 10));
-
+ 
         if(Math.random() >= 0.5) { // Soma
             ninhada_min += variacao_ninhada_min;
             ninhada_max += variacao_ninhada_max;
@@ -1039,7 +1041,7 @@ function getOrganismo(x, y) {
     if (popoverJaExiste) {
         return;
     }
-
+    
     let popover = `
         <div id="popover-${popover_id}" class="popover-info" data-organismoid="${organismo.id}" style="top:${parseInt(organismo.posicao.y - 20)}px; left:${parseInt(organismo.posicao.x + 15)}px">
             <div class="popover-title">
