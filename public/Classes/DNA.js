@@ -1,11 +1,12 @@
 class DNA{
-    constructor(raio_inicial, vel_max, forca_max, cor, raio_deteccao_inicial, intervalo_ninhada){
+    constructor(raio_inicial, vel_max, forca_max, cor, raio_deteccao_inicial, intervalo_ninhada, sexo){
         this.raio_inicial = raio_inicial;
         this.vel_max = vel_max;
         this.forca_max = forca_max;
         this.cor = cor;
         this.raio_deteccao_inicial = raio_deteccao_inicial;
         this.intervalo_ninhada = intervalo_ninhada;
+        this.sexo = sexo; // string que pode ser XX (fêmea) ou XY (macho)
     }
 
     mutar(){
@@ -48,4 +49,5 @@ class DNA{
 
         return dna_mutado;
     }
+
 }

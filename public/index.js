@@ -168,25 +168,11 @@ function trackTransforms(c){
 
 
 
-var mudarGrafico = false;
-var x;
-var y;
-var raio;
-var raio_inicial;
-var vel_max; // Altere esse valor para ver o comportamento do bicho!
-var forca_max; // Altere esse valor para ver o comportamento do bicho!
-var cor;
-var raio_deteccao_inicial;
-var raio_deteccao;
-var energia;
-var taxa_gasto_energia;
-var dna;
-var intervalo_ninhada;
-var ninhada_min;
-var ninhada_max;
 
 var fome_c = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
 var fome_h = 0.8; // porcentagem da energia máxima acima da qual eles não comerão
+
+var mudarGrafico = false;
 
 // Variáveis para o gráfico (herbívoro)
 var popH;
@@ -372,14 +358,21 @@ function geraAlimento(x,y){
 }
 
 function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros manualmente 
-    raio_inicial = geraNumeroPorIntervalo(3, 8);
-    vel_max = geraNumeroPorIntervalo(1, 2.2); 
-    forca_max = geraNumeroPorIntervalo(0.01, 0.05);
-    cor = geraCor();
-    raio_deteccao_inicial = geraNumeroPorIntervalo(40, 120);
-    ninhada_min = geraInteiro(1, 1);
-    ninhada_max = ninhada_min + geraInteiro(1, 8);
-    intervalo_ninhada = [ninhada_min, ninhada_max]
+    var raio_inicial = geraNumeroPorIntervalo(3, 8);
+    var vel_max = geraNumeroPorIntervalo(1, 2.2); 
+    var forca_max = geraNumeroPorIntervalo(0.01, 0.05);
+    var cor = geraCor();
+    var raio_deteccao_inicial = geraNumeroPorIntervalo(40, 120);
+    var ninhada_min = geraInteiro(1, 1);
+    var ninhada_max = ninhada_min + geraInteiro(1, 8);
+    var intervalo_ninhada = [ninhada_min, ninhada_max];
+    var sexo;
+
+    if(Math.random() < 0.5){
+        sexo = 'XX'
+    } else{
+        sexo = 'XY'
+    }
 
     if(conf_c) {
         raio_inicial = conf_c.raio_inicial;
@@ -387,15 +380,17 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
         forca_max = conf_c.forca_max;
         cor = conf_c.cor;
         intervalo_ninhada = conf_c.intervalo_ninhada
+        sexo = conf_c.sexo
     }
 
-    dna = new DNA(
+    var dna = new DNA(
         raio_inicial,
         vel_max,
         forca_max,
         cor,
         raio_deteccao_inicial,
-        intervalo_ninhada
+        intervalo_ninhada,
+        sexo
     )
 
     return new Carnivoro(
@@ -405,14 +400,21 @@ function geraCarnivoro(x,y){ // função para poder adicionar mais carnívoros m
 
 
 function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros manualmente    
-    raio_inicial = geraNumeroPorIntervalo(3, 8);
-    vel_max = geraNumeroPorIntervalo(1, 2.2); 
-    forca_max = geraNumeroPorIntervalo(0.01, 0.05);
-    cor = geraCor();
-    raio_deteccao_inicial = geraNumeroPorIntervalo(40, 120);
-    ninhada_min = geraInteiro(1, 1);
-    ninhada_max = ninhada_min + geraInteiro(1, 8);
-    intervalo_ninhada = [ninhada_min, ninhada_max]
+    var raio_inicial = geraNumeroPorIntervalo(3, 8);
+    var vel_max = geraNumeroPorIntervalo(1, 2.2); 
+    var forca_max = geraNumeroPorIntervalo(0.01, 0.05);
+    var cor = geraCor();
+    var raio_deteccao_inicial = geraNumeroPorIntervalo(40, 120);
+    var ninhada_min = geraInteiro(1, 1);
+    var ninhada_max = ninhada_min + geraInteiro(1, 8);
+    var intervalo_ninhada = [ninhada_min, ninhada_max];
+    var sexo;
+
+    if(Math.random() < 0.5){
+        sexo = 'XX'
+    } else{
+        sexo = 'XY'
+    }
 
     if(conf_h) {
         raio_inicial = conf_h.raio_inicial;
@@ -420,15 +422,17 @@ function geraHerbivoro(x,y){ // função para poder adicionar mais herbivoros ma
         forca_max = conf_h.forca_max;
         cor = conf_h.cor;
         intervalo_ninhada = conf_h.intervalo_ninhada;
+        sexo = conf_h.sexo;
     }
 
-    dna = new DNA(
+    var dna = new DNA(
         raio_inicial,
         vel_max,
         forca_max,
         cor,
         raio_deteccao_inicial,
-        intervalo_ninhada
+        intervalo_ninhada,
+        sexo
     )
 
     return new Herbivoro(
@@ -573,6 +577,8 @@ function mutacaoNinhada(ninhada_min, ninhada_max) {
     
     return [ninhada_min, ninhada_max];
 }
+
+
 
 function geraNumeroPorIntervalo(min, max) {
     let delta = max - min; // exemplo: 4000 e 6000. 6000 - 4000 = 2000
@@ -1048,6 +1054,7 @@ function getOrganismo(x, y) {
                 ${(organismo instanceof Carnivoro) ? "Carnívoro":"Herbívoro"} <div style="color: grey; display: inline; font-size: medium">#${organismo.id}</div>
             </div>
             <div class="popover-content">
+                <b>Sexo:</b> <div id="pop-sexo-${popover_id}" style="display: inline">${organismo.sexo}</div><br/>
                 <b>Raio:</b> <div id="pop-raio-${popover_id}" style="display: inline">${organismo.raio.toFixed(2)}</div>/${(organismo.raio_inicial * 1.5).toFixed(2)}<br/>
                 <b>Velocidade:</b> <div id="pop-vel-${popover_id}" style="display: inline">${organismo.vel.mag().toFixed(2)}</div>/${organismo.vel_max.toFixed(2)}<br/>
                 <b>Raio de detecção:</b> <div id="pop-deteccao-${popover_id}" style="display: inline">${organismo.raio_deteccao.toFixed(2)}</div><br/>

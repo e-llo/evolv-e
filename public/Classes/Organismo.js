@@ -17,6 +17,7 @@ class Organismo{
         this.cor = dna.cor;
         this.raio_deteccao_inicial = dna.raio_deteccao_inicial;
         this.intervalo_ninhada = dna.intervalo_ninhada;
+        this.sexo = dna.sexo;
 
         // DNA -> Objeto para separar apenas os atributos passados para os descendentes
         this.dna = new DNA(
@@ -25,16 +26,17 @@ class Organismo{
             this.forca_max,
             this.cor,
             this.raio_deteccao_inicial,
-            this.intervalo_ninhada
+            this.intervalo_ninhada,
+            this.sexo
         )
 
         this.raio = this.raio_inicial;
         this.vel = new Vetor(0.0001, 0.0001);
         this.acel = new Vetor(0, 0);
-        var rgb = cor.substring(4, cor.length - 1).split(",");
+        var rgb = this.cor.substring(4, this.cor.length - 1).split(",");
         this.cor2 = "rgba(" + Math.floor(parseInt(rgb[0]) * 0.4) + "," + Math.floor(parseInt(rgb[1]) * 0.4) + "," + Math.floor(parseInt(rgb[2]) * 0.4) + ")";
         
-        this.raio_deteccao = raio_deteccao_inicial;
+        this.raio_deteccao = this.raio_deteccao_inicial;
         this.energia_max = Math.pow(this.raio, 2) * 6;
         this.energia_max_fixa = Math.pow(this.raio_inicial * 1.5, 2) * 6; // Usada para obter valores não-variáveis no gráfico
 
@@ -48,8 +50,6 @@ class Organismo{
             this.energia = this.energia_max * 0.75
         }
 
-
-        
         this.taxa_gasto_energia;
         this.gasto_minimo = 0.0032 * Math.pow(Math.pow(this.raio, 2), 0.75); // Seguindo a lei de Kleiber para a taxa metabólica dos seres vivos
         this.taxa_gasto_energia_max = this.gasto_minimo + (Math.pow(this.raio_inicial * 1.5, 2) * Math.pow(this.vel_max, 2)) * 0.00012;;
@@ -359,6 +359,75 @@ class Organismo{
 
         // Soma a força de redirecionamento à aceleração
         this.aplicaForca(redirecionamento);
+    }
+
+    // Método de comportamento reprodutivo sexuado para procurar parceiros próximos 
+    procuraParceiros(){
+
+    }
+
+    // Método de comportamento reprodutivo sexuado para se aproximar do parceiro encontrado 
+    aproximaDoParceiro(){
+        // CHAMAR AQUI DENTRO O MÉTODO combinaDnas()
+    }
+
+    // Método de comportamento reprodutivo sexuado para randomicamente escolher genes do pai e da mãe
+    combinaDnas(parceiro){
+        var dnaFilho = [];
+
+        // Raio inicial
+        if(Math.random() < 0.5){
+            dnaFilho.push(this.dna.raio_inicial)
+        } else{
+            dnaFilho.push(parceiro.dna.raio_inicial)
+        }
+
+        // Velocidade máxima
+        if(Math.random() < 0.5){
+            dnaFilho.push(this.dna.vel_max)
+        } else{
+            dnaFilho.push(parceiro.dna.vel_max)
+        }
+
+        // Força máxima
+        if(Math.random() < 0.5){
+            dnaFilho.push(this.dna.forca_max)
+        } else{
+            dnaFilho.push(parceiro.dna.forca_max)
+        }
+
+        // Cor
+        if(Math.random() < 0.5){
+            dnaFilho.push(this.dna.cor)
+        } else{
+            dnaFilho.push(parceiro.dna.cor)
+        }
+
+        // Raio detecção inicial
+        if(Math.random() < 0.5){
+            dnaFilho.push(this.dna.raio_deteccao_inicial)
+        } else{
+            dnaFilho.push(parceiro.dna.raio_deteccao_inicial)
+        }
+
+        // Intervalo ninhada
+        if(Math.random() < 0.5){
+            dnaFilho.push(this.dna.intervalo_ninhada)
+        } else{
+            dnaFilho.push(parceiro.dna.intervalo_ninhada)
+        }
+
+        // Sexo
+        if(Math.random() < 0.5){
+            dnaFilho.push(this.dna.sexo)
+        } else{
+            dnaFilho.push(parceiro.dna.sexo)
+        }
+
+        var dna_filho = new DNA(dnaFilho[0], dnaFilho[1], dnaFilho[2], dnaFilho[3], 
+            dnaFilho[4], dnaFilho[5], dnaFilho[6])
+        
+        return dna_filho;
     }
 
     estaMorto(){

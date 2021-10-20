@@ -25,6 +25,19 @@ class Herbivoro extends Organismo{
         return filho;
     }
 
+    reproduzirSexuado(parceiro){
+        this.vezes_reproduzidas++;
+
+        var dna_filho = this.combinaDnas(parceiro);
+        var filho = new Herbivoro(
+            this.posicao.x, this.posicao.y, dna_filho, this
+        )
+
+        this.filhos.push(filho);
+
+        return filho;
+    }
+
     morre(){
         if(this.popover_id) deletePopover(this.popover_id, this.id);
         Herbivoro.herbivoros = super.remove(Herbivoro.herbivoros, this);

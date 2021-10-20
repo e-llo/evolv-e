@@ -25,6 +25,19 @@ class Carnivoro extends Organismo{
         return filho;
     }
 
+    reproduzirSexuado(parceiro){
+        this.vezes_reproduzidas++;
+
+        var dna_filho = this.combinaDnas(parceiro);
+        var filho = new Carnivoro(
+            this.posicao.x, this.posicao.y, dna_filho, this
+        )
+
+        this.filhos.push(filho);
+
+        return filho;
+    }
+
     morre(){
         if(this.popover_id) deletePopover(this.popover_id, this.id);
         Carnivoro.carnivoros = super.remove(Carnivoro.carnivoros, this);
