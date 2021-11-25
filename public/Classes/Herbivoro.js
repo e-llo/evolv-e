@@ -2,8 +2,8 @@ class Herbivoro extends Organismo{
     static herbivoros = [];
     static highlight = false;
     
-    constructor(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max){
-        super(x, y, raio_min, vel_max, forca_max, cor, raio_deteccao_min, eficiencia_energetica, energia_max, cansaco_max, taxa_aum_cansaco, tempo_vida_min, tempo_vida_max);
+    constructor(x, y, dna, pai = null){
+        super(x, y, dna, pai);
        
         // variável para contar quando um herbívoro poderá se reproduzir
         this.contagem_pra_reproducao = 0;
@@ -11,16 +11,31 @@ class Herbivoro extends Organismo{
         Herbivoro.herbivoros.push(this);
     }
 
-
+    // Método de reprodução (com mutações)
     reproduzir(){
         this.vezes_reproduzidas++;
-        var filho = this._reproduzir();
-    
-        return new Herbivoro(
-            this.posicao.x, this.posicao.y, filho.raio_min, filho.vel_max, filho.forca_max, 
-            filho.cor, filho.raio_deteccao_min, filho.cansaco_max, filho.taxa_aum_cansaco,
-            filho.tempo_vida_min, filho.tempo_vida_max
+
+        var dna_filho = this._reproduzir();
+        var filho = new Herbivoro(
+            this.posicao.x, this.posicao.y, dna_filho, this
         );
+        
+        this.filhos.push(filho);
+
+        return filho;
+    }
+
+    reproduzirSexuado(parceiro){
+        this.vezes_reproduzidas++;
+
+        var dna_filho = this.combinaDnas(parceiro);
+        var filho = new Herbivoro(
+            this.posicao.x, this.posicao.y, dna_filho, this
+        )
+
+        this.filhos.push(filho);
+
+        return filho;
     }
 
     morre(){
@@ -59,6 +74,7 @@ class Herbivoro extends Organismo{
             this.comendo = true;
             this.vagueando = false;
             this.status = "pegando alimento";
+            
             if(recorde <= 25){ // como recorde é a distância ao quadrado, elevamos 5 ao quadrado (5^2 = 25) para comparar
                 
                 let indice_lista_estatica = 0;
@@ -76,14 +92,14 @@ class Herbivoro extends Organismo{
                 this.comeAlimento(alimentos_proximos[i_mais_perto], indice_lista_estatica);
 
                 ///////////////////////////////////////////////////////////////////////////////
-                this.contagem_pra_reproducao++;
+                // this.contagem_pra_reproducao++;
 
-                if(this.contagem_pra_reproducao >= 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
-                    if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
-                        this.reproduzir();
-                    }
-                    this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
-                }
+                // if(this.contagem_pra_reproducao >= 3){ // se o herbívoro comer <contagem_pra_reproducao> alimentos
+                //     if(Math.random() < this.chance_de_reproducao){ // chance de se reproduzir
+                //         this.reproduzir();
+                //     }
+                //     this.contagem_pra_reproducao = 0; // reseta a variável para que possa se reproduzir outras vezes
+                // }
                 //////////////////////////////////////////////////////////////////////////////////////////
                 
             } else if(alimentos_proximos.length != 0){
@@ -107,14 +123,6 @@ class Herbivoro extends Organismo{
         }
         Alimento.alimentos.splice(i, 1); // Retira o alimento da lista de alimentos
         this.aumentaTamanho();
-    }
-
-    aumentaTamanho(){
-        if(this.raio<(this.raio_min*1.5)){
-            this.raio += 0.03*this.raio;
-            this.raio_deteccao += 0.02*this.raio_deteccao;
-        }
-        this.energia_max = Math.pow(this.raio, 2) * 6;
     }
 
     // Método para detectar um predador (basicamente idêntico ao buscarAlimento())
@@ -192,8 +200,8 @@ class Herbivoro extends Organismo{
             c.fillStyle = this.cor;
             c.strokeStyle = this.cor;
         }
-        c.fill();
 
+        c.fill();
         // desenhando o raio de detecção
         //     c.beginPath();
         //     c.arc(this.posicao.x, this.posicao.y, this.raio_deteccao, 0, Math.PI * 2);

@@ -60,6 +60,7 @@ function insertNextDataChart() {
     historico.carnivoros.deteccao.push(raioDetMedC.sem_div)
     historico.carnivoros.energia.push(energMedC.sem_div)
     historico.carnivoros.gasto.push(taxaEnergMedC.sem_div)
+    historico.carnivoros.tamanho_medio_ninhada.push(ninhadaMediaC.sem_div)
 
     //  Herbivoros
     historico.herbivoros.populacao.push(popH.sem_div)
@@ -69,6 +70,7 @@ function insertNextDataChart() {
     historico.herbivoros.deteccao.push(raioDetMedH.sem_div)
     historico.herbivoros.energia.push(energMedH.sem_div)
     historico.herbivoros.gasto.push(taxaEnergMedH.sem_div)
+    historico.herbivoros.tamanho_medio_ninhada.push(ninhadaMediaH.sem_div)
 
     //  Segundos
     historico.segundos.push(segundos_totais)
@@ -86,6 +88,7 @@ function insertNextDataChart() {
         historicoE.carnivoros.deteccao.push(raioDetMedC.esq)
         historicoE.carnivoros.energia.push(energMedC.esq)
         historicoE.carnivoros.gasto.push(taxaEnergMedC.esq)
+        historicoE.carnivoros.tamanho_medio_ninhada.push(ninhadaMediaC.esq)
 
         // Herbivoros
         historicoE.herbivoros.populacao.push(popH.esq)
@@ -95,6 +98,7 @@ function insertNextDataChart() {
         historicoE.herbivoros.deteccao.push(raioDetMedH.esq)
         historicoE.herbivoros.energia.push(energMedH.esq)
         historicoE.herbivoros.gasto.push(taxaEnergMedH.esq)
+        historicoE.herbivoros.tamanho_medio_ninhada.push(ninhadaMediaH.esq)
 
         historicoE.segundos.push(segundos_totais)
 
@@ -109,6 +113,7 @@ function insertNextDataChart() {
         historicoD.carnivoros.deteccao.push(raioDetMedC.dir)
         historicoD.carnivoros.energia.push(energMedC.dir)
         historicoD.carnivoros.gasto.push(taxaEnergMedC.dir)
+        historicoD.carnivoros.tamanho_medio_ninhada.push(ninhadaMediaC.dir)
 
         // Herbivoros
         historicoD.herbivoros.populacao.push(popH.dir)
@@ -118,6 +123,7 @@ function insertNextDataChart() {
         historicoD.herbivoros.deteccao.push(raioDetMedH.dir)
         historicoD.herbivoros.energia.push(energMedH.dir)
         historicoD.herbivoros.gasto.push(taxaEnergMedH.dir)
+        historicoD.herbivoros.tamanho_medio_ninhada.push(ninhadaMediaH.dir)
 
         historicoD.segundos.push(segundos_totais)
 
@@ -180,6 +186,13 @@ function insertNextDataChart() {
         valores2 = [[historicoD.carnivoros.gasto.last()], [historicoD.herbivoros.gasto.last()]];
       } else
         valores = [[historico.carnivoros.gasto.last()], [historico.herbivoros.gasto.last()]];
+      break;
+    case 8:
+      if(telaDividida) {
+        valores = [[historicoE.carnivoros.tamanho_medio_ninhada.last()], [historicoE.herbivoros.tamanho_medio_ninhada.last()]];
+        valores2 = [[historicoD.carnivoros.tamanho_medio_ninhada.last()], [historicoD.herbivoros.tamanho_medio_ninhada.last()]];
+      } else
+        valores = [[historico.carnivoros.tamanho_medio_ninhada.last()], [historico.herbivoros.tamanho_medio_ninhada.last()]];
   }
 
   Plotly.extendTraces(chart,{y: valores, x: arraySeconds}, [0,1]);
@@ -264,7 +277,7 @@ var layout = {
 Plotly.newPlot('chart', data, layout); */
 
 function changeChart(type) {
-  if(type == chartType || type < 1 || type > 7) {
+  if(type == chartType || type < 1 || type > 8) {
     return;
   }
   resetChart();
@@ -356,6 +369,17 @@ function buildChart(type) {
         data2 = [historicoD.carnivoros.gasto, historicoD.herbivoros.gasto];
       } else
         data = [historico.carnivoros.gasto, historico.herbivoros.gasto];
+      break;
+    case 8: // Tamanho médio da ninhada
+    //indice = 15;
+    title = "Ninhada média";
+    yTitle = "Tamanho médio da ninhada";
+
+    if(telaDividida) {
+      data = [historicoE.carnivoros.tamanho_medio_ninhada, historicoE.herbivoros.tamanho_medio_ninhada];
+      data2 = [historicoD.carnivoros.tamanho_medio_ninhada, historicoD.herbivoros.tamanho_medio_ninhada];
+    } else
+      data = [historico.carnivoros.tamanho_medio_ninhada, historico.herbivoros.tamanho_medio_ninhada];
   }
   // -----------------------------------------------------------------------------------------------
 

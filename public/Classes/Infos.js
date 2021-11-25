@@ -1,4 +1,4 @@
-class Genes {
+class Infos {
     constructor(){
         this.populacao = [];
         this.velocidade = [];
@@ -7,6 +7,7 @@ class Genes {
         this.deteccao = [];
         this.energia = [];
         this.gasto = [];
+        this.tamanho_medio_ninhada = [];
     }
 
     clear() {
@@ -17,5 +18,6 @@ class Genes {
         this.deteccao.length = 0
         this.energia.length = 0
         this.gasto.length = 0
+        this.tamanho_medio_ninhada.length = 0;
     }
 }
