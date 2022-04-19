@@ -15,7 +15,7 @@ Our goal is to demonstrate how natural selection enables complex populations and
 
 ---
 ## 👩‍💻 Try it on
-* [Click here to see how it works](https://evolv-e.github.io/evolv-e/)
+* [Click here to see how it works](https://e-llo.github.io/evolv-e/)
 * You can also run this application locally
 
 ## How can I run this locally?
